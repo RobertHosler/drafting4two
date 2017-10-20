@@ -1,0 +1,268 @@
+*{ 
+	margin: 0; 
+	padding: 0; 
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+body { 
+	font: 12px "Lucida Grande", Sans-Serif; 
+	/*background: url(images/bg.png); */
+}
+
+h2 { 
+	color: #fa9f00; 
+	font: 30px Helvetica, Sans-Serif; 
+	margin: 0 0 10px 0; 
+}
+
+#page-wrap { 
+	/*width: 500px; 
+	 margin: 30px auto; 
+	position: relative; */ 
+}
+
+#chat-wrap { 
+	border: 1px solid #eee; 
+	margin: 0 0 15px 0; 
+}
+
+#chat-area{ 
+	height: 300px; 
+	overflow: auto; 
+	border: 1px solid #666; 
+	padding: 20px; 
+	background: white; 
+}
+
+#chat-area span{ 
+	color: white; 
+	background: #333; 
+	padding: 4px 8px; 
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 8px; 
+	margin: 0 5px 0 0; 
+}
+
+#chat-area p{ 
+	padding: 8px 0; 
+	border-bottom: 1px solid #ccc; 
+}
+
+#name-area{ 
+	position: absolute; 
+	top: 12px; right: 0; 
+	color: white; 
+	font: bold 12px "Lucida Grande", Sans-Serif; 
+	text-align: right; 
+}   
+
+#name-area span{ 
+	color: #fa9f00; 
+}f
+
+#send-message-area p{ 
+	float:left;
+	color: white; 
+	padding-top: 27px; 
+	font-size: 14px; 
+}
+#sendie{ 
+	border: 3px solid #999; 
+	padding: 10px; 
+	font: 12px "Lucida Grande", Sans-Serif; 
+	float: right; 
+}
+
+.magicCard {
+	
+}
+.magicCard,
+.header {
+	max-width:100%;
+	max-height:100%;
+}
+.manaSymbol {
+	height: 14px;
+	margin-left: 2px;
+}
+.cardNameRow .manaSymbol {
+	height: 14px;
+}
+.cardText .manaSymbol {
+	height: 10px;
+}
+
+.currentPilePointer {
+	text-align: center;
+}
+
+.column,
+.columns {
+	/*background-color: light-gray;*/
+	/*text-align: center;*/
+}
+
+/**
+* override the max width of 960 yet by skeleton to
+* use the full screen width!
+*/
+.container {
+	max-width: 1000px;
+	margin: auto;
+}
+
+.draftButton {
+	margin: auto;
+	vertical-align: middle;
+	width:100%;
+}
+.draftButton[disabled] {
+	background: #eeeeee;
+	color: #bbbbbb;
+}
+
+.row {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+div.deck .magicCard {
+	width: 100px;
+}
+
+.deck {
+	overflow:auto;
+	display: flex;
+	flex-wrap: wrap-reverse;
+	flex-direction: row-reverse;
+}
+.deck > div {
+	padding: 10px;
+}
+
+.currentPile {overflow:auto;display: flex;flex-wrap: wrap;
+//overflow-x: scroll;
+//white-space: nowrap;}
+
+div.currentPile .magicCard {
+	width: 150px;
+}
+
+.pileCard {
+	margin-top:-130%;
+}
+
+.mainWinstonPile .magicCard {
+	margin-top:-137%;
+}
+
+.winstonPile {
+	margin-top: 135%;
+}
+
+.winstonPile .magicCard {
+	margin-top:-130%;
+}
+
+.mainWinstonPile {
+	margin-top: 140%;
+}
+
+.pileRow {
+	min-height: 200px;
+	border-radius: 5px;
+	border: 1px solid;
+}
+.pileRow .heading {
+	font-size: 24px;
+	text-align: left;
+	padding: 10px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom: 1px solid;
+	background: #a0a0a0;
+}
+#deckRow {
+	background: lightgrey;
+	min-height: 200px;
+}
+#currentPileRow {
+	background: lightblue;
+}
+#currentPileRow .heading {
+	background: #7cb9cd;
+}
+
+.writtenCard {
+	display: table;
+	width: 200px;
+	height: 100px;
+	padding: 5px;
+	margin: 10px;
+	border-radius: 5px;
+	background: black;
+}
+.writtenCard .row {
+	margin-top: 5px;
+	margin-top: 5px;
+}
+.writtenCard > .innerWrittenCard {
+    border: 1px solid;
+    padding: 5px;
+    border-radius: 5px;
+    min-height: 100px;
+}
+.writtenCard .cardNameRow {
+    background: white;
+    border-radius: 4px;
+    padding: 3px;
+}
+.writtenCard  .cardName {
+	float: left;
+	font-size: 16px;
+	color: black !important;
+}
+.writtenCard .cardText,
+.writtenCard .cardType,
+.writtenCard .cardNameRow {
+	text-align: left;
+	background: rgba(255, 255, 255, 0.46);
+	padding: 3px;
+	border-radius: 3px;
+	border: 1px solid #666;
+}
+.writtenCard  .manaCost {
+	float: right;
+	font-size: 16px;
+}
+.writtenCard  .loyalty,
+.writtenCard  .powerToughness {
+	text-align: right;
+	font-size: 16px;
+}
+
+.writtenCard.white > .innerWrittenCard {
+	background: #f2f5b6;
+}
+.writtenCard.red > .innerWrittenCard {
+    background: #ff6363;
+}
+.writtenCard.blue > .innerWrittenCard{
+	background: #5cb0ff;
+}
+.writtenCard.green > .innerWrittenCard {
+	background: #51e467;
+}
+.writtenCard.brown > .innerWrittenCard {
+	background: #c59a67;
+}
+.writtenCard.gold > .innerWrittenCard {
+	background: #ecc236;
+}
+.writtenCard.black > .innerWrittenCard {
+	background: #484848;
+	color: white;
+}

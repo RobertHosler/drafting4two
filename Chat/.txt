@@ -1,0 +1,1 @@
+{"fileName":".txt","piles":null,"decks":["",[],[]],"activePlayer":1,"currentPile":1,"players":[null]}
