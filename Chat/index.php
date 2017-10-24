@@ -13,15 +13,12 @@
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	
-    <script type="text/javascript" src="chat.js"></script>
-	
-	<script type="text/javascript" src="page_processing.js"></script>
 
+		
 </head>
 
 <!-- onload sets to update the chat every second -->
-<body onload="setInterval('chat.update()', 1000)">
+<body>
 
 	<div class="container">
 		
@@ -29,15 +26,18 @@
 
 			<div id="page-wrap" class="four columns">
 			
-				<h2>Grid Drafting</h2>
+				<h2>Join Draft</h2>
 				
-				<p id="name-area"></p>
-				
-				<div id="chat-wrap"><div id="chat-area"></div></div>
-				
-				<form id="send-message-area">
-					<p>Your message: </p>
-					<textarea id="sendie" maxlength = '100' ></textarea>
+				<div></div>
+								
+				<form action="winston.php">
+					<p>Player Name: </p>
+					<input type="text" name="playerName" required></input>
+					<p>Draft Name: </p>
+					<input type="text" name="draftName" required></input>
+					<div>
+					<input type="submit" value="Submit"></input>
+					</div>
 				</form>
 			
 			</div>

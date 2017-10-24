@@ -33,6 +33,9 @@ function startDraft() {
 	while (!playerName) {
 		playerName = prompt("Please enter your name", "");
 	}
+	if (!cubeName) {
+		cubeName = "cube.txt"
+	}
 	$("#welcomeMessage").html("<h2>Hello, " + playerName + "</h2>");//empty span
 	$("#welcomeMessage").append("<p>Draft: " + draftName + "</p>");
 	//alert(draftName);
