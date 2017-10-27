@@ -35,6 +35,17 @@
 					<input type="text" name="playerName" required></input>
 					<p>Draft Name: </p>
 					<input type="text" name="draftName" required></input>
+					<p>Cube Name: </p>
+					<select name="cubeName">
+						<option value="360">Roqb 360</option>
+						<option value="roqb_pauper">Roqb Pauper</option>
+						<option value="klug">Klug</option>
+						<option value="kranny">Kranny</option>
+						<option value="Usman">Usman</option>
+						<option value="pauper">Pauper</option>
+						<option value="usman_pauper">Usman Pauper</option>
+						<option value="mini">Mini (for testing)</option>
+					</select>
 					<div>
 					<input type="submit" value="Submit"></input>
 					</div>
