@@ -1,1 +1,0 @@
-{"fileName":"test46.txt","piles":[[],["Doomed Traveler","Infantry Veteran"],["Goldmeadow Harrier","Ardent Recruit"],["Gideon's Lawkeeper"]],"decks":["",null],"activePlayer":2,"currentPile":1,"players":["Red","Blue"]}
