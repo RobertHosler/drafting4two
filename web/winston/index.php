@@ -7,9 +7,9 @@
     
     <title>Chat</title>
     
-    <link rel="stylesheet" text="text/css" href="Skeleton-2.0.4/css/normalize.css" />
-    <link rel="stylesheet" text="text/css" href="Skeleton-2.0.4/css/skeleton.css" />
-    <link rel="stylesheet" text="text/css" href="mystyles.css" />
+    <link rel="stylesheet" text="text/css" href="css/Skeleton-2.0.4/css/normalize.css" />
+    <link rel="stylesheet" text="text/css" href="css/Skeleton-2.0.4/css/skeleton.css" />
+    <link rel="stylesheet" text="text/css" href="css/mystyles.css" />
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
