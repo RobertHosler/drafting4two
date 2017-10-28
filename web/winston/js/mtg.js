@@ -22,24 +22,6 @@ var setImgCard = function(imgId, card) {
 	$(imgId).attr('src', imgSrc);
 };
 
-var getCards2 = function(cardnames) {
-	var cards = [];
-	$.ajax({
-		 async: false,
-		 type: 'GET',
-		 url: 'http://mtgjson.com/json/AllCards-x.json',
-		 success: function(data) {
-			//for each cardname in the list of cardnames
-			$.each(cardnames, function(index, cardname) {
-				//add the card to the list of cards if the cardname matches the index
-				var card = data[cardname];
-				cards.push(card);
-			});
-		 }
-	});
-	return cards;
-};
-
 var getCardImages = function(cardnames) {
 	var cards = getCards2(cardnames);
 	var cardImages = [];
@@ -76,28 +58,54 @@ var appendCardImages2 = function(imgId, cardnames) {
 	});
 };
 
-var appendCardImages = function(imgId, cardnames) {
-	var cards = getCards2(cardnames);
-	$.each(cards, function(index, card) {
-		var color = "brown";
-		if (card.colors) {
-			color = card.colors.length > 1 ? "gold" : card.colors[0].toLowerCase();
-		}
-		var s = "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\"><div class=\"row cardNameRow\"><span class=\"cardName\">"+card.name+"</span>";
-			if (card.manaCost) {
-				//TODO: remove brackets from manacost
-				s += "<span class=\"manaCost\">"+prettyManaCost(card.manaCost)+"</span>";
-			}
-			s += "</div><div class=\"cardType row\">"+card.type+"</div>" + "<div class=\"cardText\">"+prettyManaCost(card.text)+"</div>";
-			s += "<div class=\"powerToughness row\">";
-			if (card.power) {
-				s += card.power+"/"+card.toughness;
-			} else if (card.loyalty) {
-				s += card.loyalty;
-			}
-			s += "</div></div></div>";
-		$(imgId).append(s);
+/**
+ * Currently called from draft.js
+ * Append Card images asynchronously
+ */
+var appendCardImages = function(divId, cardnames) {
+	var cards = getCards2(cardnames, divId);
+};
+
+/**
+ * Called from appendCardImages
+ */
+var getCards2 = function(cardnames, divId) {
+	var cards = [];
+	$.ajax({
+		 async: true,
+		 type: 'GET',
+		 url: 'http://mtgjson.com/json/AllCards-x.json',
+		 success: function(data) {
+			//for each cardname in the list of cardnames
+			$.each(cardnames, function(index, cardname) {
+				//add the card to the list of cards if the cardname matches the index
+				var card = data[cardname];
+				cards.push(card);
+			});
+			//Add Cards to View
+			$.each(cards, function(index, card) {
+				var color = "brown";
+				if (card.colors) {
+					color = card.colors.length > 1 ? "gold" : card.colors[0].toLowerCase();
+				}
+				var s = "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\"><div class=\"row cardNameRow\"><span class=\"cardName\">"+card.name+"</span>";
+					if (card.manaCost) {
+						//TODO: remove brackets from manacost
+						s += "<span class=\"manaCost\">"+prettyManaCost(card.manaCost)+"</span>";
+					}
+					s += "</div><div class=\"cardType row\">"+card.type+"</div>" + "<div class=\"cardText\">"+prettyManaCost(card.text)+"</div>";
+					s += "<div class=\"powerToughness row\">";
+					if (card.power) {
+						s += card.power+"/"+card.toughness;
+					} else if (card.loyalty) {
+						s += card.loyalty;
+					}
+					s += "</div></div></div>";
+				$(divId).append(s);
+			});
+		 }
 	});
+	return cards;
 };
 
 var prettyManaCost = function(manaCost) {

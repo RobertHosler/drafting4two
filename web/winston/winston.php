@@ -4,7 +4,7 @@
 		<link rel="stylesheet" text="text/css" href="css/Skeleton-2.0.4/css/normalize.css" />
 		<link rel="stylesheet" text="text/css" href="css/Skeleton-2.0.4/css/skeleton.css" />
 		<link rel="stylesheet" text="text/css" href="css/mystyles.css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script type="text/javascript" src="js/draft.js"></script>
 		<script type="text/javascript" src="js/mtg.js"></script>
 		
@@ -28,7 +28,7 @@
 					<!-- Header -->
 					
 					<div class="row">
-						<img class="header" src="http://www.cubetutor.com/images/header_bg_4.jpg"/>
+						<img class="header" src="images/header_bg_4.jpg"/>
 					</div>
 					
 					<div id="topButtons"class="row">

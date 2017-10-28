@@ -46,6 +46,9 @@
 		return $draftOver;
 	}
 	
+	/*
+	 * Unused
+	 */
 	function make_unique($full_path) {
 		$file_name = basename($full_path);
 		$directory = dirname($full_path).DIRECTORY_SEPARATOR;

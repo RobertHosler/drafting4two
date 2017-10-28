@@ -11,16 +11,19 @@
 		//$state['draftOver'] = isDraftOver($state);//set the draftOver variable
 		$json = json_encode($state);
 		//fwrite(fopen($file_name, 'a'), $json."\n");//append content
-		file_put_contents("drafts/".$state_file_name, $json);//overwrite content
+		file_put_contents($state_file_name, $json);//overwrite content
 	}
 	
 	function retrieveStateFromFile($state_file_name) {
-		$jsonString = file_get_contents("drafts/".$state_file_name);
+		$jsonString = file_get_contents($state_file_name);
 		$file_content = json_decode($jsonString, true);
 		return $file_content;
 	}
 	
 	function saveDeckToFile($deck, $file_name) {
+		for ($i = 0; $i < count($deck); $i++) {
+			$deck[$i] = "1 ".$deck[$i];
+		}
 		file_put_contents($file_name, implode(PHP_EOL, $deck));
 	}
 	
@@ -46,6 +49,9 @@
 		return $draftOver;
 	}
 	
+	/**
+	 * Unused
+	 */
 	function make_unique($full_path) {
 		$file_name = basename($full_path);
 		$directory = dirname($full_path).DIRECTORY_SEPARATOR;
@@ -102,7 +108,7 @@
 			 $playerNumber = -1;			 
 			 if (file_exists("drafts/".$state_file_name)) {
 				//File already exists, add new player
-				$state = retrieveStateFromFile($state_file_name);
+				$state = retrieveStateFromFile("drafts/".$state_file_name);
 				$players = $state['players'];//retrieve state of players
 				$playerNumber = array_search($playerName, $players);
 				if ($playerNumber > -1) {
@@ -120,7 +126,7 @@
 				// array_push($state['players'], $playerName);
 				$playerNumber = count($state['players']);//playerNumber is count after adding
 			 }
-			 writeStateToFile($state, $state_file_name);
+			 writeStateToFile($state, "drafts/".$state_file_name);
              $log['state'] = $state;//sends the state object back
 			 $log['playerNumber'] = $playerNumber;
 			 $log['changeTime'] = filemtime("drafts/".$state_file_name);
@@ -129,7 +135,8 @@
     	 case('update'):
         	 $state = $_POST['state'];
 			 $changeTime = $_POST['changeTime'];
-        	 if(file_exists($state['fileName'])) {
+			 $changeTimeServer = 0;
+        	 if(file_exists("drafts/".$state['fileName'])) {
         	   $changeTimeServer = filemtime("drafts/".$state['fileName']);
         	 }
         	 if($changeTimeServer == $changeTime){//change time is the same
@@ -137,9 +144,9 @@
 				 $log['change'] = false;
 				 //$log['changeTime'] = filemtime($state['fileName']);
 			 } else {//if the state has changed...
-				 $log['state'] = retrieveStateFromFile($state['fileName']);//decode into an object
+				 $log['state'] = retrieveStateFromFile("drafts/".$state['fileName']);//decode into an object
 				 $log['change'] = true;
-				 $log['changeTime'] = filemtime($state['fileName']);
+				 $log['changeTime'] = filemtime("drafts/".$state['fileName']);
 			 }
              break;
     	 
@@ -179,9 +186,9 @@
 			$state['activePlayer'] = ($state['activePlayer'] == 1) ? 2 : 1;
 			
 			//encode the state as json and write to file
-			 writeStateToFile($state, $state['fileName']);
+			 writeStateToFile($state, "drafts/".$state['fileName']);
 			$log['state'] = $state;
-			$log['changeTime'] = filemtime($state['fileName']);
+			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
         	break;
     	case('passPile'):
 			$state = $_POST['state'];
@@ -264,9 +271,9 @@
 					}
 					$state['currentPile'] = $currentPile;
 			}
-			writeStateToFile($state, $state['fileName']);
+			writeStateToFile($state, "drafts/".$state['fileName']);
 			$log['state'] = $state;
-			$log['changeTime'] = filemtime($state['fileName']);
+			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
 			break;
 		case('saveDeck'):
 			$state = $_POST['state'];
