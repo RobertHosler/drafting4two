@@ -24,7 +24,7 @@
 		for ($i = 0; $i < count($deck); $i++) {
 			$deck[$i] = "1 ".$deck[$i];
 		}
-		file_put_contents($file_name, implode(PHP_EOL, $deck));
+		file_put_contents($file_name, implode("\r\n", $deck));
 	}
 	
 	function addPileToDeckList($pile, $deckList) {
