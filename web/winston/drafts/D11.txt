@@ -1,1 +1,0 @@
-{"fileName":"D11.txt","piles":[["Infantry Veteran","Goldmeadow Harrier","Gideon's Lawkeeper"],["Ardent Recruit"],["Doomed Traveler"],["Elite Vanguard"]],"decks":["",[],[]],"activePlayer":1,"currentPile":1,"players":["Roqb","Dylan"]}
