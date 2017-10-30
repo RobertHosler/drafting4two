@@ -1,0 +1,1 @@
+{"fileName":"4.txt","piles":{"1":["Spectral Procession","Fireball"],"2":["Dismember"]},"decks":["",["Simic Guildmage"]],"activePlayer":2,"currentPile":1,"players":["D","R"]}

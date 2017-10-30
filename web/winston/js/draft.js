@@ -191,7 +191,7 @@ function cardCountString(size) {
 function updateCurrentPile() {
 	$('#currentPile').html("");//empty div
 	if (!draftComplete && isActivePlayer()) {
-		appendCardImages('#currentPile', state.piles[state.currentPile]);
+		mtg.appendCardImages('#currentPile', state.piles[state.currentPile]);
 		$('#currentPileNumber').html(currentPileAsString(state.currentPile) + " - " + cardCountString(state.piles[state.currentPile].length));
 	} else {
 		$('#currentPileNumber').html("");
@@ -315,7 +315,7 @@ function passPile() {
 
 function updateDeckList(deckList) {
 	$('#deckList').html($(""));//empty div
-	appendCardNames('#deckList', deckList);
+	mtg.appendCardNames('#deckList', deckList);
 	$('#deckListNumber').html(cardCountString(deckList ? deckList.length : 0));
 }
 

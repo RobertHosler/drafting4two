@@ -1,139 +1,83 @@
-var getCards = function(cardnames) {
-	var cards = [];
-	var result = $.getJSON('http://mtgjson.com/json/AllCards.json', function(data) {
-		//for each card in the datafile
-		$.each(data, function(index, card) {
-			//and each cardname in the list of cardnames
-			$.each(cardnames, function(i, cardname) {
-				//add the card to the list of cards if the cardname matches the index
-				if (index === cardname) {
+var mtg = (function() {
+
+	/**
+	 * Currently called from draft.js
+	 * Append Card images asynchronously
+	 */
+	var appendCardImages = function(divId, cardnames) {
+		var cards = getCards2(cardnames, divId);
+	};
+
+	/**
+	 * Called from appendCardImages
+	 */
+	var getCards2 = function(cardnames, divId) {
+		var cards = [];
+		$.ajax({
+			 async: true,
+			 type: 'GET',
+			 url: 'http://mtgjson.com/json/AllCards-x.json',
+			 success: function(data) {
+				//for each cardname in the list of cardnames
+				$.each(cardnames, function(index, cardname) {
+					//add the card to the list of cards if the cardname matches the index
+					var card = data[cardname];
 					cards.push(card);
-				}
-			});
+				});
+				//Add Cards to View
+				$.each(cards, function(index, card) {
+					var color = "brown";
+					if (card.colors) {
+						color = card.colors.length > 1 ? "gold" : card.colors[0].toLowerCase();
+					}
+					var s = "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\"><div class=\"row cardNameRow\"><span class=\"cardName\">"+card.name+"</span>";
+						if (card.manaCost) {
+							//TODO: remove brackets from manacost
+							s += "<span class=\"manaCost\">"+prettySymbolText(card.manaCost)+"</span>";
+						}
+						s += "</div><div class=\"cardType row\">"+card.type+"</div>" + "<div class=\"cardText\">"+prettySymbolText(card.text)+"</div>";
+						s += "<div class=\"powerToughness row\">";
+						if (card.power) {
+							s += card.power+"/"+card.toughness;
+						} else if (card.loyalty) {
+							s += card.loyalty;
+						}
+						s += "</div></div></div>";
+					$(divId).append(s);
+				});
+			 }
 		});
 		return cards;
-	});
-};
-//var cardnames = ["Birthing Pod"];
-//getCards(cardnames);
+	};
 
-var setImgCard = function(imgId, card) {
-	var imgSrc = "http://mtgimage.com/card/"+card.imageName+".jpg";
-	$(imgId).attr('src', imgSrc);
-};
+	var prettySymbolText = function(textWithSymbols) {
+		if (!textWithSymbols) return;
+		var symbols = ["{T}", "{Q}", "{[0]}", "{[1]}", "{[2]}", "{[3]}", "{[4]}", "{[5]}", "{[6]}", "{[7]}", "{[8]}", "{[9]}", "{X}", "{W}", "{U}", "{B}", "{R}", "{G}", "{W/B}", "{R/W}", "{W/U}", "{G/W}", "{U/B}", "{U/R}", "{G/U}", "{R/G}", "{B/G}", "{B/R}", "{2/W}", "{2/U}", "{2/B}", "{2/R}", "{2/G}", "{W/P}", "{U/P}", "{B/P}", "{R/P}", "{G/P}"];
+		symbols.forEach(function(element) {
+			var regex = new RegExp(element, "g");
+			textWithSymbols = textWithSymbols.replace(regex, manaSymbol(element));
+		});
+		textWithSymbols = textWithSymbols.replace(/\{|\}/g, '');//remove braces
+		return textWithSymbols;
+	};
 
-var getCardImages = function(cardnames) {
-	var cards = getCards2(cardnames);
-	var cardImages = [];
-	$.ajax({
-		 async: false,
-		 type: 'GET',
-		 url: 'http://mtgjson.com/json/AllSetsArray.json',
-		 success: function(data) {
-			//for each cardname in the list of cardnames
-			$.each(cards, function(index, card) {
-				var firstPrinting = card.printings[0];
-				$.each(data, function(i, set) {
-					if (set.code === firstPrinting) {
-						$.each(set.cards, function(j, cardInSet) {
-							if (cardInSet.name === card.name) {
-								var number = cardInSet.number;
-								var imgSrc = "http://magiccards.info/scans/en/"+firstPrinting.toLowerCase()+"/"+number+".jpg";
-								cardImages.push(imgSrc);
-								return false;
-							}
-						});
-					}
-				});
-			});
-		 }
-	});
-	return cardImages;
-};
+	var manaSymbol = function(symbol) {
+		symbol = symbol.replace(/\/|\[|\]|\{|\}/g, '');//remove braces
+		var result = "";
+		var imgSrc = "/images/"+symbol+".svg";
+		result = "<img class=\"manaSymbol\" src=\"" + imgSrc + "\">";
+		return result;
+	};
 
-var appendCardImages2 = function(imgId, cardnames) {
-	var cardImages = getCardImages(cardnames);
-	$.each(cardImages, function(index, img) {
-		$(imgId).append($("<img class=\"magicCard\" src=\"" + img + "\">"));//adds to current html body
-	});
-};
-
-/**
- * Currently called from draft.js
- * Append Card images asynchronously
- */
-var appendCardImages = function(divId, cardnames) {
-	var cards = getCards2(cardnames, divId);
-};
-
-/**
- * Called from appendCardImages
- */
-var getCards2 = function(cardnames, divId) {
-	var cards = [];
-	$.ajax({
-		 async: true,
-		 type: 'GET',
-		 url: 'http://mtgjson.com/json/AllCards-x.json',
-		 success: function(data) {
-			//for each cardname in the list of cardnames
-			$.each(cardnames, function(index, cardname) {
-				//add the card to the list of cards if the cardname matches the index
-				var card = data[cardname];
-				cards.push(card);
-			});
-			//Add Cards to View
-			$.each(cards, function(index, card) {
-				var color = "brown";
-				if (card.colors) {
-					color = card.colors.length > 1 ? "gold" : card.colors[0].toLowerCase();
-				}
-				var s = "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\"><div class=\"row cardNameRow\"><span class=\"cardName\">"+card.name+"</span>";
-					if (card.manaCost) {
-						//TODO: remove brackets from manacost
-						s += "<span class=\"manaCost\">"+prettyManaCost(card.manaCost)+"</span>";
-					}
-					s += "</div><div class=\"cardType row\">"+card.type+"</div>" + "<div class=\"cardText\">"+prettyManaCost(card.text)+"</div>";
-					s += "<div class=\"powerToughness row\">";
-					if (card.power) {
-						s += card.power+"/"+card.toughness;
-					} else if (card.loyalty) {
-						s += card.loyalty;
-					}
-					s += "</div></div></div>";
-				$(divId).append(s);
-			});
-		 }
-	});
-	return cards;
-};
-
-var prettyManaCost = function(manaCost) {
-	if (!manaCost) return;
-	var symbols = ["W", "U", "B", "R", "G"];
-	symbols.forEach(function(element) {
-		var regex = new RegExp("\{" + element + "\}", "g");
-		manaCost = manaCost.replace(regex, manaSymbol(element));
-	});
-	manaCost = manaCost.replace(/\{|\}/g, '');//remove braces
-	//
-	//manaCost = manaCost.replace(/G/g, manaSymbol("green"));
-	//var manaCost = card.manaCost.replace('}', '');
-	return manaCost;
-};
-
-var manaSymbol = function(colorLetter) {
-	var result = "";
-	var imgSrc = "images/"+colorLetter+".png";
-	result = "<img class=\"manaSymbol\" src=\"" + imgSrc + "\">";
-	return result;
-};
-
-var appendCardNames = function(imgId, cardnames) {
-	//var cards = getCards2(cardnames);
-	$.each(cardnames, function(index, cardname) {
-		$(imgId).append("<div>"+cardname+"</div>");
-		//var imgSrc = "http://mtgimage.com/card/"+card.imageName+".jpg";
-		//$(imgId).append($("<img class=\"magicCard\" src=\"" + imgSrc + "\">"));//adds to current html body
-	});
-};
+	var appendCardNames = function(imgId, cardnames) {
+		$.each(cardnames, function(index, cardname) {
+			$(imgId).append("<div>"+cardname+"</div>");
+		});
+	};
+	
+	return {
+		appendCardNames: appendCardNames,
+		appendCardImages: appendCardImages,
+		prettySymbolText: prettySymbolText
+	}
+})();
