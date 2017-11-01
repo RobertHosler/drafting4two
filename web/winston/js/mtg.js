@@ -1,55 +1,80 @@
 var mtg = (function() {
+	
+	var allCards;
 
 	/**
 	 * Currently called from draft.js
 	 * Append Card images asynchronously
 	 */
-	var appendCardImages = function(divId, cardnames) {
-		var cards = getCards2(cardnames, divId);
+	var appendCardImages = function(viewId, cardnames) {
+		if (allCards) {
+			addCardsToView(viewId, getCards(cardnames));
+		} else {
+			$.getJSON('http://mtgjson.com/json/AllCards-x.json', function(obj) {
+				allCards = obj;
+				addCardsToView(viewId, getCards(cardnames));
+			});
+		}
+	};
+	
+	var getCards = function(divId, cardnames) {
+		var cards = [];
+		//for each cardname in the list of cardnames
+		$.each(cardnames, function(index, cardname) {
+			//add the card to the list of cards if the cardname matches the index
+			var card = allCards[cardname];
+			cards.push(card);
+		});
+	};
+	
+	var addCardsToView = function(viewId, cards) {
+		$.each(cards, function(index, card) {
+			var color = "brown";
+			if (card.colors) {
+				color = card.colors.length > 1 ? "gold" : card.colors[0].toLowerCase();
+			}
+			var s = "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\"><div class=\"row cardNameRow\"><span class=\"cardName\">"+card.name+"</span>";
+				if (card.manaCost) {
+					//TODO: remove brackets from manacost
+					s += "<span class=\"manaCost\">"+prettySymbolText(card.manaCost)+"</span>";
+				}
+				s += "</div><div class=\"cardType row\">"+card.type+"</div>" + "<div class=\"cardText\">"+prettySymbolText(card.text)+"</div>";
+				s += "<div class=\"powerToughness row\">";
+				if (card.power) {
+					s += card.power+"/"+card.toughness;
+				} else if (card.loyalty) {
+					s += card.loyalty;
+				}
+				s += "</div></div></div>";
+			$(viewId).append(s);
+		});
+	};
+	
+	/**
+	 * Returns card names in multiple color sorted arrays sorted by cmc.
+	 */
+	var sortCardsByColorCmc = function(cardnames) {
+		//TODO: sort and populate result object
+		var result = {
+			white: [],
+			blue: [],
+			black: [],
+			red: [],
+			green: [],
+			multi: [],
+			land: [],
+			colorless: []
+		};
+		var cards = getCards(cardnames);
+		$.each(cards, function(index, card) {
+			
+		});
+		return result;
 	};
 
 	/**
-	 * Called from appendCardImages
+	 *  Converts mana, tap, and numbers to pretty graphics
 	 */
-	var getCards2 = function(cardnames, divId) {
-		var cards = [];
-		$.ajax({
-			 async: true,
-			 type: 'GET',
-			 url: 'http://mtgjson.com/json/AllCards-x.json',
-			 success: function(data) {
-				//for each cardname in the list of cardnames
-				$.each(cardnames, function(index, cardname) {
-					//add the card to the list of cards if the cardname matches the index
-					var card = data[cardname];
-					cards.push(card);
-				});
-				//Add Cards to View
-				$.each(cards, function(index, card) {
-					var color = "brown";
-					if (card.colors) {
-						color = card.colors.length > 1 ? "gold" : card.colors[0].toLowerCase();
-					}
-					var s = "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\"><div class=\"row cardNameRow\"><span class=\"cardName\">"+card.name+"</span>";
-						if (card.manaCost) {
-							//TODO: remove brackets from manacost
-							s += "<span class=\"manaCost\">"+prettySymbolText(card.manaCost)+"</span>";
-						}
-						s += "</div><div class=\"cardType row\">"+card.type+"</div>" + "<div class=\"cardText\">"+prettySymbolText(card.text)+"</div>";
-						s += "<div class=\"powerToughness row\">";
-						if (card.power) {
-							s += card.power+"/"+card.toughness;
-						} else if (card.loyalty) {
-							s += card.loyalty;
-						}
-						s += "</div></div></div>";
-					$(divId).append(s);
-				});
-			 }
-		});
-		return cards;
-	};
-
 	var prettySymbolText = function(textWithSymbols) {
 		if (!textWithSymbols) return;
 		var symbols = ["{T}", "{Q}", "{[0]}", "{[1]}", "{[2]}", "{[3]}", "{[4]}", "{[5]}", "{[6]}", "{[7]}", "{[8]}", "{[9]}", "{X}", "{W}", "{U}", "{B}", "{R}", "{G}", "{W/B}", "{R/W}", "{W/U}", "{G/W}", "{U/B}", "{U/R}", "{G/U}", "{R/G}", "{B/G}", "{B/R}", "{2/W}", "{2/U}", "{2/B}", "{2/R}", "{2/G}", "{W/P}", "{U/P}", "{B/P}", "{R/P}", "{G/P}"];

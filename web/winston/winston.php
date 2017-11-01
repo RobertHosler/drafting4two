@@ -7,6 +7,7 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script type="text/javascript" src="js/mtg.js"></script>
 		<script type="text/javascript" src="js/draft.js"></script>
+
 		
 	</head>
 	
