@@ -139,14 +139,27 @@ var mtg = (function() {
 		return result;
 	};
 
-	var appendCardNames = function(imgId, cardnames) {
+	var appendCardNames = function(divId, cardnames) {
 		$.each(cardnames, function(index, cardname) {
-			$(imgId).append("<div>"+cardname+"</div>");
+			$(divId).append("<div>"+cardname+"</div>");
+		});
+	};
+
+	var appendSortedCardNames = function(divId, cardnames) {
+	    var sortedCards = sortCardsByColorCmc(cardnames);
+        $.each(sortedCards, function(index, array) {
+			$(divId).append("<div>");
+			$(divId).append("<div>"+index+"</div>");
+			$.each(array, function(index, item){
+			    $(divId).append("<p>"+item+" </p>");
+			});
+			$(divId).append("</div>");
 		});
 	};
 	
 	return {
 		appendCardNames: appendCardNames,
+		appendSortedCardNames: appendSortedCardNames,
 		appendCardImages: appendCardImages,
 		prettySymbolText: prettySymbolText,
 		sortCards: sortCardsByColorCmc
