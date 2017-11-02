@@ -149,11 +149,11 @@ var mtg = (function() {
 		var sortedCards = sortCardsByColorCmc(cardnames);
         	$.each(sortedCards, function(index, array) {
 			$(divId).append("<div>");
-			$(divId).append("<div>"+index+"</div>");
+			$(divId).append("<div>"+index+" - "+array.length+"</div><div>");
 			$.each(array, function(index, item){
 			    $(divId).append("<p>"+item.name+" </p>");
 			});
-			$(divId).append("</div>");
+			$(divId).append("</div></div>");
 		});
 	};
 	
