@@ -285,7 +285,7 @@
 		case('listDrafts'):
 			$dir = "drafts";
 			$allFiles = scandir($dir);
-			$drafts = array_diff($allFiles, array('.', '..'));
+			$drafts = array_diff($allFiles, array('.', '..', '.gitignore'));
 			$states = [];
 			foreach($drafts as $draft) {
 				$state = retrieveStateFromFile("drafts/".$draft);
