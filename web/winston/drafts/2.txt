@@ -1,1 +1,0 @@
-{"fileName":"2.txt","piles":{"1":["Rakdos Guildmage"],"2":["Simic Guildmage","Gruul Guildmage"]},"decks":["",["Orzhov Guildmage","Boros Guildmage","Izzet Guildmage","Azorius Guildmage"],["Golgari Guildmage","Selesnya Guildmage","Dimir Guildmage"]],"activePlayer":1,"currentPile":1,"players":["R","D"]}

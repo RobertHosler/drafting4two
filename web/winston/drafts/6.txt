@@ -1,1 +1,0 @@
-{"fileName":"6.txt","piles":[],"decks":["",["Silkbind Faerie","Spectral Procession"],["Simic Guildmage","Cunning Sparkmage"]],"activePlayer":2,"currentPile":3,"players":["R","D"]}

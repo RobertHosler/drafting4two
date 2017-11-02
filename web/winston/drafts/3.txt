@@ -1,1 +1,0 @@
-{"fileName":"3.txt","piles":{"1":["Golgari Guildmage","Dimir Guildmage","Orzhov Guildmage","Azorius Guildmage"],"2":["Spectral Procession","Boros Guildmage","Rakdos Guildmage","Dismember"]},"decks":["",["Gruul Guildmage","Selesnya Guildmage"],["Izzet Guildmage","Simic Guildmage"]],"activePlayer":"1","currentPile":2,"players":["R","D"]}
