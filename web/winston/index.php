@@ -13,12 +13,14 @@
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="js/lobby.js"></script>
 
 		
 </head>
 
 <!-- onload sets to update the chat every second -->
-<body>
+<body onload="listDrafts();">
 
 	<div class="container">
 		
@@ -30,7 +32,7 @@
 				
 				<div></div>
 								
-				<form action="winston.php">
+				<form action="winston.php" target="_blank">
 					<p>Player Name: </p>
 					<input type="text" name="playerName" required></input>
 					<p>Draft Name: </p>
@@ -51,6 +53,14 @@
 					</div>
 				</form>
 			
+			</div>
+			<div class="four columns">
+				<div>
+					<button class="draftButton" onclick="listDrafts();">Refresh Drafts</button>
+				</div>
+				<div id="draftList">
+				
+				</div>
 			</div>
 		</div>
 	</div>

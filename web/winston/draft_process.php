@@ -282,6 +282,18 @@
 			$deck = $state['decks'][$playerNumber];
 			saveDeckToFile($deck, $deckFileName);
 			break;
+		case('listDrafts'):
+			$dir = "drafts";
+			$allFiles = scandir($dir);
+			$drafts = array_diff($allFiles, array('.', '..'));
+			$states = [];
+			foreach($drafts as $draft) {
+				$state = retrieveStateFromFile("drafts/".$draft);
+				$states[] = $state;
+			}
+			$log['drafts'] = $drafts;
+			$log['states'] = $states;
+			break;
     }
     
     echo json_encode($log);
