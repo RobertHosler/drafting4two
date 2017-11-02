@@ -72,7 +72,7 @@ var mtg = (function() {
 		$.each(cards, function(index, card) {
 		    switch (card.colors.length) {
 		        case 0: //Colorless or land
-                    switch (card.types[0]) {
+                    switch (card.type[0]) {
                         case "Land":
                             result.land.push(card);
                             break;
