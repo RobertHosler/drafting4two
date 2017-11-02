@@ -146,12 +146,12 @@ var mtg = (function() {
 	};
 
 	var appendSortedCardNames = function(divId, cardnames) {
-	    var sortedCards = sortCardsByColorCmc(cardnames);
-        $.each(sortedCards, function(index, array) {
+		var sortedCards = sortCardsByColorCmc(cardnames);
+        	$.each(sortedCards, function(index, array) {
 			$(divId).append("<div>");
 			$(divId).append("<div>"+index+"</div>");
 			$.each(array, function(index, item){
-			    $(divId).append("<p>"+item+" </p>");
+			    $(divId).append("<p>"+item.name+" </p>");
 			});
 			$(divId).append("</div>");
 		});
