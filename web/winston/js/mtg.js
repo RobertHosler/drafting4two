@@ -1,6 +1,7 @@
 var mtg = (function() {
 	
 	var allCards;
+	var appendViewId;
 
 	/**
 	 * Currently called from draft.js
@@ -10,14 +11,16 @@ var mtg = (function() {
 		if (allCards) {
 			addCardsToView(viewId, getCards(cardnames));
 		} else {
+			appendViewId = viewId;
 			$.getJSON('http://mtgjson.com/json/AllCards-x.json', function(obj) {
 				allCards = obj;
-				addCardsToView(viewId, getCards(cardnames));
+				var cards = getCards(cardnames);
+				addCardsToView(viewId, cards);
 			});
 		}
 	};
 	
-	var getCards = function(divId, cardnames) {
+	var getCards = function(cardnames) {
 		var cards = [];
 		//for each cardname in the list of cardnames
 		$.each(cardnames, function(index, cardname) {
@@ -25,6 +28,7 @@ var mtg = (function() {
 			var card = allCards[cardname];
 			cards.push(card);
 		});
+		return cards;
 	};
 	
 	var addCardsToView = function(viewId, cards) {
