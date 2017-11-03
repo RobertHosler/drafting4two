@@ -33,28 +33,32 @@
 					</div>
 					
 					<div id="topButtons"class="row">
-						<div class="four columns">
+						<div class="seven columns">
 							<div id="welcomeMessage"></div>
 							<div id="statusMessage"></div>
 						</div>
-						<div id="mainPileCount" class="two columns">
-							<div>Main Pile: <span id="mainPileNumber">[pileNumber]</span></div>
-							<div id="mainPile" class="mainWinstonPile"></div>
-						</div>
-						<div class="two columns">
-							<div>Pile One: <span id="pileOneNumber">[pileNumber]</span></div>
-							<div id="pileOne" class="winstonPile"></div>
-							<div id="pileOneArrow" class="currentPilePointer">^</div>
-						</div>
-						<div class="two columns">
-							<div>Pile Two: <span id="pileTwoNumber">[pileNumber]</span></div>
-							<div id="pileTwo" class="winstonPile"></div>
-							<div id="pileTwoArrow" class="currentPilePointer" style="display: none;">^</div>
-						</div>
-						<div class="two columns">
-							<div>Pile Three: <span id="pileThreeNumber">[pileNumber]</span></div>
-							<div id="pileThree" class="winstonPile"></div>
-							<div id="pileThreeArrow" class="currentPilePointer" style="display: none;">^</div>
+						<div class="five columns">
+							<div class="row">
+								<div id="mainPileCount" class="three columns">
+									<div>Main Pile: <span id="mainPileNumber">[pileNumber]</span></div>
+									<div id="mainPile" class="mainWinstonPile"></div>
+								</div>
+								<div class="three columns">
+									<div>Pile One: <span id="pileOneNumber">[pileNumber]</span></div>
+									<div id="pileOne" class="winstonPile"></div>
+									<div id="pileOneArrow" class="currentPilePointer">^</div>
+								</div>
+								<div class="three columns">
+									<div>Pile Two: <span id="pileTwoNumber">[pileNumber]</span></div>
+									<div id="pileTwo" class="winstonPile"></div>
+									<div id="pileTwoArrow" class="currentPilePointer" style="display: none;">^</div>
+								</div>
+								<div class="three columns">
+									<div>Pile Three: <span id="pileThreeNumber">[pileNumber]</span></div>
+									<div id="pileThree" class="winstonPile"></div>
+									<div id="pileThreeArrow" class="currentPilePointer" style="display: none;">^</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					
@@ -62,10 +66,10 @@
 					<div id="buttonRow" class="row">
 						<div class="six columns" style="height: 1px;"></div>
 						<div class="three columns">
-							<button id="takePile" class="draftButton" onclick="if (confirm('Take pile?')) { takePile(); }">Take Pile</button>
+							<button id="takePile" class="draftButton" onclick="takePile();">Take Pile</button>
 						</div>
 						<div class="three columns">
-							<button id="passPile" class="draftButton" onclick="if (confirm('Pass pile?')) { passPile(); }">Pass Pile</button>
+							<button id="passPile" class="draftButton" onclick="passPile();">Pass Pile</button>
 						</div>
 					</div>
 					

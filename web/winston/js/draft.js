@@ -240,6 +240,7 @@ function takePileLegacy() {
 }
 
 function takePile() {
+	// if (!confirm('Take pile?')) return;
 	if (!instanse) {
 		instanse = true;
 	    $.ajax({
@@ -288,6 +289,7 @@ function passPileLegacy() {
 }
 
 function passPile() {
+	// if (!confirm('Pass pile?')) return;
 	if (!instanse) {
 		instanse = true;
 	    $.ajax({

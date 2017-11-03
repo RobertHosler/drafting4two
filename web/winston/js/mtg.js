@@ -1,7 +1,9 @@
 var mtg = (function() {
 	
+	var isAllCardRetrieved = false;
 	var allCards;
-	var appendViewId;
+	var waitingFunctions = [];
+	
 	var mtgJson = 'http://mtgjson.com/json/AllCards-x.json';
 	var mtgApi = 'https://api.magicthegathering.io/v1/cards';
 
@@ -10,16 +12,9 @@ var mtg = (function() {
 	 * Append Card images asynchronously
 	 */
 	var appendCardImages = function(viewId, cardnames) {
-		if (allCards) {
+		getCardsThen(cardnames, function(cards) {
 			addCardsToView(viewId, getCards(cardnames));
-		} else {
-			appendViewId = viewId;
-			$.getJSON(mtgJson, function(obj) {
-				allCards = obj;
-				var cards = getCards(cardnames);
-				addCardsToView(viewId, cards);
-			});
-		}
+		});
 	};
 	
 	var getCards = function(cardnames) {
@@ -32,6 +27,26 @@ var mtg = (function() {
 		});
 		return cards;
 	};
+	
+	var getCardsThen = function(cardnames, postRetrieval) {
+		if (allCards) {
+			//already retrieved
+			postRetrieval();
+		} else if (isAllCardRetrieved) {
+			//retrieved, but not yet initialized
+			waitingFunctions.push(postRetrieval);
+		} else {
+			isAllCardRetrieved = true;
+			//not yet retrieved
+			waitingFunctions.push(postRetrieval);
+			$.getJSON(mtgJson, function(obj) {
+				allCards = obj;
+				$.each(waitingFunctions, function(index, waitingFunction) {
+					waitingFunction();
+				});
+			});
+		}
+	}
 	
 	var addCardsToView = function(viewId, cards) {
 		$.each(cards, function(index, card) {
@@ -59,71 +74,97 @@ var mtg = (function() {
 	/**
 	 * Returns card names in multiple color sorted arrays sorted by cmc.
 	 */
-	var sortCardsByColorCmc = function(cardnames) {
-		var result = {
-			white: [],
-			blue: [],
-			black: [],
-			red: [],
-			green: [],
-			multi: [],
-			land: [],
-			colorless: []
-		};
-		var cards = getCards(cardnames);
-		$.each(cards, function(index, card) {
-		    switch (card.colors.length) {
-		        case 0: //Colorless or land
-                    switch (card.type[0]) {
-                        case "Land":
-                            result.land.push(card);
-                            break;
-                        default:
-                            result.colorless.push(card);
-                    }
-                    break;
-                case 1: //Single Color
-                    switch (card.colors[0]) {
-                        case "White":
-                            result.white.push(card);
-                            break;
-                        case "Blue":
-                            result.blue.push(card);
-                            break;
-                        case "Black":
-                            result.black.push(card);
-                            break;
-                        case "Red":
-                            result.red.push(card);
-                            break;
-                        case "Green":
-                            result.green.push(card);
-                            break;
-                    }
-                    break;
-		        default: //Multicolor
-                    result.multi.push(card);
-		    }
+	var appendSortedCardNames = function(divId, cardnames) {
+		getCardsThen(cardnames, function() {
+			var cards = getCards(cardnames);
+			var result = {
+				white: [],
+				blue: [],
+				black: [],
+				red: [],
+				green: [],
+				multi: [],
+				land: [],
+				colorless: []
+			};
+			$.each(cards, function(index, card) {
+				var colors = card.colors ? card.colors.length : 0;
+				switch (colors) {
+					case 0: //Colorless or land
+						switch (card.types[0]) {
+							case "Land":
+								result.land.push(card);
+								break;
+							default:
+								result.colorless.push(card);
+						}
+						break;
+					case 1: //Single Color
+						switch (card.colors[0]) {
+							case "White":
+								result.white.push(card);
+								break;
+							case "Blue":
+								result.blue.push(card);
+								break;
+							case "Black":
+								result.black.push(card);
+								break;
+							case "Red":
+								result.red.push(card);
+								break;
+							case "Green":
+								result.green.push(card);
+								break;
+						}
+						break;
+					default: //Multicolor
+						result.multi.push(card);
+				}
+			});
+			result.white.sort(compareCmc);
+			result.blue.sort(compareCmc);
+			result.black.sort(compareCmc);
+			result.red.sort(compareCmc);
+			result.green.sort(compareCmc);
+			result.multi.sort(compareCmc);
+			result.colorless.sort(compareCmc);
+			var sortedCards = result;
+			$.each(sortedCards, function(index, array) {
+				var colorList = "";
+				colorList += "<div class=\"colorBlock\">";
+				colorList += "<div class=\"colorList\">"+index+" - "+array.length+"</div><div>";
+				$.each(array, function(index, item){
+					colorList += "<div class=\"row\">";
+					colorList += "<div class=\"four columns mana\">"+prettySymbolText(item.manaCost)+" </div><div class=\"eight columns\">"+item.name+" </div></div>";
+				});
+				colorList += "</div></div>";
+				$(divId).append(colorList);
+			});
 		});
-		result.white.sort(compareCmc);
-		result.blue.sort(compareCmc);
-		result.black.sort(compareCmc);
-		result.red.sort(compareCmc);
-		result.green.sort(compareCmc);
-		result.multi.sort(compareCmc);
-		result.colorless.sort(compareCmc);
-		return result;
 	};
 
 	var compareCmc = function(cardA, cardB) {
-        	return cardA.cmc - cardB.cmc;
+		var result;
+		var isCardCreatureA = cardA.types.includes("Creature");
+		var isCardCreatureB = cardB.types.includes("Creature");
+		if (isCardCreatureA && !isCardCreatureB) {
+			result = 1;
+		} else if (!isCardCreatureA && isCardCreatureB) {
+			result = -1;
+		} else {
+			var cmcA = cardA.manaCost && cardA.manaCost.includes("X") ? 100 : cardA.cmc;
+			var cmcB = cardB.manaCost && cardB.manaCost.includes("X") ? 100 : cardB.cmc;
+			result = cmcA - cmcB;
+		}
+		return result;
 	};
 	
 	/**
 	 *  Converts mana, tap, and numbers to pretty graphics
 	 */
 	var prettySymbolText = function(textWithSymbols) {
-		if (!textWithSymbols) return;
+		if (!textWithSymbols) return "";
 		var symbols = ["{T}", "{Q}", "{[0]}", "{[1]}", "{[2]}", "{[3]}", "{[4]}", "{[5]}", "{[6]}", "{[7]}", "{[8]}", "{[9]}", "{X}", "{W}", "{U}", "{B}", "{R}", "{G}", "{W/B}", "{R/W}", "{W/U}", "{G/W}", "{U/B}", "{U/R}", "{G/U}", "{R/G}", "{B/G}", "{B/R}", "{2/W}", "{2/U}", "{2/B}", "{2/R}", "{2/G}", "{W/P}", "{U/P}", "{B/P}", "{R/P}", "{G/P}"];
 		symbols.forEach(function(element) {
 			var regex = new RegExp(element, "g");
@@ -147,23 +188,10 @@ var mtg = (function() {
 		});
 	};
 
-	var appendSortedCardNames = function(divId, cardnames) {
-		var sortedCards = sortCardsByColorCmc(cardnames);
-        	$.each(sortedCards, function(index, array) {
-			$(divId).append("<div>");
-			$(divId).append("<div>"+index+" - "+array.length+"</div><div>");
-			$.each(array, function(index, item){
-			    $(divId).append("<p>"+item.name+" </p>");
-			});
-			$(divId).append("</div></div>");
-		});
-	};
-	
 	return {
 		appendCardNames: appendCardNames,
 		appendSortedCardNames: appendSortedCardNames,
 		appendCardImages: appendCardImages,
-		prettySymbolText: prettySymbolText,
-		sortCards: sortCardsByColorCmc
+		prettySymbolText: prettySymbolText
 	}
 })();

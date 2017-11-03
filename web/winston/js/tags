@@ -5,24 +5,17 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 $.urlParam	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	322;"	kind:function	line:322	language:JavaScript
-appendCardImages	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	79;"	kind:function	line:79	language:JavaScript
-appendCardImages2	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	72;"	kind:function	line:72	language:JavaScript
-appendCardNames	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	124;"	kind:function	line:124	language:JavaScript
 changeTime	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	23;"	kind:variable	line:23	language:JavaScript
 cubeName	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	21;"	kind:variable	line:21	language:JavaScript
 draftComplete	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	24;"	kind:variable	line:24	language:JavaScript
 draftName	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	20;"	kind:variable	line:20	language:JavaScript
 file	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	18;"	kind:variable	line:18	language:JavaScript
-getCardImages	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	43;"	kind:function	line:43	language:JavaScript
-getCards	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	1;"	kind:function	line:1	language:JavaScript
-getCards2	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	25;"	kind:function	line:25	language:JavaScript
 instanse	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	16;"	kind:variable	line:16	language:JavaScript
-manaSymbol	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	117;"	kind:function	line:117	language:JavaScript
+instanse	C:\xampp\htdocs\drafting4two\web\winston\js\lobby.js	1;"	kind:variable	line:1	language:JavaScript
+listDrafts	C:\xampp\htdocs\drafting4two\web\winston\js\lobby.js	3;"	kind:function	line:3	language:JavaScript
 mes	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	17;"	kind:variable	line:17	language:JavaScript
 playerName	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	22;"	kind:variable	line:22	language:JavaScript
 playerNumber	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	19;"	kind:variable	line:19	language:JavaScript
-prettyManaCost	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	103;"	kind:function	line:103	language:JavaScript
-setImgCard	C:\xampp\htdocs\drafting4two\web\winston\js\mtg.js	20;"	kind:function	line:20	language:JavaScript
 startDraft.Draft	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	366;"	kind:class	line:366	language:JavaScript
 startDraft.cardCountString	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	180;"	kind:function	line:180	language:JavaScript
 startDraft.currentPileAsString	C:\xampp\htdocs\drafting4two\web\winston\js\draft.js	214;"	kind:function	line:214	language:JavaScript

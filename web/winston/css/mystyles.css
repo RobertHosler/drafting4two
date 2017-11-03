@@ -29,6 +29,19 @@ h2 {
 	margin: 0 0 15px 0; 
 }
 
+.colorList {
+	text-transform: capitalize;
+	font-weight: bold;
+	text-align: center;
+}
+.colorBlock .mana {
+	text-align: right;
+}
+
+.colorBlock {
+	min-width: 200px;
+}
+
 #chat-area{ 
 	height: 300px; 
 	overflow: auto; 
@@ -105,6 +118,10 @@ h2 {
 	/*text-align: center;*/
 }
 
+.deck .columns {
+	min-height: 1px;
+}
+
 /**
 * override the max width of 960 yet by skeleton to
 * use the full screen width!
@@ -136,8 +153,8 @@ div.deck .magicCard {
 .deck {
 	overflow:auto;
 	display: flex;
-	flex-wrap: wrap-reverse;
-	flex-direction: row-reverse;
+	flex-wrap: wrap;
+	flex-direction: row;
 }
 .deck > div {
 	padding: 10px;
