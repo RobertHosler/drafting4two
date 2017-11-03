@@ -2,6 +2,8 @@ var mtg = (function() {
 	
 	var allCards;
 	var appendViewId;
+	var mtgJson = 'http://mtgjson.com/json/AllCards-x.json';
+	var mtgApi = 'https://api.magicthegathering.io/v1/cards';
 
 	/**
 	 * Currently called from draft.js
@@ -12,7 +14,7 @@ var mtg = (function() {
 			addCardsToView(viewId, getCards(cardnames));
 		} else {
 			appendViewId = viewId;
-			$.getJSON('http://mtgjson.com/json/AllCards-x.json', function(obj) {
+			$.getJSON(mtgJson, function(obj) {
 				allCards = obj;
 				var cards = getCards(cardnames);
 				addCardsToView(viewId, cards);
