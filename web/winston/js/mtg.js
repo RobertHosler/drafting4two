@@ -60,7 +60,6 @@ var mtg = (function() {
 	 * Returns card names in multiple color sorted arrays sorted by cmc.
 	 */
 	var sortCardsByColorCmc = function(cardnames) {
-		//TODO: sort and populate result object
 		var result = {
 			white: [],
 			blue: [],
@@ -73,11 +72,53 @@ var mtg = (function() {
 		};
 		var cards = getCards(cardnames);
 		$.each(cards, function(index, card) {
-			
+		    switch (card.colors.length) {
+		        case 0: //Colorless or land
+                    switch (card.type[0]) {
+                        case "Land":
+                            result.land.push(card);
+                            break;
+                        default:
+                            result.colorless.push(card);
+                    }
+                    break;
+                case 1: //Single Color
+                    switch (card.colors[0]) {
+                        case "White":
+                            result.white.push(card);
+                            break;
+                        case "Blue":
+                            result.blue.push(card);
+                            break;
+                        case "Black":
+                            result.black.push(card);
+                            break;
+                        case "Red":
+                            result.red.push(card);
+                            break;
+                        case "Green":
+                            result.green.push(card);
+                            break;
+                    }
+                    break;
+		        default: //Multicolor
+                    result.multi.push(card);
+		    }
 		});
+		result.white.sort(compareCmc);
+		result.blue.sort(compareCmc);
+		result.black.sort(compareCmc);
+		result.red.sort(compareCmc);
+		result.green.sort(compareCmc);
+		result.multi.sort(compareCmc);
+		result.colorless.sort(compareCmc);
 		return result;
 	};
 
+	var compareCmc = function(cardA, cardB) {
+        	return cardA.cmc - cardB.cmc;
+	};
+	
 	/**
 	 *  Converts mana, tap, and numbers to pretty graphics
 	 */
@@ -100,15 +141,29 @@ var mtg = (function() {
 		return result;
 	};
 
-	var appendCardNames = function(imgId, cardnames) {
+	var appendCardNames = function(divId, cardnames) {
 		$.each(cardnames, function(index, cardname) {
-			$(imgId).append("<div>"+cardname+"</div>");
+			$(divId).append("<div>"+cardname+"</div>");
+		});
+	};
+
+	var appendSortedCardNames = function(divId, cardnames) {
+		var sortedCards = sortCardsByColorCmc(cardnames);
+        	$.each(sortedCards, function(index, array) {
+			$(divId).append("<div>");
+			$(divId).append("<div>"+index+" - "+array.length+"</div><div>");
+			$.each(array, function(index, item){
+			    $(divId).append("<p>"+item.name+" </p>");
+			});
+			$(divId).append("</div></div>");
 		});
 	};
 	
 	return {
 		appendCardNames: appendCardNames,
+		appendSortedCardNames: appendSortedCardNames,
 		appendCardImages: appendCardImages,
-		prettySymbolText: prettySymbolText
+		prettySymbolText: prettySymbolText,
+		sortCards: sortCardsByColorCmc
 	}
 })();

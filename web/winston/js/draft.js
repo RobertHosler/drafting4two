@@ -315,7 +315,7 @@ function passPile() {
 
 function updateDeckList(deckList) {
 	$('#deckList').html($(""));//empty div
-	mtg.appendCardNames('#deckList', deckList);
+	mtg.appendSortedCardNames('#deckList', deckList);
 	$('#deckListNumber').html(cardCountString(deckList ? deckList.length : 0));
 }
 
