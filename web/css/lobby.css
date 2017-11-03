@@ -1,0 +1,10 @@
+.footer {
+    background: #eee;
+}
+.footer > .container {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+.container.main {
+    min-height: 500px;
+}
