@@ -22,8 +22,33 @@ var mtg = (function() {
 		//for each cardname in the list of cardnames
 		$.each(cardnames, function(index, cardname) {
 			//add the card to the list of cards if the cardname matches the index
-			var card = allCards[cardname];
-			cards.push(card);
+			if (cardname.includes("//")) {
+				//handle split cards
+				var cardnameSplit = cardname.split(" // ");
+				var cardname1 = cardnameSplit[0];
+				var cardname2 = cardnameSplit[1];
+				var card1 = allCards[cardname1];
+				if (!card1.configured) {
+					var card2 = allCards[cardname2];
+					card1.card2 = card2;
+					var colors1 = card1.colors;
+					var colors2 = card2.colors;
+					var colors = card1.colors.concat(card2.colors);
+					var manaCost = card1.manaCost+"/"+card2.manaCost;
+					var name = cardname1+"/"+cardname2;
+					var uniqueColors = colors.filter(function(item, pos) {
+						return colors.indexOf(item) == pos;
+					});
+					card1.colors = uniqueColors;
+					card1.manaCost = manaCost;
+					card1.name = name;
+					card1.configured = true;
+				}
+				cards.push(card1);
+			} else {
+				var card = allCards[cardname];
+				cards.push(card);
+			}
 		});
 		return cards;
 	};
@@ -136,7 +161,9 @@ var mtg = (function() {
 				colorList += "<div class=\"colorList\">"+index+" - "+array.length+"</div><div>";
 				$.each(array, function(index, item){
 					colorList += "<div class=\"row\">";
-					colorList += "<div class=\"four columns mana\">"+prettySymbolText(item.manaCost)+" </div><div class=\"eight columns\">"+item.name+" </div></div>";
+					colorList += "<div class=\"four columns mana\">"+prettySymbolText(item.manaCost)+" </div>";
+					//Make name of card clickable to provide options for moving to sideboard
+					colorList += "<div class=\"eight columns\">"+item.name+" </div></div>";
 				});
 				colorList += "</div></div>";
 				$(divId).append(colorList);

@@ -1,53 +1,11 @@
 <?php
+	include 'draft_state.php';
+	include 'draft_winston.php';
+	
     //this file is called by the draft.js file
     $function = $_POST['function'];
     
     $log = array();
-	
-	/**
-	 *	Converts state to json and writes to file
-	 */
-	function writeStateToFile($state, $state_file_name) {
-		//$state['draftOver'] = isDraftOver($state);//set the draftOver variable
-		$json = json_encode($state);
-		//fwrite(fopen($file_name, 'a'), $json."\n");//append content
-		file_put_contents($state_file_name, $json);//overwrite content
-	}
-	
-	function retrieveStateFromFile($state_file_name) {
-		$jsonString = file_get_contents($state_file_name);
-		$file_content = json_decode($jsonString, true);
-		return $file_content;
-	}
-	
-	function saveDeckToFile($deck, $file_name) {
-		for ($i = 0; $i < count($deck); $i++) {
-			$deck[$i] = "1 ".$deck[$i];
-		}
-		file_put_contents($file_name, implode("\r\n", $deck));
-	}
-	
-	function addPileToDeckList($pile, $deckList) {
-		foreach ($pile as $card) {
-			//array_push($deckList, $card);
-			$deckList[] = $card;//add card to decklist
-		}
-		return $deckList;
-	}
-	
-	function isDraftOver($state) {
-		$draftOver = true;
-		//if the piles still have cards, draft isn't over
-		foreach ($state['piles'] as $pile) {
-			//if the pile is empty, the draft may be over so we should keep looking at the piles
-			if (!empty($pile)) {
-				//if the pile is not empty, the draft should continue
-				$draftOver = false;
-				break;
-			}
-		}
-		return $draftOver;
-	}
 	
 	/**
 	 * Unused
@@ -70,33 +28,6 @@
 			$i++;
 		}
 		return $directory.$file_name;
-	}
-	
-	function initState($draftName, $cubeName) {
-		if(file_exists("cubes/".$cubeName.".txt")){
-		   $cube = file("cubes/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
-		   shuffle($cube);
-		   $mainPile = array_slice($cube, 0, 90);
-		   $pileOne = array(array_pop($mainPile));
-		   $pileTwo = array(array_pop($mainPile));
-		   $pileThree = array(array_pop($mainPile));
-		   $piles = array($mainPile, $pileOne, $pileTwo, $pileThree);
-		   $players = array();
-		 } else {
-			 //What to do if the cube doesn't exist?  Retry with default_cube.txt
-			$cubeName = 'default_cube';
-			initState($draftName, $cubeName);
-		 }
-		 $decks = array("", array(), array());
-		 $state = [
-			"fileName" => $draftName,
-			"piles" => $piles,
-			"decks" => $decks,
-			"activePlayer" => 1,
-			"currentPile" => 1,
-			"players" => $players
-		 ];
-		 return $state;
 	}
 	    
 	switch($function) {
@@ -137,12 +68,12 @@
 			 $changeTime = $_POST['changeTime'];
 			 $changeTimeServer = 0;
         	 if(file_exists("drafts/".$state['fileName'])) {
-        	   $changeTimeServer = filemtime("drafts/".$state['fileName']);
+        	   //$changeTimeServer = filemtime("drafts/".$state['fileName']);
         	 }
         	 if($changeTimeServer == $changeTime){//change time is the same
         		 $log['state'] = $state;//state is the same as passed in
 				 $log['change'] = false;
-				 //$log['changeTime'] = filemtime($state['fileName']);
+				 $log['changeTime'] = filemtime("drafts/".$state['fileName']);
 			 } else {//if the state has changed...
 				 $log['state'] = retrieveStateFromFile("drafts/".$state['fileName']);//decode into an object
 				 $log['change'] = true;
@@ -192,85 +123,7 @@
         	break;
     	case('passPile'):
 			$state = $_POST['state'];
-			//add card to currentPile
-			$topCard = isset($state['piles'][0]) ? array_pop($state['piles'][0]) : null;
-			$pileNum = $state['currentPile'];
-			$player = $state['activePlayer'];
-			$deck = isset($state['decks'][$player]) ? $state['decks'][$player] : array();
-			
-			switch ($pileNum) {
-				case 3:
-					if ($topCard == null) {
-						//this pile must be taken, no cards left in main
-						$pile = $state['piles'][3];
-						$state['decks'][$player] = addPileToDeckList($pile, $deck);
-						$state['piles'][$pileNum] = array();//empty pile
-					} else {
-						//add top of main pile to deck
-						//$deck[] = $topCard;
-						//$state['decks'][$player] = $deck;
-						$state['decks'][$player][] = $topCard;
-						$topCard = isset($state['piles'][0]) ? array_pop($state['piles'][0]) : null;
-						if ($topCard != null) {
-							//add top of main pile to pile
-							//$pile = $state['piles'][3];
-							//$pile[] = $topCard;
-							//$state['piles'][3] = $pile;
-							$state['piles'][3][] = $topCard;
-							//array_push($state['piles'][3], $topCard);
-						} else {
-							//$state['piles'][$pileNum] = array();//empty pile
-						}
-					}
-					
-					//change currentPile
-					$currentPile = 1;
-					while ($currentPile <= 3) {
-						if (empty($state['piles'][$currentPile])) {
-							//continue to increment until pile isn't empty
-							$currentPile++;
-						} else {
-							break;
-						}
-					}
-					
-					if (empty($state['piles'][$currentPile])) {
-						$currentPile = 2;
-						if (empty($state['piles'][$currentPile])) {
-							$currentPile = 3;
-							if (empty($state['piles'][$currentPile])) {
-								//all piles empty, draft over
-								$state['draftOver'] = true;
-							}
-						}
-					}
-					$state['currentPile'] = $currentPile;
-					//change the active player
-					$state['activePlayer'] = ($player == 1) ? 2 : 1;
-					//add to pile
-					if ($topCard != null) {
-						//add top card to current pile
-						//array_push($state['piles'][$pileNum], $topCard);
-					}
-					break;
-				default:
-					//add to pile
-					if ($topCard != null) {
-						//add top card to current pile
-						array_push($state['piles'][$pileNum], $topCard);
-					}
-					//change currentPile
-					$currentPile = $pileNum + 1;
-					while ($currentPile <= 3) {
-						if (empty($state['piles'][$currentPile])) {
-							//continue to increment until pile isn't empty
-							$currentPile++;
-						} else {
-							break;
-						}
-					}
-					$state['currentPile'] = $currentPile;
-			}
+			$state = passWinstonPile($state);
 			writeStateToFile($state, "drafts/".$state['fileName']);
 			$log['state'] = $state;
 			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
@@ -293,6 +146,14 @@
 			}
 			$log['drafts'] = $drafts;
 			$log['states'] = $states;
+			break;
+		case('moveToSideboard'):
+			$state = $_POST['state'];
+			$cardName = $_POST['cardName'];
+			
+			
+			$log['state'] = $state;
+			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
 			break;
     }
     

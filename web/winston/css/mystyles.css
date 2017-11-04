@@ -121,6 +121,9 @@ h2 {
 .deck .columns {
 	min-height: 1px;
 }
+.deck .manaSymbol {
+	height: 10px;
+}
 
 /**
 * override the max width of 960 yet by skeleton to
