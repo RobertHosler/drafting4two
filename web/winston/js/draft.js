@@ -97,11 +97,67 @@ function updateDraft() {
 	}
 }
 
+function moveToSideboard(cardName) {
+	if (!instanse) {
+		instanse = true;
+	    $.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+			   	'function': 'moveToSideboard',
+				'state': state,
+				'cardName': cardName,
+				'playerNumber': playerNumber
+			},
+			dataType: "json",
+			success: function(data) {
+				state = data.state;
+				changeTime = data.changeTime;
+				processDataChange(data.state);
+				instanse = false;
+			},
+		});
+	}
+	else {
+		setTimeout(function() {
+			moveToSideboard(cardName);
+		}, 100);
+	}
+}
+
+function moveToDeck(cardName) {
+	if (!instanse) {
+		instanse = true;
+	    $.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+			   	'function': 'moveToDeck',
+				'state': state,
+				'cardName': cardName,
+				'playerNumber': playerNumber
+			},
+			dataType: "json",
+			success: function(data) {
+				state = data.state;
+				changeTime = data.changeTime;
+				processDataChange(data.state);
+				instanse = false;
+			},
+		});
+	}
+	else {
+		setTimeout(function() {
+			moveToDeck(cardName);
+		}, 100);
+	}
+}
+
 function processDataChange(state) {
 	updateAllPiles();
 	updateCurrentPile();
 	//updateDeckList(state.deckList);
-	updateDeckList(state.decks[playerNumber]);//update this player's decklist
+	updateDeckList(state.decks[playerNumber], state.sideboard[playerNumber]);//update this player's decklist
 	updateActivePlayer(state.activePlayer);
 	updateStatusMessage();
 }
@@ -269,7 +325,7 @@ function takePile() {
 function updateAll() {
 	updateAllPiles();
 	updateCurrentPile();
-	updateDeckList(state.decks[playerNumber]);//update this player's decklist
+	updateDeckList(state.decks[playerNumber], state.sideboard[playerNumber]);//update this player's decklist
 }
 
 function passPileLegacy() {
@@ -315,10 +371,13 @@ function passPile() {
 	}
 }
 
-function updateDeckList(deckList) {
+function updateDeckList(deckList, sideboardList) {
 	$('#deckList').html($(""));//empty div
 	mtg.appendSortedCardNames('#deckList', deckList);
+	$('#sideboardList').html($(""));//empty div
+	mtg.appendSortedCardNames('#sideboardList', sideboardList);
 	$('#deckListNumber').html(cardCountString(deckList ? deckList.length : 0));
+	$('#sideboardListNumber').html(cardCountString(sideboardList ? sideboardList.length : 0));
 }
 
 $.urlParam = function(name){

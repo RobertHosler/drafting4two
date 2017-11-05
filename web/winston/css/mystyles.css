@@ -74,7 +74,7 @@ h2 {
 
 #name-area span{ 
 	color: #fa9f00; 
-}f
+}
 
 #send-message-area p{ 
 	float:left;
@@ -102,7 +102,7 @@ h2 {
 	margin-left: 2px;
 }
 .cardNameRow .manaSymbol {
-	height: 14px;
+	height: 12px;
 }
 .cardText .manaSymbol {
 	height: 10px;
@@ -123,6 +123,12 @@ h2 {
 }
 .deck .manaSymbol {
 	height: 10px;
+}
+.maindeck .btn-maindeck {
+	display: none;
+}
+.sideboard .btn-sideboard {
+	display: none;
 }
 
 /**
@@ -242,7 +248,7 @@ div.currentPile .magicCard {
 }
 .writtenCard  .cardName {
 	float: left;
-	font-size: 16px;
+	font-size: 12px;
 	color: black !important;
 }
 .writtenCard .cardText,
@@ -253,15 +259,16 @@ div.currentPile .magicCard {
 	padding: 3px;
 	border-radius: 3px;
 	border: 1px solid #666;
+	font-size: 10px;
 }
 .writtenCard  .manaCost {
 	float: right;
-	font-size: 16px;
+	font-size: 12px;
 }
 .writtenCard  .loyalty,
 .writtenCard  .powerToughness {
 	text-align: right;
-	font-size: 16px;
+	font-size: 12px;
 }
 
 .writtenCard.white > .innerWrittenCard {

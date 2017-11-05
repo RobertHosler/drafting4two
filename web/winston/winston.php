@@ -96,7 +96,14 @@
 						<div class="twelve columns heading">
 							Your Deck: <span id="deckListNumber">[pileNumber]</span>
 						</div>
-						<div id="deckList" class="twelve columns deck" style=""></div>				
+						<div id="deckList" class="twelve columns deck maindeck" style=""></div>
+					</div>
+					
+					<div id="deckRow" class="row pileRow">
+						<div class="twelve columns heading">
+							Your Sideboard: <span id="sideboardListNumber">[pileNumber]</span>
+						</div>
+						<div id="sideboardList" class="twelve columns deck sideboard" style=""></div>		
 					</div>
 					
 					<div id="draftComplete" class="row" style="display: none;">

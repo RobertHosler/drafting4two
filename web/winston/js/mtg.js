@@ -161,15 +161,22 @@ var mtg = (function() {
 				colorList += "<div class=\"colorList\">"+index+" - "+array.length+"</div><div>";
 				$.each(array, function(index, item){
 					colorList += "<div class=\"row\">";
-					colorList += "<div class=\"four columns mana\">"+prettySymbolText(item.manaCost)+" </div>";
+					colorList += "<div class=\"four columns mana\">"+prettySymbolText(item.manaCost)+"</div>";
 					//Make name of card clickable to provide options for moving to sideboard
-					colorList += "<div class=\"eight columns\">"+item.name+" </div></div>";
+					colorList += "<div class=\"eight columns\">"+item.name;
+					colorList += " <a class=\"btn-sideboard\" href=\"javascript:void(0)\" onclick=\"moveToSideboard('"+safeString(item.name)+"')\" >SB</a>";
+					colorList += " <a class=\"btn-maindeck\" href=\"javascript:void(0)\" onclick=\"moveToDeck('"+safeString(item.name)+"')\" >MB</a>";
+					colorList += "</div></div>";
 				});
 				colorList += "</div></div>";
 				$(divId).append(colorList);
 			});
 		});
 	};
+	
+	var safeString = function(str) {
+		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, "\\'");
+	}
 
 	var compareCmc = function(cardA, cardB) {
 		var result;

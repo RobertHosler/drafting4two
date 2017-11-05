@@ -68,7 +68,7 @@
 			 $changeTime = $_POST['changeTime'];
 			 $changeTimeServer = 0;
         	 if(file_exists("drafts/".$state['fileName'])) {
-        	   //$changeTimeServer = filemtime("drafts/".$state['fileName']);
+				$changeTimeServer = filemtime("drafts/".$state['fileName']);
         	 }
         	 if($changeTimeServer == $changeTime){//change time is the same
         		 $log['state'] = $state;//state is the same as passed in
@@ -150,8 +150,28 @@
 		case('moveToSideboard'):
 			$state = $_POST['state'];
 			$cardName = $_POST['cardName'];
-			
-			
+			$playerNumber = $_POST['playerNumber'];
+			$deckList = $state['decks'][$playerNumber];
+			$key = array_search($cardName,$deckList);//find card key
+			if ($key!==false) { unset($deckList[$key]); }//remove card
+			$deckList = array_values($deckList);//resort the array so it will be interpretted as an array by javascript
+			$state['decks'][$playerNumber] = $deckList;//set the list
+			$state['sideboard'][$playerNumber][] = $cardName;//add to sideboard
+			writeStateToFile($state, "drafts/".$state['fileName']);
+			$log['state'] = $state;
+			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
+			break;
+		case('moveToDeck'):
+			$state = $_POST['state'];
+			$cardName = $_POST['cardName'];
+			$playerNumber = $_POST['playerNumber'];
+			$sideboard = $state['sideboard'][$playerNumber];
+			$key = array_search($cardName,$sideboard);//find card key
+			if ($key!==false) { unset($sideboard[$key]); }//remove card
+			$sideboard = array_values($sideboard);//reindex the array so it will be interpretted as an array by javascript
+			$state['sideboard'][$playerNumber] = $sideboard;//set the sideboard without the card
+			$state['decks'][$playerNumber][] = $cardName;//add to decklist
+			writeStateToFile($state, "drafts/".$state['fileName']);
 			$log['state'] = $state;
 			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
 			break;
