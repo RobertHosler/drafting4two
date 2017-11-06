@@ -159,7 +159,7 @@ var mtg = (function() {
 				var colorList = "";
 				colorList += "<div class=\"colorBlock\">";
 				colorList += "<div class=\"colorList\">"+index+" - "+array.length+"</div><div>";
-				$.each(array, function(index, item){
+				$.each(array, function(index, item) {
 					colorList += "<div class=\"row\">";
 					colorList += "<div class=\"four columns mana\">"+prettySymbolText(item.manaCost)+"</div>";
 					//Make name of card clickable to provide options for moving to sideboard

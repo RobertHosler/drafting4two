@@ -132,8 +132,9 @@
 			$state = $_POST['state'];
 			$playerNumber = $_POST['playerNumber'];
 			$deckFileName = $_POST['deckFileName'];
-			$deck = $state['decks'][$playerNumber];
-			saveDeckToFile($deck, $deckFileName);
+			$deck = isset($state['decks'][$playerNumber]) ? $state['decks'][$playerNumber] : array();
+			$sideboard = isset($state['sideboard'][$playerNumber]) ? $state['sideboard'][$playerNumber] : array();
+			saveDeckAndSideboardToFile($deck, $sideboard, $deckFileName);
 			break;
 		case('listDrafts'):
 			$dir = "drafts";

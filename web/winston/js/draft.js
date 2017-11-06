@@ -154,11 +154,18 @@ function moveToDeck(cardName) {
 }
 
 function processDataChange(state) {
-	updateAllPiles();
-	updateCurrentPile();
-	//updateDeckList(state.deckList);
-	updateDeckList(state.decks[playerNumber], state.sideboard[playerNumber]);//update this player's decklist
-	updateActivePlayer(state.activePlayer);
+	if (state.piles) {
+		updateAllPiles();
+		updateCurrentPile();
+		updateActivePlayer(state.activePlayer);
+	} else {
+		draftComplete = true;
+		$("#draftComplete").show();
+		$("#topButtons").hide();
+		$("#buttonRow").hide();
+		$("#currentPileRow").hide();
+	}
+	updateDeckList(state.decks[playerNumber], state.sideboard[playerNumber]);//update this player's decklist and sideboard
 	updateStatusMessage();
 }
 
@@ -198,10 +205,11 @@ function isActivePlayer() {
 }
 
 function updateAllPiles() {
-	var mainPileSize = state.piles[0] != null ? state.piles[0].length : 0;
-	var pileOneSize = state.piles[1] != null ? state.piles[1].length : 0;
-	var pileTwoSize = state.piles[2] != null ? state.piles[2].length : 0;
-	var pileThreeSize = state.piles[3] != null ? state.piles[3].length : 0;
+	if (!state.piles) { return; }
+	var mainPileSize = state.piles[0] ? state.piles[0].length : 0;
+	var pileOneSize = state.piles[1] ? state.piles[1].length : 0;
+	var pileTwoSize = state.piles[2] ? state.piles[2].length : 0;
+	var pileThreeSize = state.piles[3] ? state.piles[3].length : 0;
 	var totalCardsLeft = mainPileSize + pileOneSize + pileTwoSize + pileThreeSize;
 	if (totalCardsLeft > 0) {
 		updatePile('#mainPile', mainPileSize);

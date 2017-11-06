@@ -17,10 +17,10 @@
 	function saveDeckAndSideboardToFile($deck, $sideboard, $file_name) {
 		$fileContents = array();
 		for ($i = 0; $i < count($deck); $i++) {
-			$fileContents[$i] = "1 ".$deck[$i];
+			$fileContents[] = "1 ".$deck[$i];
 		}
 		for ($i = 0; $i < count($sideboard); $i++) {
-			$fileContents[$i] = "SB: 1 ".$sideboard[$i];
+			$fileContents[] = "SB: 1 ".$sideboard[$i];
 		}
 		file_put_contents($file_name, implode("\r\n", $fileContents));
 	}
