@@ -102,6 +102,7 @@ var mtg = (function() {
 	var appendSortedCardNames = function(divId, cardnames) {
 		getCardsThen(cardnames, function() {
 			var cards = getCards(cardnames);
+			var cmcList = [];
 			var result = {
 				white: [],
 				blue: [],
@@ -113,6 +114,9 @@ var mtg = (function() {
 				colorless: []
 			};
 			$.each(cards, function(index, card) {
+				if (!card) { return; }
+				var cmc = card.cmc;
+				cmcList[cmc] = cmcList[cmc] ? cmcList[cmc] + 1 : 1;
 				var colors = card.colors ? card.colors.length : 0;
 				switch (colors) {
 					case 0: //Colorless or land
@@ -147,6 +151,12 @@ var mtg = (function() {
 						result.multi.push(card);
 				}
 			});
+			var cmcOutput = "<div><div><strong>Curve</strong></div>";
+			$.each (cmcList, function(cmc, count) {
+				cmcOutput += "<div>" + prettySymbolText("{"+cmc+"}") + ": " + (count ? count : 0) + "</div>";
+			});
+			cmcOutput += "</div>";
+			$(divId).append(cmcOutput);
 			result.white.sort(compareCmc);
 			result.blue.sort(compareCmc);
 			result.black.sort(compareCmc);
@@ -175,7 +185,7 @@ var mtg = (function() {
 	};
 	
 	var safeString = function(str) {
-		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, "\\'");
+		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, "\\'").replace(/\//g, " // ");
 	}
 
 	var compareCmc = function(cardA, cardB) {
