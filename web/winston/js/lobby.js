@@ -19,7 +19,7 @@ function listDrafts() {
 						lobbyEmpty = false;
 						var fileName = state.fileName;
 						var draftName = fileName.substr(0, fileName.lastIndexOf('.'));
-						var joinLink = "/winston/winston.php?draftName="+draftName;
+						var joinLink = "winston.php?draftName="+draftName;
 						$("#draftList").append("<p>Draft: " + draftName + "<br/>Players: "  + state.players.length + "<br/><a href=\""+joinLink+"\">Join</a></p>");
 					}
 				});

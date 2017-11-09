@@ -4,9 +4,10 @@ var mtg = (function() {
 	var allCards;
 	var waitingFunctions = [];
 	
-	var mtgJson = 'http://mtgjson.com/json/AllCards-x.json';
+	// var mtgJson = 'http://mtgjson.com/json/AllCards-x.json';
+	var mtgJson = '../json/AllCards-x.json';
 	var mtgApi = 'https://api.magicthegathering.io/v1/cards';
-
+	
 	/**
 	 * Currently called from draft.js
 	 * Append Card images asynchronously
@@ -221,7 +222,7 @@ var mtg = (function() {
 	var manaSymbol = function(symbol) {
 		symbol = symbol.replace(/\/|\[|\]|\{|\}/g, '');//remove braces
 		var result = "";
-		var imgSrc = "/images/"+symbol+".svg";
+		var imgSrc = "../images/"+symbol+".svg";
 		result = "<img class=\"manaSymbol\" src=\"" + imgSrc + "\">";
 		return result;
 	};
