@@ -176,6 +176,10 @@
 			$log['state'] = $state;
 			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
 			break;
+		case('deleteDrafts'):
+			//TODO: delete all drafts from the winston/drafts folder - ability to change which drafts are being deleted?  Move drafts folder to web so its web/drafts/winston/
+			//TODO: create unique id for draft file rather than using the name of the draft.  makes clearing the draft folder less necessary
+			break;
     }
     
     echo json_encode($log);
