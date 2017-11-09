@@ -5,11 +5,12 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Chat</title>
+    <title>Lobby</title>
     
     <link rel="stylesheet" text="text/css" href="css/Skeleton-2.0.4/css/normalize.css" />
     <link rel="stylesheet" text="text/css" href="css/Skeleton-2.0.4/css/skeleton.css" />
     <link rel="stylesheet" text="text/css" href="css/mystyles.css" />
+    <link rel="stylesheet" text="text/css" href="../css/lobby.css" />
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -26,19 +27,25 @@
 		
 		<div class="row">
 
-			<div id="page-wrap" class="four columns">
+			<div id="page-wrap" class="six columns">
 			
 				<h2>Join Draft</h2>
 				
 				<div></div>
 								
-				<form action="winston.php" target="_blank">
-					<p>Player Name: </p>
-					<input type="text" name="playerName" required></input>
-					<p>Draft Name: </p>
-					<input type="text" name="draftName" required></input>
-					<p>Cube Name: </p>
-					<select name="cubeName">
+				<form id="createDraftForm" name="createDraftForm" action="winston.php" target="_blank">
+					<label for="playerName">Player Name: </label>
+					<input id="playerName" type="text" name="playerName" required class="draftButton"></input>
+					<label for="draftName">Draft Name: </label>
+					<input type="text" name="draftName" required class="draftButton"></input>
+					<label for="draftType">Draft Type: </label>
+					<select name="draftType" class="draftButton">
+						<option value="winston">Winston</option>
+						<option value="grid">Grid</option>
+						<option value="winchester">Winchester</option>
+					</select>
+					<label for="cubeName">Cube Name: </label>
+					<select name="cubeName" class="draftButton">
 						<option value="360">Roqb 360</option>
 						<option value="roqb_pauper">Roqb Pauper</option>
 						<option value="klug">Klug</option>
@@ -48,17 +55,20 @@
 						<option value="usman_pauper">Usman Pauper</option>
 						<option value="mini">Mini (for testing)</option>
 					</select>
-					<div>
-					<input type="submit" value="Submit"></input>
+					<div class="row">
+						<input type="submit" value="Submit" onclick="clearCreateForm()" class="draftButton eight columns"></input>
+						<input type="reset" value="Reset" class="draftButton four columns"></input>
 					</div>
 				</form>
 			
 			</div>
-			<div class="four columns">
-				<div>
-					<button class="draftButton" onclick="listDrafts();">Refresh Drafts</button>
+			<div class="six columns">
+				<h2>View Drafts</h2>
+				<div class="row">
+					<button class="draftButton six columns" onclick="showOpenDrafts();">Show Open Drafts</button>
+					<button class="draftButton six columns" onclick="showAllDrafts();">Show All Drafts</button>
 				</div>
-				<div id="draftList">
+				<div id="draftList" class="draftList">
 				
 				</div>
 			</div>

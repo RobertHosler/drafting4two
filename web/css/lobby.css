@@ -8,3 +8,17 @@
 .container.main {
     min-height: 500px;
 }
+
+.draftList {
+    max-height: 400px;
+    overflow: auto;
+    border: #ccc 1px solid;
+}
+.draftList .row {
+    margin: 15px;
+    margin-bottom: 20px;
+}
+.draftList hr {
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
