@@ -96,5 +96,31 @@
 		}
 		return $deckList;
 	}
+	
+	/**
+	 * Extracted code from start draft.
+	 * 
+	 * Check draft state for if 
+	 */
+	function joinDraft($state, $playerName) {
+		$playerNumber = -1;			 
+			$players = $state['players'];//retrieve state of players
+			$playerNumber = array_search($playerName, $players);
+			if ($playerNumber > -1) {
+				//player rejoined - number is index + 1
+				$playerNumber = $playerNumber + 1;
+			} else {
+				//player joined game - add to players list
+				$players[] = $playerName;//add to players array
+				$state['players'] = $players;//set state of players to local players
+				$playerNumber = count($players);//playerNumber is count after adding
+			}
+		 } else {
+			$state = initState($state_file_name, $cubeName);
+			$state['players'][] = $playerName;
+			// array_push($state['players'], $playerName);
+			$playerNumber = count($state['players']);//playerNumber is count after adding
+		 }
+	}
 
 ?>

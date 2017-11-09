@@ -34,6 +34,8 @@
     	 case('startDraft'):
         	 $cubeName = $_POST['cubeName'];
         	 $draftName = $_POST['draftName'];
+        	 $draftType = $_POST['draftType'];
+        	 $fileName = $_POST['fileName'];
         	 $playerName = $_POST['playerName'];
 			 $state_file_name = $draftName.'.txt';
 			 $playerNumber = -1;			 
