@@ -4,62 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e880aec749e241237c0535272d325cd0",
+    "content-hash": "e66fd5c3f8342ff9ed1f0d21aab6ef81",
     "packages": [
-        {
-            "name": "alrik11es/cowsayphp",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/alrik11es/cowsayphp.git",
-                "reference": "080dc10c8f5420fef35163569293601f17124eeb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/alrik11es/cowsayphp/zipball/080dc10c8f5420fef35163569293601f17124eeb",
-                "reference": "080dc10c8f5420fef35163569293601f17124eeb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "5.*",
-                "scrutinizer/ocular": "~1.1"
-            },
-            "bin": [
-                "bin/cowsayphp"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Cowsayphp\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marcos Sigueros",
-                    "email": "alrik11es@gmail.com",
-                    "homepage": "https://github.com/alrik11es",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Cowsay port in PHP",
-            "homepage": "https://github.com/alrik11es/cowsayphp",
-            "keywords": [
-                "cowsay"
-            ],
-            "time": "2016-08-25T07:53:44+00:00"
-        },
         {
             "name": "monolog/monolog",
             "version": "1.23.0",
@@ -925,16 +871,16 @@
     "packages-dev": [
         {
             "name": "heroku/heroku-buildpack-php",
-            "version": "v125",
+            "version": "v126",
             "source": {
                 "type": "git",
                 "url": "https://github.com/heroku/heroku-buildpack-php.git",
-                "reference": "880d625f715680aca2969562b8a5a69f4a289b7f"
+                "reference": "8288ddb4b717019f5e39db384e3a9a5b41d73e93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/880d625f715680aca2969562b8a5a69f4a289b7f",
-                "reference": "880d625f715680aca2969562b8a5a69f4a289b7f",
+                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/8288ddb4b717019f5e39db384e3a9a5b41d73e93",
+                "reference": "8288ddb4b717019f5e39db384e3a9a5b41d73e93",
                 "shasum": ""
             },
             "bin": [
@@ -965,7 +911,7 @@
                 "nginx",
                 "php"
             ],
-            "time": "2017-10-04T22:42:04+00:00"
+            "time": "2017-10-28T00:17:41+00:00"
         }
     ],
     "aliases": [],
