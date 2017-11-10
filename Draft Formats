@@ -1,0 +1,100 @@
+-------------
+---Winston---
+-------------
+90 Cards
+
+4 piles are created:
+main pile: 87 cards
+pile 1: 1 card
+pile 2: 1 card
+pile 3: 1 card
+
+Player A looks at pile 1 secretly and chooses whether or not to draft it and add it to their pool replacing it with a card from the top of the main pile.
+If they pass, they add another card from the main pile to pile 1 without looking at it and may then view pile 2 and repeat the above.
+If player A chooses to pass pile 3, they take one card from the top of the main pile at random instead.
+
+Players take turn looking at piles and choosing to either pass or draft that pile.
+
+
+---------------------
+---I'll take Three---
+---------------------
+252 Cards
+18 packs of 14
+
+Player A goes first
+Player B makes 3 piles from a 14 card packs
+Pile 1: 2 cards
+Pile 2: 3 cards
+Pile 3: 4 cards
+Pile 4: 5 cards
+Player A chooses a pile and looks at it
+Player A must choose to keep or burn the pile
+If player A keeps pile {
+    then player B takes a pile of their choice and adds it to their draft pool.
+    The piles contents are revealed to player A.
+} else If player A choose to burn the pile {
+    player A takes a second pile and must add it to their draft pool.
+    Player B then takes a pile and adds it to their draft pool.
+}
+any remaining piles are publicly burnt (add to undrafted cards pool)
+
+-------------
+---Pancake---
+-------------
+198 Cards
+18 packs of 11
+
+Turn 1 Each player takes 1 card then passes the pack to the other player
+Turn 2 Each player takes 2 cards then burns 2 and passes back to the other player
+Turn 3 each player takes 2 cards then discards the remaining cards
+
+45 cards will be drafted total
+
+---------------
+---Burn Four---
+---------------
+360 cards
+24 packs of 15
+Turn 1 take 1 card discard 4 then pass to opposite player
+repeat twice
+
+36 cards will be drafted total
+High quality picks (12 first picks)
+
+-------------------
+---Glimpse Draft---
+-------------------
+270 Cards
+18 packs of 15
+
+Turn 1 Take 1 Burn 2
+Repeat until cards are exhausted
+
+45 cards drafted total
+
+-------------------
+---Solomon Draft---
+-------------------
+80 Cards
+10 packs of 8
+
+Player A splits pack into 2 piles
+Player B chooses from pile 1 and 2
+Player A gets remaining cards
+
+variable pool size
+
+----------------
+---Grid Draft---
+----------------
+162 cards
+18 packs of 9
+
+Place 9 cards in a 3 by 3 grid
+Player A chooses to take a row or column from the grid and add it to their pool.
+Player B chooses any row or column that was not already taken.
+
+Player B then goes first and everything repeats until packs are exhausted.
+
+Add diagonal?  Make option?
