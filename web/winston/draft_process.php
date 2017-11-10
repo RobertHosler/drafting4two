@@ -38,27 +38,13 @@
         	 $fileName = $_POST['fileName'];
         	 $playerName = $_POST['playerName'];
 			 $state_file_name = $draftName.'.txt';
-			 $playerNumber = -1;			 
 			 if (file_exists("drafts/".$state_file_name)) {
 				//File already exists, add new player
 				$state = retrieveStateFromFile("drafts/".$state_file_name);
-				$players = $state['players'];//retrieve state of players
-				$playerNumber = array_search($playerName, $players);
-				if ($playerNumber > -1) {
-					//player rejoined - number is index + 1
-					$playerNumber = $playerNumber + 1;
-				} else {
-					//player joined game - add to players list
-					$players[] = $playerName;//add to players array
-					$state['players'] = $players;//set state of players to local players
-					$playerNumber = count($players);//playerNumber is count after adding
-				}
 			 } else {
-				$state = initState($state_file_name, $cubeName);
-				$state['players'][] = $playerName;
-				// array_push($state['players'], $playerName);
-				$playerNumber = count($state['players']);//playerNumber is count after adding
+				$state = initState($state_file_name, $cubeName, $playerName);
 			 }
+			 $playerNumber = joinDraft($state, $playerName);
 			 writeStateToFile($state, "drafts/".$state_file_name);
              $log['state'] = $state;//sends the state object back
 			 $log['playerNumber'] = $playerNumber;

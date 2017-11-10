@@ -41,7 +41,7 @@
 		return $file_content;
 	}
 
-	function initState($draftName, $cubeName) {
+	function initState($draftName, $cubeName, $playerName) {
 		if(file_exists("cubes/".$cubeName.".txt")){
 		   $cube = file("cubes/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
 		   shuffle($cube);
@@ -51,10 +51,11 @@
 		   $pileThree = array(array_pop($mainPile));
 		   $piles = array($mainPile, $pileOne, $pileTwo, $pileThree);
 		   $players = array();
+		   $players[] = $playerName;
 		 } else {
 			 //What to do if the cube doesn't exist?  Retry with default_cube.txt
 			$cubeName = 'default_cube';
-			initState($draftName, $cubeName);
+			initState($draftName, $cubeName, $playerName);
 		 }
 		 $decks = array("", array(), array());
 		 $sideboard = array("", array(), array());
@@ -103,24 +104,19 @@
 	 * Check draft state for if 
 	 */
 	function joinDraft($state, $playerName) {
-		$playerNumber = -1;			 
-			$players = $state['players'];//retrieve state of players
-			$playerNumber = array_search($playerName, $players);
-			if ($playerNumber > -1) {
-				//player rejoined - number is index + 1
-				$playerNumber = $playerNumber + 1;
-			} else {
-				//player joined game - add to players list
-				$players[] = $playerName;//add to players array
-				$state['players'] = $players;//set state of players to local players
-				$playerNumber = count($players);//playerNumber is count after adding
-			}
-		 } else {
-			$state = initState($state_file_name, $cubeName);
-			$state['players'][] = $playerName;
-			// array_push($state['players'], $playerName);
-			$playerNumber = count($state['players']);//playerNumber is count after adding
-		 }
+		$playerNumber = -1;
+		$players = $state['players'];//retrieve state of players
+		$playerNumber = array_search($playerName, $players);
+		if ($playerNumber > -1) {
+			//player rejoined - number is index + 1
+			$playerNumber = $playerNumber + 1;
+		} else {
+			//player joined game - add to players list
+			$players[] = $playerName;//add to players array
+			$state['players'] = $players;//set state of players to local players
+			$playerNumber = count($players);//playerNumber is count after adding
+		}
+		return $playerNumber;
 	}
 
 ?>
