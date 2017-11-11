@@ -40,15 +40,15 @@
 			 $state_file_name = $draftName.'.txt';
 			 if (file_exists("drafts/".$state_file_name)) {
 				//File already exists, add new player
-				$state = retrieveStateFromFile("drafts/".$state_file_name);
+				$state = retrieveDraftFile($state_file_name);
 			 } else {
 				$state = initState($state_file_name, $cubeName, $playerName);
 			 }
 			 $playerNumber = joinDraft($state, $playerName);
-			 writeStateToFile($state, "drafts/".$state_file_name);
+			 saveDraftFile($state);
              $log['state'] = $state;//sends the state object back
 			 $log['playerNumber'] = $playerNumber;
-			 $log['changeTime'] = filemtime("drafts/".$state_file_name);
+			 $log['changeTime'] = draftLastChange($state_file_name);
         	 break;
 		 
     	 case('update'):
@@ -56,16 +56,16 @@
 			 $changeTime = $_POST['changeTime'];
 			 $changeTimeServer = 0;
         	 if(file_exists("drafts/".$state['fileName'])) {
-				$changeTimeServer = filemtime("drafts/".$state['fileName']);
+				$changeTimeServer = draftLastChange($state['fileName']);
         	 }
         	 if($changeTimeServer == $changeTime){//change time is the same
         		 $log['state'] = $state;//state is the same as passed in
 				 $log['change'] = false;
-				 $log['changeTime'] = filemtime("drafts/".$state['fileName']);
+				 $log['changeTime'] = draftLastChange($state['fileName']);
 			 } else {//if the state has changed...
-				 $log['state'] = retrieveStateFromFile("drafts/".$state['fileName']);//decode into an object
+				 $log['state'] = retrieveDraftFile($state['fileName']);//decode into an object
 				 $log['change'] = true;
-				 $log['changeTime'] = filemtime("drafts/".$state['fileName']);
+				 $log['changeTime'] = draftLastChange($state['fileName']);
 			 }
              break;
     	 
@@ -105,16 +105,16 @@
 			$state['activePlayer'] = ($state['activePlayer'] == 1) ? 2 : 1;
 			
 			//encode the state as json and write to file
-			 writeStateToFile($state, "drafts/".$state['fileName']);
+			saveDraftToFile($state);
 			$log['state'] = $state;
-			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
+			$log['changeTime'] = drafts($state['fileName']);
         	break;
     	case('passPile'):
 			$state = $_POST['state'];
 			$state = passWinstonPile($state);
-			writeStateToFile($state, "drafts/".$state['fileName']);
+			saveDraftToFile($state);
 			$log['state'] = $state;
-			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
+			$log['changeTime'] = drafts($state['fileName']);
 			break;
 		case('saveDeck'):
 			$state = $_POST['state'];
@@ -125,12 +125,11 @@
 			saveDeckAndSideboardToFile($deck, $sideboard, $deckFileName);
 			break;
 		case('listDrafts'):
-			$dir = "drafts";
-			$allFiles = scandir($dir);
+			$allFiles = retrieveAllDrafts();
 			$drafts = array_diff($allFiles, array('.', '..', '.gitignore'));
 			$states = [];
 			foreach($drafts as $draft) {
-				$state = retrieveStateFromFile("drafts/".$draft);
+				$state = retrieveDraftFile($draft);
 				$states[] = $state;
 			}
 			$log['drafts'] = $drafts;
@@ -146,9 +145,9 @@
 			$deckList = array_values($deckList);//resort the array so it will be interpretted as an array by javascript
 			$state['decks'][$playerNumber] = $deckList;//set the list
 			$state['sideboard'][$playerNumber][] = $cardName;//add to sideboard
-			writeStateToFile($state, "drafts/".$state['fileName']);
+			saveDraftToFile($state);
 			$log['state'] = $state;
-			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
+			$log['changeTime'] = draftLastChange($state['fileName']);
 			break;
 		case('moveToDeck'):
 			$state = $_POST['state'];
@@ -160,9 +159,9 @@
 			$sideboard = array_values($sideboard);//reindex the array so it will be interpretted as an array by javascript
 			$state['sideboard'][$playerNumber] = $sideboard;//set the sideboard without the card
 			$state['decks'][$playerNumber][] = $cardName;//add to decklist
-			writeStateToFile($state, "drafts/".$state['fileName']);
+			saveDraftFile($state);
 			$log['state'] = $state;
-			$log['changeTime'] = filemtime("drafts/".$state['fileName']);
+			$log['changeTime'] = draftLastChange($state['fileName']);
 			break;
 		case('deleteDrafts'):
 			//TODO: delete all drafts from the winston/drafts folder - ability to change which drafts are being deleted?  Move drafts folder to web so its web/drafts/winston/

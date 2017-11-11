@@ -42,8 +42,8 @@
 	}
 
 	function initState($draftName, $cubeName, $playerName) {
-		if(file_exists("cubes/".$cubeName.".txt")){
-		   $cube = file("cubes/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
+		if(file_exists("../data/cubes/".$cubeName.".txt")){
+		   $cube = file("../data/cubes/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
 		   shuffle($cube);
 		   $mainPile = array_slice($cube, 0, 90);
 		   $pileOne = array(array_pop($mainPile));
@@ -117,6 +117,36 @@
 			$playerNumber = count($players);//playerNumber is count after adding
 		}
 		return $playerNumber;
+	}
+	
+	function retrieveDraftFile($fileName) {
+		$draftsPath = getDraftsPath();
+		return retrieveStateFromFile($draftsPath.$fileName);
+	}
+	
+	function saveDraftFile($state) {
+		$draftsPath = getDraftsPath();
+		error_log("saveDraftFile".$draftsPath);
+		writeStateToFile($state, $draftsPath.$state['fileName']);
+	}
+	
+	function draftLastChange($fileName) {
+		$draftsPath = getDraftsPath();
+		error_log("draftsLastChange".$draftsPath);
+		return filemtime($draftsPath.$fileName);
+	}
+	
+	function retrieveAllDrafts() {
+		$draftsPath = getDraftsPath();
+		error_log("retrieveAllDrafts".$draftsPath);
+		error_log($_SERVER['DOCUMENT_ROOT'], 0);
+		error_log(__DIR__);
+		scandir($draftsPath);
+	}
+	
+	function getDraftsPath() {
+		// return "/home/ubuntu/workspace/data/drafts";
+		return "../../data/drafts";
 	}
 
 ?>
