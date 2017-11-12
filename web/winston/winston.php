@@ -1,16 +1,13 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 		<link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/normalize.css" />
 		<link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/skeleton.css" />
-	    <!--<link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap.min.css"/>-->
-	    <!--<link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap-theme.min.css"/>-->
 		<link rel="stylesheet" text="text/css" href="/css/mystyles.css" />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    	<!--<script type="text/javascript" src="/libs/bootstrap/3.3.5/bootstrap.min.js"></script>-->
 		<script type="text/javascript" src="/js/mtg.js"></script>
 		<script type="text/javascript" src="/js/draft.js"></script>
-
 		
 	</head>
 	
