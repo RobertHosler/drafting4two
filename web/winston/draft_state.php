@@ -136,14 +136,20 @@
 	
 	function retrieveAllDrafts() {
 		$draftsPath = getDraftsPath();
-		error_log($_SERVER['DOCUMENT_ROOT'], 0);
-		error_log(__DIR__);
-		scandir($draftsPath);
+		$allDrafts = scandir($draftsPath);
+		return $allDrafts;
 	}
 	
+	$_draftsPath;
+	
 	function getDraftsPath() {
-		return "//home/ubuntu/workspace/data/drafts";
-		// return "../../data/drafts";
+		if ($_draftsPath == null) {
+			$webPath = $_SERVER['DOCUMENT_ROOT']; //path to /web
+			$appPath = dirname($webPath);
+			$_draftsPath = $appPath."/data/drafts";
+			error_log("_draftsPath=".$_draftsPath);
+		}
+		return $_draftsPath;
 	}
 
 ?>

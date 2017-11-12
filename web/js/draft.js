@@ -231,7 +231,7 @@ function updatePile(id, size) {
 		if (i > 30) {
 			break;
 		}
-		$(id).append($("<img class=\"magicCard\" src=\"images/Magic_the_gathering-card_back.jpg\">"));
+		$(id).append($("<img class=\"magicCard\" src=\"/images/Magic_the_gathering-card_back.jpg\">"));
 	}
 	updatePileCount((id + 'Number'), size);
 }
