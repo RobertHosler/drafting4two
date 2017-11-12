@@ -38,13 +38,9 @@
         	 $fileName = $_POST['fileName'];
         	 $playerName = $_POST['playerName'];
 			 $state_file_name = $draftName.'.txt';
-			 if (file_exists("drafts/".$state_file_name)) {
-				//File already exists, add new player
-				$state = retrieveDraftFile($state_file_name);
-			 } else {
-				$state = initState($state_file_name, $cubeName, $playerName);
-			 }
-			 $playerNumber = joinDraft($state, $playerName);
+			 $state = getDraftState($state_file_name, $cubeName);
+			 $state['players'] = joinDraft($state['players'], $playerName);
+			 $playerNumber = getPlayerNumber($state['players'], $playerName);
 			 saveDraftFile($state);
              $log['state'] = $state;//sends the state object back
 			 $log['playerNumber'] = $playerNumber;

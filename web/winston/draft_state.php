@@ -41,7 +41,7 @@
 		return $file_content;
 	}
 
-	function initState($draftName, $cubeName, $playerName) {
+	function initState($draftName, $cubeName) {
 		if(file_exists("../data/cubes/".$cubeName.".txt")){
 		   $cube = file("../data/cubes/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
 		   shuffle($cube);
@@ -51,11 +51,10 @@
 		   $pileThree = array(array_pop($mainPile));
 		   $piles = array($mainPile, $pileOne, $pileTwo, $pileThree);
 		   $players = array();
-		   $players[] = $playerName;
 		 } else {
 			 //What to do if the cube doesn't exist?  Retry with default_cube.txt
 			$cubeName = 'default_cube';
-			initState($draftName, $cubeName, $playerName);
+			initState($draftName, $cubeName);
 		 }
 		 $decks = array("", array(), array());
 		 $sideboard = array("", array(), array());
@@ -103,18 +102,23 @@
 	 * 
 	 * Check draft state for if 
 	 */
-	function joinDraft($state, $playerName) {
-		$playerNumber = -1;
-		$players = $state['players'];//retrieve state of players
+	function joinDraft($players, $playerName) {
 		$playerNumber = array_search($playerName, $players);
-		if ($playerNumber > -1) {
-			//player rejoined - number is index + 1
-			$playerNumber = $playerNumber + 1;
-		} else {
+		if ($playerNumber === false) {
 			//player joined game - add to players list
 			$players[] = $playerName;//add to players array
-			$state['players'] = $players;//set state of players to local players
-			$playerNumber = count($players);//playerNumber is count after adding
+		} else {
+			//player rejoined, already in players list
+		}
+		return $players;
+	}
+	
+	function getPlayerNumber($players, $playerName) {
+		$playerNumber = array_search($playerName, $players);
+		if ($playerNumber === false) {
+			$playerNumber = -1;
+		} else {
+			$playerNumber++;
 		}
 		return $playerNumber;
 	}
@@ -147,9 +151,22 @@
 			$webPath = $_SERVER['DOCUMENT_ROOT']; //path to /web
 			$appPath = dirname($webPath);
 			$_draftsPath = $appPath."/data/drafts";
-			error_log("_draftsPath=".$_draftsPath);
+			// error_log("_draftsPath=".$_draftsPath);
 		}
 		return $_draftsPath;
+	}
+	
+	function getDraftState($state_file_name, $cubeName) {
+	    $state = null;
+	    error_log("Getting draft state for: ".getDraftsPath()."/".$state_file_name);
+		if (file_exists(getDraftsPath()."/".$state_file_name)) {
+			//Draft already exists, retrieve from file
+			$state = retrieveDraftFile($state_file_name);
+		} else {
+		 	//Create new state
+			$state = initState($state_file_name, $cubeName);
+		}
+		return $state;
 	}
 
 ?>
