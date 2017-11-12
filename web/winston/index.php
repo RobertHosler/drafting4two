@@ -11,6 +11,7 @@
     <link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/skeleton.css" />
     <link rel="stylesheet" text="text/css" href="/css/mystyles.css" />
     <link rel="stylesheet" text="text/css" href="/css/lobby.css" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/lobby.js"></script>
 
 		
