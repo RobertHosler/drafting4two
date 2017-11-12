@@ -101,14 +101,14 @@
 			$state['activePlayer'] = ($state['activePlayer'] == 1) ? 2 : 1;
 			
 			//encode the state as json and write to file
-			saveDraftToFile($state);
+			saveDraftFile($state);
 			$log['state'] = $state;
 			$log['changeTime'] = drafts($state['fileName']);
         	break;
     	case('passPile'):
 			$state = $_POST['state'];
 			$state = passWinstonPile($state);
-			saveDraftToFile($state);
+			saveDraftFile($state);
 			$log['state'] = $state;
 			$log['changeTime'] = drafts($state['fileName']);
 			break;
@@ -141,7 +141,7 @@
 			$deckList = array_values($deckList);//resort the array so it will be interpretted as an array by javascript
 			$state['decks'][$playerNumber] = $deckList;//set the list
 			$state['sideboard'][$playerNumber][] = $cardName;//add to sideboard
-			saveDraftToFile($state);
+			saveDraftFile($state);
 			$log['state'] = $state;
 			$log['changeTime'] = draftLastChange($state['fileName']);
 			break;
