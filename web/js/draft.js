@@ -402,7 +402,7 @@ function saveDeckToFile(deck) {
 	deck = deck ? deck : state.decks[playerNumber];
 	var dt = new Date();
 	var date = dt.getFullYear() + "" + (dt.getMonth() + 1) + "" + dt.getDate();
-	var fileName = "/data/decks/" + date + "_" + draftName + "_" + playerName + ".txt";
+	var fileName = "/decks/" + date + "_" + draftName + "_" + playerName + ".txt";
 	if (!instanse) {
 		instanse = true;
 		$.ajax({

@@ -22,7 +22,8 @@
 		for ($i = 0; $i < count($sideboard); $i++) {
 			$fileContents[] = "SB: 1 ".$sideboard[$i];
 		}
-		file_put_contents($file_name, implode("\r\n", $fileContents));
+		error_log("Saving deck to file: ".$_SERVER['DOCUMENT_ROOT'].$file_name);
+		file_put_contents($_SERVER['DOCUMENT_ROOT'].$file_name, implode("\r\n", $fileContents));
 	}
 
 	/**
@@ -42,8 +43,8 @@
 	}
 
 	function initState($draftName, $cubeName) {
-		if(file_exists("../data/cubes/".$cubeName.".txt")){
-		   $cube = file("../data/cubes/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
+		if(file_exists(getCubesPath()."/".$cubeName.".txt")){
+		   $cube = file(getCubesPath()."/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
 		   shuffle($cube);
 		   $mainPile = array_slice($cube, 0, 90);
 		   $pileOne = array(array_pop($mainPile));
@@ -53,6 +54,7 @@
 		   $players = array();
 		 } else {
 			 //What to do if the cube doesn't exist?  Retry with default_cube.txt
+			 //TODO notify user that default cube was used... somehow
 			$cubeName = 'default_cube';
 			initState($draftName, $cubeName);
 		 }
@@ -145,6 +147,7 @@
 	}
 	
 	$_draftsPath;
+	$_cubesPath;
 	
 	function getDraftsPath() {
 		if ($_draftsPath == null) {
@@ -156,9 +159,19 @@
 		return $_draftsPath;
 	}
 	
+	function getCubesPath() {
+		if ($_cubesPath == null) {
+			$webPath = $_SERVER['DOCUMENT_ROOT']; //path to /web
+			$appPath = dirname($webPath); //path to root of app
+			$_cubesPath = $appPath."/data/cubes";//append path to cubes dir
+			// error_log("$_cubesPath=".$_cubesPath);
+		}
+		return $_cubesPath;
+	}
+	
 	function getDraftState($state_file_name, $cubeName) {
 	    $state = null;
-	    error_log("Getting draft state for: ".getDraftsPath()."/".$state_file_name);
+	    // error_log("Getting draft state for: ".getDraftsPath()."/".$state_file_name);
 		if (file_exists(getDraftsPath()."/".$state_file_name)) {
 			//Draft already exists, retrieve from file
 			$state = retrieveDraftFile($state_file_name);

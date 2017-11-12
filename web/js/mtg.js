@@ -5,7 +5,7 @@ var mtg = (function() {
 	var waitingFunctions = [];
 	
 	// var mtgJson = 'http://mtgjson.com/json/AllCards-x.json';
-	var mtgJson = '/data/json/AllCards-x.json';
+	var mtgJson = '/json/AllCards-x.json';
 	var mtgApi = 'https://api.magicthegathering.io/v1/cards';
 	
 	/**

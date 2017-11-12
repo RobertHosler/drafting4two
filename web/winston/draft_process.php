@@ -103,15 +103,17 @@
 			//encode the state as json and write to file
 			saveDraftFile($state);
 			$log['state'] = $state;
-			$log['changeTime'] = drafts($state['fileName']);
+			$log['changeTime'] = draftLastChange($state['fileName']);
         	break;
+        	
     	case('passPile'):
 			$state = $_POST['state'];
 			$state = passWinstonPile($state);
 			saveDraftFile($state);
 			$log['state'] = $state;
-			$log['changeTime'] = drafts($state['fileName']);
+			$log['changeTime'] = draftLastChange($state['fileName']);
 			break;
+			
 		case('saveDeck'):
 			$state = $_POST['state'];
 			$playerNumber = $_POST['playerNumber'];
@@ -120,6 +122,7 @@
 			$sideboard = isset($state['sideboard'][$playerNumber]) ? $state['sideboard'][$playerNumber] : array();
 			saveDeckAndSideboardToFile($deck, $sideboard, $deckFileName);
 			break;
+			
 		case('listDrafts'):
 			$allFiles = retrieveAllDrafts();
 			$drafts = array_diff($allFiles, array('.', '..', '.gitignore'));
@@ -131,6 +134,7 @@
 			$log['drafts'] = $drafts;
 			$log['states'] = $states;
 			break;
+			
 		case('moveToSideboard'):
 			$state = $_POST['state'];
 			$cardName = $_POST['cardName'];
@@ -145,6 +149,7 @@
 			$log['state'] = $state;
 			$log['changeTime'] = draftLastChange($state['fileName']);
 			break;
+			
 		case('moveToDeck'):
 			$state = $_POST['state'];
 			$cardName = $_POST['cardName'];
@@ -159,10 +164,12 @@
 			$log['state'] = $state;
 			$log['changeTime'] = draftLastChange($state['fileName']);
 			break;
+			
 		case('deleteDrafts'):
 			//TODO: delete all drafts from the winston/drafts folder - ability to change which drafts are being deleted?  Move drafts folder to web so its web/drafts/winston/
 			//TODO: create unique id for draft file rather than using the name of the draft.  makes clearing the draft folder less necessary
 			break;
+			
     }
     
     echo json_encode($log);
