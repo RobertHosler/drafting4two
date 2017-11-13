@@ -183,9 +183,17 @@ div.deck .magicCard {
 	padding: 10px;
 }
 
-.currentPile {overflow:auto;display: flex;flex-wrap: wrap;
-//overflow-x: scroll;
-//white-space: nowrap;}
+.currentPile {
+	overflow: auto;
+	display: flex;
+	flex-wrap: wrap;
+	/*overflow-x: scroll;*/
+	/*white-space: nowrap;*/
+}
+
+.cardPile {
+	text-align: center;
+}
 
 div.currentPile .magicCard {
 	width: 150px;
@@ -201,6 +209,15 @@ div.currentPile .magicCard {
 
 .winstonPile {
 	margin-top: 135%;
+}
+.pileBorder {
+	padding: 0px 4px 4px 4px;
+}
+.currentCardPile .pileBorder {
+	background: #ecc236;
+	border: 1px solid black;
+	padding: 0px 3px 3px 3px;
+	border-radius: 5px;
 }
 
 .winstonPile .magicCard {

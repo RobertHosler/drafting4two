@@ -1,3 +1,4 @@
+/* global $*/
 var mtg = (function() {
 
 	var isAllCardRetrieved = false;
@@ -6,7 +7,7 @@ var mtg = (function() {
 
 	// var mtgJson = 'http://mtgjson.com/json/AllCards-x.json';
 	var mtgJson = '/json/AllCards-x.json';
-	var mtgApi = 'https://api.magicthegathering.io/v1/cards';
+	// var mtgApi = 'https://api.magicthegathering.io/v1/cards';
 
 	/**
 	 * Currently called from draft.js
@@ -32,8 +33,6 @@ var mtg = (function() {
 				if (!card1.configured) {
 					var card2 = allCards[cardname2];
 					card1.card2 = card2;
-					var colors1 = card1.colors;
-					var colors2 = card2.colors;
 					var colors = card1.colors.concat(card2.colors);
 					var manaCost = card1.manaCost + "/" + card2.manaCost;
 					var name = cardname1 + "/" + cardname2;
@@ -75,7 +74,7 @@ var mtg = (function() {
 				});
 			});
 		}
-	}
+	};
 
 	var addCardsToView = function(viewId, cards) {
 		$.each(cards, function(index, card) {
@@ -179,8 +178,8 @@ var mtg = (function() {
 					colorList += "<div class=\"four columns mana\">" + prettySymbolText(item.manaCost) + "</div>";
 					//Make name of card clickable to provide options for moving to sideboard
 					colorList += "<div class=\"eight columns\">" + item.name;
-					colorList += " <a class=\"btn-sideboard\" href=\"javascript:void(0)\" onclick=\"moveToSideboard('" + safeString(item.name) + "')\" >SB</a>";
-					colorList += " <a class=\"btn-maindeck\" href=\"javascript:void(0)\" onclick=\"moveToDeck('" + safeString(item.name) + "')\" >MB</a>";
+					colorList += " <a class=\"btn-sideboard\" href=\"javascript:void(0)\" onclick=\"moveToSideboard('" + safeString(item.name) + "', this)\" >SB</a>";
+					colorList += " <a class=\"btn-maindeck\" href=\"javascript:void(0)\" onclick=\"moveToDeck('" + safeString(item.name) + "', this)\" >MB</a>";
 					colorList += "</div></div>";
 				});
 				colorList += "</div></div>";
@@ -191,7 +190,7 @@ var mtg = (function() {
 
 	var safeString = function(str) {
 		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, "\\'").replace(/\//g, " // ");
-	}
+	};
 
 	var compareCmc = function(cardA, cardB) {
 		var result;
@@ -244,5 +243,5 @@ var mtg = (function() {
 		appendSortedCardNames: appendSortedCardNames,
 		appendCardImages: appendCardImages,
 		prettySymbolText: prettySymbolText
-	}
+	};
 })();

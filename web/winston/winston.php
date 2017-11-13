@@ -31,33 +31,46 @@
 					<div class="row">
 						<img class="header" src="/images/header_bg_4.jpg"/>
 						<a href="/">Return to Lobby</a>
+						<a href="javascript:void(0)" onclick="if (confirm('Are you sure you want to restart the draft?')) { restartDraft(); }">Restart Draft</a>
 					</div>
 					
 					<div id="topButtons"class="row">
 						<div class="seven columns">
 							<div id="welcomeMessage"></div>
-							<div id="statusMessage"></div>
+							<div id="status">
+								<p id="statusDraftName"></p>
+								<p id="statusPlayerNumber" style="display: none;"></p>
+								<p id="statusActivePlayer"></p>
+								<p id="statusCurrentPileNumber" style="display: none;"></p>
+							</div>
 						</div>
 						<div class="five columns">
 							<div class="row">
-								<div id="mainPileCount" class="three columns">
-									<div>Main Pile: <span id="mainPileNumber">[pileNumber]</span></div>
+								<div id="mainPileCount" class="three columns pileCount">
+									<div>Main Pile</div>
+									<div id="mainPileNumber">[pileNumber]</div>
 									<div id="mainPile" class="mainWinstonPile"></div>
 								</div>
-								<div class="three columns">
-									<div>Pile One: <span id="pileOneNumber">[pileNumber]</span></div>
-									<div id="pileOne" class="winstonPile"></div>
-									<div id="pileOneArrow" class="currentPilePointer">^</div>
+								<div id="cardPileOne" class="three columns cardPile">
+									<div>Pile One</div>
+									<div id="pileOneNumber">[pileNumber]</div>
+									<div class="pileBorder">
+										<div id="pileOne" class="winstonPile"></div>
+									</div>
 								</div>
-								<div class="three columns">
-									<div>Pile Two: <span id="pileTwoNumber">[pileNumber]</span></div>
-									<div id="pileTwo" class="winstonPile"></div>
-									<div id="pileTwoArrow" class="currentPilePointer" style="display: none;">^</div>
+								<div id="cardPileTwo" class="three columns cardPile">
+									<div>Pile Two</div>
+									<div id="pileTwoNumber">[pileNumber]</div>
+									<div class="pileBorder">
+										<div id="pileTwo" class="winstonPile"></div>
+									</div>
 								</div>
-								<div class="three columns">
-									<div>Pile Three: <span id="pileThreeNumber">[pileNumber]</span></div>
-									<div id="pileThree" class="winstonPile"></div>
-									<div id="pileThreeArrow" class="currentPilePointer" style="display: none;">^</div>
+								<div id="cardPileThree" class="three columns cardPile">
+									<div>Pile Three</div>
+									<div id="pileThreeNumber">[pileNumber]</div>
+									<div class="pileBorder">
+										<div id="pileThree" class="winstonPile"></div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -97,14 +110,24 @@
 						<div class="twelve columns heading">
 							Your Deck: <span id="deckListNumber">[pileNumber]</span>
 						</div>
-						<div id="deckList" class="twelve columns deck maindeck" style=""></div>
+						<div class="eight columns" style="height: 1px;"></div>
+						<div class="three columns">
+							<button id="showDeckSorted" class="draftButton" onclick="sortDeckList();" style="display:none;">Sorted</button>
+							<button id="showDeckUnsorted" class="draftButton" onclick="unsortDeckList();">Unsorted</button>
+						</div>
+						<div id="deckList" class="twelve columns deck maindeck"></div>
 					</div>
 					
 					<div id="deckRow" class="row pileRow">
 						<div class="twelve columns heading">
 							Your Sideboard: <span id="sideboardListNumber">[pileNumber]</span>
 						</div>
-						<div id="sideboardList" class="twelve columns deck sideboard" style=""></div>		
+						<div class="eight columns" style="height: 1px;"></div>
+						<div class="three columns">
+							<button id="showSideboardSorted" class="draftButton" onclick="sortSideboard();" style="display:none;">Sorted</button>
+							<button id="showSideboardUnsorted" class="draftButton" onclick="unsortSideboard();">Unsorted</button>
+						</div>
+						<div id="sideboardList" class="twelve columns deck sideboard"></div>
 					</div>
 					
 					<div id="draftComplete" class="row" style="display: none;">
