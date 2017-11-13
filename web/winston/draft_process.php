@@ -138,7 +138,7 @@ switch ($function) {
             saveDraftFile($state);
         }
         $publicState = getPublicState($state, $playerNumber);
-        $publicState['recentlyDrafted'] = $pile;
+        // $publicState['recentlyDrafted'] = $pile;
         $response['state'] = $publicState;
         break;
     

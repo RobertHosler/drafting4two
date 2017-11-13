@@ -12,18 +12,6 @@ ary playerTwoDeckList
 int currentPile
 int activePlayer (1 or 2)
 */
-var state;
-
-var instanse = false; //used to lock functions which access the php files.
-var playerNumber = 1; // set to 1 or 2 // need to figure out how this will be set...
-var draftName;
-var cubeName;
-var playerName;
-var changeTime;
-var draftComplete = false;
-var isDeckSorted = true;
-var isSideboardSorted = true;
-
 
 /**
  * Get parameter froms the window location
@@ -38,13 +26,23 @@ $.urlParam = function(name) {
 	}
 };
 
+var state;
+
+var instanse = false; //used to lock functions which access the php files.
+var playerNumber = 1; // set to 1 or 2 // need to figure out how this will be set...
+var draftName = $.urlParam('draftName');
+var cubeName = $.urlParam('cubeName');
+var playerName = $.urlParam('playerName');
+var changeTime;
+var draftComplete = false;
+var isDeckSorted = true;
+var isSideboardSorted = true;
+var updating = false;
+
 /**
  * Run on load of the page to initialize the draft process.
  */
 function startDraft() {
-	draftName = $.urlParam('draftName');
-	cubeName = $.urlParam('cubeName');
-	playerName = $.urlParam('playerName');
 	while (!playerName) {
 		playerName = prompt("Please enter your name", "");
 	}
@@ -77,7 +75,15 @@ function startDraft() {
 			}
 		});
 	}
-	setInterval(updateDraft, 1000);
+	else {
+		setTimeout(function() {
+			startDraft();
+		}, 100);
+	}
+	if (!updating) {
+		updating = true;
+		setInterval(updateDraft, 1000);
+	}
 }
 
 function restartDraft() {
@@ -89,7 +95,7 @@ function restartDraft() {
 			data: {
 				'function': 'restartDraft',
 				'draftName': draftName,
-				'cubeName': cubeName,
+				'cubeName': state.cubeName,
 				'playerName': playerName
 			},
 			dataType: "json",
@@ -103,6 +109,11 @@ function restartDraft() {
 				instanse = false;
 			}
 		});
+	}
+	else {
+		setTimeout(function() {
+			restartDraft();
+		}, 100);
 	}
 }
 
@@ -123,11 +134,17 @@ function updateDraft() {
 			},
 			dataType: "json",
 			success: function(data) {
-				if (state.currentPile != data.state.currentPile ||
-					state.piles[0] != data.state.piles[0]) {
+				if (state.currentPile != data.state.currentPile
+					|| state.piles[0] != data.state.piles[0]
+					|| state.players.length != data.state.players.length) {
 					state = data.state;
-					changeTime = data.changeTime;
-					processDataChange(state);
+					if (state.players[playerNumber-1] != playerName) {
+						//draft restarted
+						startDraft();
+					} else {
+						changeTime = data.changeTime;
+						processDataChange(state);
+					}
 				}
 				instanse = false;
 			},

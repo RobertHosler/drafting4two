@@ -62,6 +62,7 @@
 		 $sideboard = array("", array(), array());
 		 $state = [
 			"fileName" => $draftName,
+			"cubeName" => $cubeName,
 			"piles" => $piles,
 			"decks" => $decks,
 			"sideboard" => $sideboard,
