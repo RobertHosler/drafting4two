@@ -15,7 +15,6 @@ var state;
 
 var instanse = false;//used to lock functions which access the php files.
 var mes;
-var file;
 var playerNumber = 1; // set to 1 or 2 // need to figure out how this will be set...
 var draftName;
 var cubeName;
@@ -80,14 +79,14 @@ function updateDraft() {
 			url: "draft_process.php",
 			data: {
 			   	'function': 'update',
-				'state': state,
-				'file': file,
-				'changeTime': changeTime
+				'draftName': draftName,
+				'playerNumber': playerNumber
 			},
 			dataType: "json",
 			success: function(data) {
-				state = data.state;
-				if (data.change) {
+				if (state.activePile != data.state.activePile
+					|| state.piles[0] != data.state.piles[0]) {
+					state = data.state;
 					changeTime = data.changeTime;
 					processDataChange(state);
 				}
@@ -105,7 +104,7 @@ function moveToSideboard(cardName) {
 			url: "draft_process.php",
 			data: {
 			   	'function': 'moveToSideboard',
-				'state': state,
+				'draftName': draftName,
 				'cardName': cardName,
 				'playerNumber': playerNumber
 			},
@@ -133,7 +132,7 @@ function moveToDeck(cardName) {
 			url: "draft_process.php",
 			data: {
 			   	'function': 'moveToDeck',
-				'state': state,
+				'draftName': draftName,
 				'cardName': cardName,
 				'playerNumber': playerNumber
 			},
@@ -189,13 +188,13 @@ function updateActivePlayer(activePlayer) {
 
 function updateButtons(state) {
 	//disable passing the pile if the next piles are empty
-	if ( (state.currentPile == 1 && (!state.piles[2] || state.piles[2].length === 0) && (!state.piles[3] || state.piles[3].length === 0) )
-		|| (state.currentPile == 2 && (!state.piles[3] || state.piles[3].length === 0))
-		|| (state.currentPile == 3 && (!state.piles[0] || state.piles[0].length === 0)) ) {
+	if ( (state.currentPile == 1 && (!state.piles[2] || state.piles[2] === 0) && (!state.piles[3] || state.piles[3] === 0) )
+		|| (state.currentPile == 2 && (!state.piles[3] || state.piles[3] === 0))
+		|| (state.currentPile == 3 && (!state.piles[0] || state.piles[0] === 0)) ) {
 	   $('#passPile').attr('disabled','disabled');//disable passing the pile
 	}
-	//disable taking the pile if the current piles length is 0
-	if ( state.piles[state.currentPile].length === 0) {
+	//disable taking active pile if its undefined
+	if ( !state.activePile ) {
 	   $('#takePile').attr('disabled','disabled');//disable passing the pile
 	}
 }
@@ -206,10 +205,10 @@ function isActivePlayer() {
 
 function updateAllPiles() {
 	if (!state.piles) { return; }
-	var mainPileSize = state.piles[0] ? state.piles[0].length : 0;
-	var pileOneSize = state.piles[1] ? state.piles[1].length : 0;
-	var pileTwoSize = state.piles[2] ? state.piles[2].length : 0;
-	var pileThreeSize = state.piles[3] ? state.piles[3].length : 0;
+	var mainPileSize = state.piles[0] ? state.piles[0] : 0;
+	var pileOneSize = state.piles[1] ? state.piles[1] : 0;
+	var pileTwoSize = state.piles[2] ? state.piles[2] : 0;
+	var pileThreeSize = state.piles[3] ? state.piles[3] : 0;
 	var totalCardsLeft = mainPileSize + pileOneSize + pileTwoSize + pileThreeSize;
 	if (totalCardsLeft > 0) {
 		updatePile('#mainPile', mainPileSize);
@@ -254,9 +253,9 @@ function cardCountString(size) {
  */
 function updateCurrentPile() {
 	$('#currentPile').html("");//empty div
-	if (!draftComplete && isActivePlayer()) {
-		mtg.appendCardImages('#currentPile', state.piles[state.currentPile]);
-		$('#currentPileNumber').html(currentPileAsString(state.currentPile) + " - " + cardCountString(state.piles[state.currentPile].length));
+	if (!draftComplete && isActivePlayer() && state.activePile) {
+		mtg.appendCardImages('#currentPile', state.activePile);
+		$('#currentPileNumber').html(currentPileAsString(state.currentPile) + " - " + cardCountString(state.activePile.length));
 	} else {
 		$('#currentPileNumber').html("");
 	}
@@ -287,22 +286,6 @@ function currentPileAsString(pileNumber) {
 	}
 }
 
-function takePileLegacy() {
-	if (isActivePlayer()) {
-		var activePlayerDeck = state.decks[state.activePlayer];
-		var currentPile = state.piles[state.currentPile];
-		$.each (currentPile, function(index, card) {
-			activePlayerDeck.push(card);
-		});
-		//reset currentPile
-		currentPile = [];
-		currentPile.push(state.piles[0].pop());
-		state.piles[state.currentPile] = currentPile;
-		state.currentPile = 1;
-		updateAll();
-	}
-}
-
 function takePile() {
 	// if (!confirm('Take pile?')) return;
 	if (!instanse) {
@@ -312,9 +295,9 @@ function takePile() {
 			url: "draft_process.php",
 			data: {
 			   	'function': 'takePile',
-				'state': state,
-				'file': file,
-				'changeTime': changeTime
+				'draftName': draftName,
+				'changeTime': changeTime,
+				'playerNumber': playerNumber
 			},
 			dataType: "json",
 			success: function(data) {
@@ -336,22 +319,6 @@ function updateAll() {
 	updateDeckList(state.decks[playerNumber], state.sideboard[playerNumber]);//update this player's decklist
 }
 
-function passPileLegacy() {
-	if (isActivePlayer()) {
-		var currentPile = state.piles[state.currentPile];
-		currentPile.push(state.piles[0].pop());
-		state.piles[state.currentPile] = currentPile;
-		if (state.currentPile === 3) {
-			var activePlayerDeck = state.decks[state.activePlayer];
-			activePlayerDeck.push(state.piles[0].pop());
-			state.currentPile = 1;
-		} else {
-			state.currentPile += 1;
-		}
-		updateAll();
-	}
-}
-
 function passPile() {
 	// if (!confirm('Pass pile?')) return;
 	if (!instanse) {
@@ -361,9 +328,9 @@ function passPile() {
 			url: "draft_process.php",
 			data: {
 			   	'function': 'passPile',
-				'state': state,
-				'file': file,
-				'changeTime': changeTime
+				'draftName': draftName,
+				'changeTime': changeTime,
+				'playerNumber': playerNumber
 			},
 			dataType: "json",
 			success: function(data) {
@@ -410,7 +377,7 @@ function saveDeckToFile(deck) {
 			url: "draft_process.php",
 			data: {
 				'function': 'saveDeck',
-				'state': state,
+				'draftName': draftName,
 				'deckFileName': fileName,
 				'playerNumber': playerNumber
 			},

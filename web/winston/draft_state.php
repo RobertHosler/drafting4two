@@ -72,6 +72,27 @@
 		 return $state;
 	}
 	
+	/**
+	 * Convert the state object into a publicly viewable version
+	 */
+	function getPublicState($state, $playerNumber) {
+		//clean piles - convert them to length of pile
+		if ($playerNumber == $state['activePlayer']) {
+			$state['activePile'] = $state['piles'][$state['currentPile']];//set activePile to visible pile
+		}
+		$state['piles'][0] = count($state['piles'][0]);
+		$state['piles'][1] = count($state['piles'][1]);
+		$state['piles'][2] = count($state['piles'][2]);
+		$state['piles'][3] = count($state['piles'][3]);
+		for ($i = 0; $i < count($state['decks']); $i++) {
+			if ($i != $playerNumber) {
+				$state['decks'][$i] = "";
+				$state['sideboard'][$i] = "";
+			}
+		}
+		return $state;
+	}
+	
 	function isDraftOver($state) {
 		$draftOver = true;
 		//if the piles still have cards, draft isn't over
@@ -137,13 +158,18 @@
 	
 	function draftLastChange($fileName) {
 		$draftsPath = getDraftsPath();
-		return filemtime($draftsPath."/".$fileName);
+		return filectime($draftsPath."/".$fileName);
 	}
 	
 	function retrieveAllDrafts() {
 		$draftsPath = getDraftsPath();
 		$allDrafts = scandir($draftsPath);
 		return $allDrafts;
+	}
+	
+	function doesDraftExist($draftName) {
+		$draftsPath = getDraftsPath();
+		return file_exists($draftsPath."/".$draftName);
 	}
 	
 	$_draftsPath;
@@ -169,15 +195,13 @@
 		return $_cubesPath;
 	}
 	
-	function getDraftState($state_file_name, $cubeName) {
+	function getDraftState($draftName) {
 	    $state = null;
+		$state_file_name = $draftName;
 	    // error_log("Getting draft state for: ".getDraftsPath()."/".$state_file_name);
 		if (file_exists(getDraftsPath()."/".$state_file_name)) {
 			//Draft already exists, retrieve from file
 			$state = retrieveDraftFile($state_file_name);
-		} else {
-		 	//Create new state
-			$state = initState($state_file_name, $cubeName);
 		}
 		return $state;
 	}

@@ -37,36 +37,29 @@
         	 $draftType = $_POST['draftType'];
         	 $fileName = $_POST['fileName'];
         	 $playerName = $_POST['playerName'];
-			 $state_file_name = $draftName.'.txt';
-			 $state = getDraftState($state_file_name, $cubeName);
+			 $state = getDraftState($draftName);
+			 if ($state == null) {
+			 	//Create new state
+				$state = initState($draftName, $cubeName);
+			 }
 			 $state['players'] = joinDraft($state['players'], $playerName);
 			 $playerNumber = getPlayerNumber($state['players'], $playerName);
 			 saveDraftFile($state);
-             $log['state'] = $state;//sends the state object back
+             $log['state'] = getPublicState($state, $playerNumber);//sends the state object back
 			 $log['playerNumber'] = $playerNumber;
-			 $log['changeTime'] = draftLastChange($state_file_name);
         	 break;
 		 
     	 case('update'):
-        	 $state = $_POST['state'];
-			 $changeTime = $_POST['changeTime'];
-			 $changeTimeServer = 0;
-        	 if(file_exists("drafts/".$state['fileName'])) {
-				$changeTimeServer = draftLastChange($state['fileName']);
-        	 }
-        	 if($changeTimeServer == $changeTime){//change time is the same
-        		 $log['state'] = $state;//state is the same as passed in
-				 $log['change'] = false;
-				 $log['changeTime'] = draftLastChange($state['fileName']);
-			 } else {//if the state has changed...
-				 $log['state'] = retrieveDraftFile($state['fileName']);//decode into an object
-				 $log['change'] = true;
-				 $log['changeTime'] = draftLastChange($state['fileName']);
-			 }
+        	 $draftName = $_POST['draftName'];
+        	 $playerNumber = $_POST['playerNumber'];
+			 $state = getDraftState($draftName);
+			 $log['state'] = getPublicState($state, $playerNumber);//decode into an object
              break;
     	 
     	 case('takePile'):
-			$state = $_POST['state'];
+        	$draftName = $_POST['draftName'];
+        	$playerNumber = $_POST['playerNumber'];
+			$state = getDraftState($draftName);
 			//pop card off of current deck for setting to the pile taken
 			$topCard = isset($state['piles'][0]) ? array_pop($state['piles'][0]) : null;
 			//determine current pile
@@ -102,20 +95,24 @@
 			
 			//encode the state as json and write to file
 			saveDraftFile($state);
-			$log['state'] = $state;
-			$log['changeTime'] = draftLastChange($state['fileName']);
+			$log['state'] = getPublicState($state, $playerNumber);
         	break;
         	
     	case('passPile'):
-			$state = $_POST['state'];
-			$state = passWinstonPile($state);
-			saveDraftFile($state);
-			$log['state'] = $state;
-			$log['changeTime'] = draftLastChange($state['fileName']);
+        	$draftName = $_POST['draftName'];
+        	$playerNumber = $_POST['playerNumber'];
+			$state = getDraftState($draftName);
+			if ($state['activePlayer'] == $playerNumber) {
+				$previousTs = draftLastChange($draftName);
+				$state = passWinstonPile($state);
+				saveDraftFile($state);
+			}
+			$log['state'] = getPublicState($state, $playerNumber);
 			break;
 			
 		case('saveDeck'):
-			$state = $_POST['state'];
+        	$draftName = $_POST['draftName'];
+			$state = getDraftState($draftName);
 			$playerNumber = $_POST['playerNumber'];
 			$deckFileName = $_POST['deckFileName'];
 			$deck = isset($state['decks'][$playerNumber]) ? $state['decks'][$playerNumber] : array();
@@ -136,7 +133,8 @@
 			break;
 			
 		case('moveToSideboard'):
-			$state = $_POST['state'];
+        	$draftName = $_POST['draftName'];
+			$state = getDraftState($draftName);
 			$cardName = $_POST['cardName'];
 			$playerNumber = $_POST['playerNumber'];
 			$deckList = $state['decks'][$playerNumber];
@@ -146,12 +144,12 @@
 			$state['decks'][$playerNumber] = $deckList;//set the list
 			$state['sideboard'][$playerNumber][] = $cardName;//add to sideboard
 			saveDraftFile($state);
-			$log['state'] = $state;
-			$log['changeTime'] = draftLastChange($state['fileName']);
+			$log['state'] = getPublicState($state, $playerNumber);
 			break;
 			
 		case('moveToDeck'):
-			$state = $_POST['state'];
+        	$draftName = $_POST['draftName'];
+			$state = getDraftState($draftName);
 			$cardName = $_POST['cardName'];
 			$playerNumber = $_POST['playerNumber'];
 			$sideboard = $state['sideboard'][$playerNumber];
@@ -161,8 +159,7 @@
 			$state['sideboard'][$playerNumber] = $sideboard;//set the sideboard without the card
 			$state['decks'][$playerNumber][] = $cardName;//add to decklist
 			saveDraftFile($state);
-			$log['state'] = $state;
-			$log['changeTime'] = draftLastChange($state['fileName']);
+			$log['state'] = getPublicState($state, $playerNumber);
 			break;
 			
 		case('deleteDrafts'):
