@@ -30,6 +30,7 @@
 					
 					<div class="row">
 						<img class="header" src="/images/header_bg_4.jpg"/>
+						<a href="/">Return to Lobby</a>
 					</div>
 					
 					<div id="topButtons"class="row">
