@@ -241,10 +241,20 @@ var mtg = (function() {
 		});
 	};
 
+	var cardCountString = function(size) {
+		if (size == 1) {
+			return size + " Card";
+		}
+		else {
+			return size + " Cards";
+		}
+	}
+
 	return {
 		appendCardNames: appendCardNames,
 		appendSortedCardNames: appendSortedCardNames,
 		appendCardImages: appendCardImages,
-		prettySymbolText: prettySymbolText
+		prettySymbolText: prettySymbolText,
+		cardCountString: cardCountString
 	};
 })();

@@ -8,21 +8,175 @@ var winston = (function() {
 	var draftComplete = false;//TODO: move draftComplete to the state object
     
     var takePile = function(cardName) {
-        //TODO: process
+		$("#passPile").attr("disabled", true);
+		$("#takePile").attr("disabled", true);
+		// if (!confirm('Take pile?')) return;
+		if (!instanse) {
+			instanse = true;
+			$.ajax({
+				type: "POST",
+				url: "draft_process.php",
+				data: {
+					'function': 'takePile',
+					'draftName': draftName,
+					'changeTime': changeTime,
+					'playerNumber': playerNumber
+				},
+				dataType: "json",
+				success: function(data) {
+					state = data.state;
+					changeTime = data.changeTime;
+					processDataChange(state);
+					instanse = false;
+				},
+			});
+		}
+		else {
+			setTimeout(takePile, 100);
+		}
     };
     
-    var takePile = function(cardName) {
-        //TODO: process removing a card from the pack
+    var passPile = function(cardName) {
+    	$("#passPile").attr("disabled", true);
+		$("#takePile").attr("disabled", true);
+		// if (!confirm('Pass pile?')) return;
+		if (!instanse) {
+			instanse = true;
+			$.ajax({
+				type: "POST",
+				url: "draft_process.php",
+				data: {
+					'function': 'passPile',
+					'draftName': draftName,
+					'changeTime': changeTime,
+					'playerNumber': playerNumber
+				},
+				dataType: "json",
+				success: function(data) {
+					state = data.state;
+					changeTime = data.changeTime;
+					processDataChange(state);
+					instanse = false;
+				},
+			});
+		}
+		else {
+			setTimeout(passPile, 100);
+		}
     };
     
     var processDataChange = function() {
     	//TODO configure page based on new state
+		if (state.piles) {
+			updateAllPiles();
+			updateActivePlayer(state.activePlayer);
+		}
+		else {
+			draftComplete = true;
+			$("#draftComplete").show();
+			$("#topButtons").hide();
+			$("#buttonRow").hide();
+			$("#currentPileRow").hide();
+		}
     };
     
     var isStateUpdated = function(_state) {
     	//TODO compare current state to passed in state
     };
+    
+	var currentClass = "currentCardPile";
+	
+	var updateCardPileIndicator = function() {
+		$(".cardPile").removeClass(currentClass);
+		if (state.currentPile == 1) {
+			$("#cardPileOne").addClass(currentClass);
+		}
+		else if (state.currentPile == 2) {
+			$("#cardPileTwo").addClass(currentClass);
+		}
+		else {
+			$("#cardPileThree").addClass(currentClass);
+		}
+	};
+	
+	var updateActivePlayer = function(activePlayer) {
+		if (!draftComplete && isActivePlayer() && state.players.length > 1) {
+			//enable buttons
+			$('#takePile').removeAttr('disabled');
+			$('#passPile').removeAttr('disabled');
+			updateButtons(state);
+		}
+		else {
+			//disable buttons
+			$('#takePile').attr('disabled', 'disabled');
+			$('#passPile').attr('disabled', 'disabled');
+		}
+	};
 
+	var updateButtons = function(state) {
+		//disable passing the pile if the next piles are empty
+		if ((state.currentPile == 1 && (!state.piles[2] || state.piles[2] === 0) && (!state.piles[3] || state.piles[3] === 0)) ||
+			(state.currentPile == 2 && (!state.piles[3] || state.piles[3] === 0)) ||
+			(state.currentPile == 3 && (!state.piles[0] || state.piles[0] === 0))) {
+			$('#passPile').attr('disabled', 'disabled'); //disable passing the pile
+		}
+		//disable taking active pile if its undefined
+		if (!state.activePile) {
+			$('#takePile').attr('disabled', 'disabled'); //disable passing the pile
+		}
+	};
+	
+	var updateAllPiles = function() {
+		if (!state.piles) { return; }
+		var mainPileSize = state.piles[0] ? state.piles[0] : 0;
+		var pileOneSize = state.piles[1] ? state.piles[1] : 0;
+		var pileTwoSize = state.piles[2] ? state.piles[2] : 0;
+		var pileThreeSize = state.piles[3] ? state.piles[3] : 0;
+		var totalCardsLeft = mainPileSize + pileOneSize + pileTwoSize + pileThreeSize;
+		if (totalCardsLeft > 0) {
+			updatePile('#mainPile', mainPileSize);
+			updatePile('#pileOne', pileOneSize);
+			updatePile('#pileTwo', pileTwoSize);
+			updatePile('#pileThree', pileThreeSize);
+		}
+		else {
+			draftComplete = true;
+			$("#draftComplete").show();
+			$("#topButtons").hide();
+			$("#buttonRow").hide();
+			$("#currentPileRow").hide();
+		}
+	};
+
+	var updatePile = function(id, size) {
+		//Add card images
+		$(id).html($("")); //empty div
+		for (var i = 0; i !== size; ++i) {
+			if (i > 30) {
+				break;
+			}
+			$(id).append($("<img class=\"magicCard\" src=\"/images/Magic_the_gathering-card_back.jpg\">"));
+		}
+		//Reset Number
+		$(id + 'Number').html($("")); //empty span
+		$(id).append(cardCountString(size));
+	};
+	
+	var currentPileAsString = function(pileNumber) {
+		if (pileNumber == 1) {
+			return "One";
+		}
+		else if (pileNumber == 2) {
+			return "Two";
+		}
+		else if (pileNumber == 3) {
+			return "Three";
+		}
+		else {
+			return "Error";
+		}
+	};
+	
 	return {
 	    
 	};
@@ -224,305 +378,4 @@ function moveToDeck(cardName, element) {
 			moveToDeck(cardName);
 		}, 100);
 	}
-}
-
-function processDataChange(state) {
-	if (state.piles) {
-		updateAllPiles();
-		updateCurrentPile();
-		updateActivePlayer(state.activePlayer);
-	}
-	else {
-		draftComplete = true;
-		$("#draftComplete").show();
-		$("#topButtons").hide();
-		$("#buttonRow").hide();
-		$("#currentPileRow").hide();
-	}
-	updateDeckList(state.decks[playerNumber], state.sideboard[playerNumber]); //update this player's decklist and sideboard
-	updateStatusMessage();
-}
-
-function updateStatusMessage() {
-	$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer-1]);
-	$("#statusCurrentPileNumber").html("Current Pile: " + state.currentPile);
-}
-
-function updateActivePlayer(activePlayer) {
-	if (!draftComplete && isActivePlayer() && state.players.length > 1) {
-		//enable buttons
-		$('#takePile').removeAttr('disabled');
-		$('#passPile').removeAttr('disabled');
-		updateButtons(state);
-	}
-	else {
-		//disable buttons
-		$('#takePile').attr('disabled', 'disabled');
-		$('#passPile').attr('disabled', 'disabled');
-	}
-}
-
-function updateButtons(state) {
-	//disable passing the pile if the next piles are empty
-	if ((state.currentPile == 1 && (!state.piles[2] || state.piles[2] === 0) && (!state.piles[3] || state.piles[3] === 0)) ||
-		(state.currentPile == 2 && (!state.piles[3] || state.piles[3] === 0)) ||
-		(state.currentPile == 3 && (!state.piles[0] || state.piles[0] === 0))) {
-		$('#passPile').attr('disabled', 'disabled'); //disable passing the pile
-	}
-	//disable taking active pile if its undefined
-	if (!state.activePile) {
-		$('#takePile').attr('disabled', 'disabled'); //disable passing the pile
-	}
-}
-
-function isActivePlayer() {
-	return (state.activePlayer == playerNumber);
-}
-
-function updateAllPiles() {
-	if (!state.piles) { return; }
-	var mainPileSize = state.piles[0] ? state.piles[0] : 0;
-	var pileOneSize = state.piles[1] ? state.piles[1] : 0;
-	var pileTwoSize = state.piles[2] ? state.piles[2] : 0;
-	var pileThreeSize = state.piles[3] ? state.piles[3] : 0;
-	var totalCardsLeft = mainPileSize + pileOneSize + pileTwoSize + pileThreeSize;
-	if (totalCardsLeft > 0) {
-		updatePile('#mainPile', mainPileSize);
-		updatePile('#pileOne', pileOneSize);
-		updatePile('#pileTwo', pileTwoSize);
-		updatePile('#pileThree', pileThreeSize);
-	}
-	else {
-		draftComplete = true;
-		$("#draftComplete").show();
-		$("#topButtons").hide();
-		$("#buttonRow").hide();
-		$("#currentPileRow").hide();
-	}
-}
-
-function updatePile(id, size) {
-	$(id).html($("")); //empty div
-	for (var i = 0; i !== size; ++i) {
-		if (i > 30) {
-			break;
-		}
-		$(id).append($("<img class=\"magicCard\" src=\"/images/Magic_the_gathering-card_back.jpg\">"));
-	}
-	updatePileCount((id + 'Number'), size);
-}
-
-function updatePileCount(id, size) {
-	$(id).html($("")); //empty span
-	$(id).append(cardCountString(size));
-}
-
-function cardCountString(size) {
-	if (size == 1) {
-		return size + " Card";
-	}
-	else {
-		return size + " Cards";
-	}
-}
-
-var currentClass = "currentCardPile";
-
-/**
- * Populates the CurrentPile section of the page with the cards in the current pile.
- */
-function updateCurrentPile() {
-	$('#currentPile').html(""); //empty div
-	if (!draftComplete && isActivePlayer() && state.activePile) {
-		mtg.appendCardImages('#currentPile', state.activePile);
-		$('#currentPileNumber').html(currentPileAsString(state.currentPile) + " - " + cardCountString(state.activePile.length));
-	}
-	else {
-		$('#currentPileNumber').html("");
-	}
-	$(".cardPile").removeClass(currentClass);
-	if (state.currentPile == 1) {
-		$("#cardPileOne").addClass(currentClass);
-	} else if (state.currentPile == 2) {
-		$("#cardPileTwo").addClass(currentClass);
-	} else {
-		$("#cardPileThree").addClass(currentClass);
-	}
-}
-
-function currentPileAsString(pileNumber) {
-	if (pileNumber == 1) {
-		return "One";
-	}
-	else if (pileNumber == 2) {
-		return "Two";
-	}
-	else if (pileNumber == 3) {
-		return "Three";
-	}
-	else {
-		return "Error";
-	}
-}
-
-function takePile() {
-	$("#passPile").attr("disabled", true);
-	$("#takePile").attr("disabled", true);
-	// if (!confirm('Take pile?')) return;
-	if (!instanse) {
-		instanse = true;
-		$.ajax({
-			type: "POST",
-			url: "draft_process.php",
-			data: {
-				'function': 'takePile',
-				'draftName': draftName,
-				'changeTime': changeTime,
-				'playerNumber': playerNumber
-			},
-			dataType: "json",
-			success: function(data) {
-				state = data.state;
-				changeTime = data.changeTime;
-				processDataChange(state);
-				instanse = false;
-			},
-		});
-	}
-	else {
-		setTimeout(takePile, 100);
-	}
-}
-
-function updateAll() {
-	updateAllPiles();
-	updateCurrentPile();
-	updateDeckList(state.decks[playerNumber], state.sideboard[playerNumber]); //update this player's decklist
-}
-
-function passPile() {
-	$("#passPile").attr("disabled", true);
-	$("#takePile").attr("disabled", true);
-	// if (!confirm('Pass pile?')) return;
-	if (!instanse) {
-		instanse = true;
-		$.ajax({
-			type: "POST",
-			url: "draft_process.php",
-			data: {
-				'function': 'passPile',
-				'draftName': draftName,
-				'changeTime': changeTime,
-				'playerNumber': playerNumber
-			},
-			dataType: "json",
-			success: function(data) {
-				state = data.state;
-				changeTime = data.changeTime;
-				processDataChange(state);
-				instanse = false;
-			},
-		});
-	}
-	else {
-		setTimeout(passPile, 100);
-	}
-}
-
-function updateDeckList(deckList, sideboardList) {
-	$('#deckList').html($("")); //empty div
-	if (isDeckSorted) {
-		mtg.appendSortedCardNames('#deckList', deckList);
-	} else {
-		var cardList = "";
-		$.each(deckList, function(index, card) {
-			cardList += "<div>" + card + "</div>";
-		});
-		$('#deckList').append(cardList);
-	}
-	$('#sideboardList').html($("")); //empty div
-	if (isSideboardSorted) {
-		mtg.appendSortedCardNames('#sideboardList', sideboardList);
-	} else {
-		var cardList = "";
-		$.each(sideboardList, function(index, card) {
-			cardList += "<div>" + card + "</div>";
-		});
-		$('#sideboardList').append(cardList);
-	}
-	$('#deckListNumber').html(cardCountString(deckList ? deckList.length : 0));
-	$('#sideboardListNumber').html(cardCountString(sideboardList ? sideboardList.length : 0));
-}
-
-function sortDeckList() {
-	isDeckSorted = true;
-	$("#showDeckSorted").hide();
-	$("#showDeckUnsorted").show();
-	updateDeckList(state.decks[playerNumber], 
-		state.sideboard[playerNumber]);
-}
-
-function unsortDeckList() {
-	isDeckSorted = false;
-	$("#showDeckSorted").show();
-	$("#showDeckUnsorted").hide();
-	updateDeckList(state.decks[playerNumber], 
-		state.sideboard[playerNumber]);
-}
-
-function sortSideboard() {
-	isSideboardSorted = true;
-	$("#showSideboardSorted").hide();
-	$("#showSideboardUnsorted").show();
-	updateDeckList(state.decks[playerNumber], 
-		state.sideboard[playerNumber]);
-}
-
-function unsortSideboard() {
-	isSideboardSorted = false;
-	$("#showSideboardSorted").show();
-	$("#showSideboardUnsorted").hide();
-	updateDeckList(state.decks[playerNumber], 
-		state.sideboard[playerNumber]);
-}
-
-function saveDeckToFile(deck) {
-	deck = deck ? deck : state.decks[playerNumber];
-	var dt = new Date();
-	var date = dt.getFullYear() + "" + (dt.getMonth() + 1) + "" + dt.getDate();
-	var fileName = "/decks/" + date + "_" + draftName + "_" + playerName + ".txt";
-	if (!instanse) {
-		instanse = true;
-		$.ajax({
-			type: "POST",
-			url: "draft_process.php",
-			data: {
-				'function': 'saveDeck',
-				'draftName': draftName,
-				'deckFileName': fileName,
-				'playerNumber': playerNumber
-			},
-			dataType: "json",
-			success: function(data) {
-				var a = document.createElement('A');
-				a.href = fileName; //full path
-				a.download = fileName.substr(fileName.lastIndexOf('/') + 1); //file name
-				document.body.appendChild(a);
-				a.click();
-				document.body.removeChild(a);
-				instanse = false;
-			}
-		});
-	}
-	else {
-		setTimeout(saveDeckToFile, 100);
-	}
-}
-
-
-function Draft() {
-	"use strict";
-	this.update = updateDraft;
-	this.send = sendDraft;
-	this.getState = getStateOfDraft;
 }
