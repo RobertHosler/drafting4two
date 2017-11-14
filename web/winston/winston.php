@@ -7,17 +7,9 @@
 		<link rel="stylesheet" text="text/css" href="/css/mystyles.css" />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/mtg.js"></script>
-		<script type="text/javascript" src="/js/draft.js"></script>
+		<script type="text/javascript" src="/js/winston.js"></script>
 		
 	</head>
-	
-	<!-- 
-		place for deck at the bottom where you can resort by adjusting a text box? 
-		or two places one for sideboard one for deck so you can build deck as you go and there are
-		buttons for adjusting it. basically rebuild cubetutor's deckbuilder.
-		
-		setInterval('Draft.update()', 1000)
-	-->
 	
 	<body onload="startDraft();">
 		<div class="container">

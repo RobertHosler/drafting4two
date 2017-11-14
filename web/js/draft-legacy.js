@@ -1,107 +1,5 @@
 /* global $*/
 /* global mtg*/
-/* global winston*/
-/* global pancake*/
-
-
-var draftName;
-var cubeName;
-var playerName;
-
-/**
- * Initialize all the variables from the request parameters
- */
-$(function() {
-	var draftName = $.urlParam('draftName');
-	var draftType = $.urlParam('draftType');
-	var cubeName = $.urlParam('cubeName');
-	var playerName = $.urlParam('playerName');
-	while (!playerName) {
-		playerName = prompt("Please enter your name", "");
-	}
-	switch (draftType) {
-		case 'winston':
-			draft.startDraft(winston);
-			break;
-		case 'pancake':
-			draft.startDraft(pancake);
-			break;
-		default:
-			draft.startDraft(winston);
-	}
-	// draft.startDraft(pancake);
-});
-
-var draft = (function() {
-
-	var playerNumber;
-	var playerName;
-	var dfm;
-	var instanse = false;
-	var updating = false;//set to true once the draft begins updating
-	var isDeckSorted = true;
-	var isSideboardSorted = true;
-
-	var startDraft = function(draftFormatModule) {
-		dfm = draftFormatModule;
-		draftFormatModule.format;
-		draftFormatModule.state;
-	};
-	
-	var restartDraft = function() {
-		
-	};
-	
-	/**
-	 * Checks to see if the state was updated, and if it was, overwrites 
-	 * the state with what is on the server.
-	 */
-	var updateDraft = function() {
-		if (!instanse) {
-			instanse = true;
-			$.ajax({
-				type: "POST",
-				url: "draft_process.php",
-				data: {
-					'function': 'update',
-					'draftName': draftName,
-					'playerNumber': playerNumber
-				},
-				dataType: "json",
-				success: function(data) {
-					dfm.processData
-					if (dfm.isStateUpdated(data.state)) {
-						dfm.state = data.state;
-						if (dfm.state.players[playerNumber - 1] != playerName) {
-							//draft was restarted, need to rejoin
-							startDraft(dfm);
-						}
-						else {
-							dfm.processDataChange();
-						}
-					}
-					instanse = false;
-				},
-			});
-		}
-	};
-	
-	var updateCurrentPile = function() {
-		
-	};
-	
-	var updateDeck = function() {
-		
-	};
-	
-	var updateSideboad = function() {
-		
-	};
-
-	return {
-
-	};
-})();
 
 /**
  * Get parameter froms the window location
@@ -118,10 +16,24 @@ $.urlParam = function(name) {
 
 var state;
 
+var instanse = false; //used to lock functions which access the php files.
+var playerNumber = 1; // set to 1 or 2 // need to figure out how this will be set...
+var draftName = $.urlParam('draftName');
+var cubeName = $.urlParam('cubeName');
+var playerName = $.urlParam('playerName');
+var changeTime;
+var draftComplete = false;
+var isDeckSorted = true;
+var isSideboardSorted = true;
+var updating = false;
+
 /**
  * Run on load of the page to initialize the draft process.
  */
 function startDraft() {
+	while (!playerName) {
+		playerName = prompt("Please enter your name", "");
+	}
 	if (!cubeName) {
 		cubeName = "default_cube";
 	}
@@ -191,6 +103,41 @@ function restartDraft() {
 		setTimeout(function() {
 			restartDraft();
 		}, 100);
+	}
+}
+
+/**
+ * Checks to see if the state was updated, and if it was, overwrites 
+ * the state with what is on the server.
+ */
+function updateDraft() {
+	if (!instanse) {
+		instanse = true;
+		$.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+				'function': 'update',
+				'draftName': draftName,
+				'playerNumber': playerNumber
+			},
+			dataType: "json",
+			success: function(data) {
+				if (state.currentPile != data.state.currentPile
+					|| state.piles[0] != data.state.piles[0]
+					|| state.players.length != data.state.players.length) {
+					state = data.state;
+					if (state.players[playerNumber-1] != playerName) {
+						//draft restarted
+						startDraft();
+					} else {
+						changeTime = data.changeTime;
+						processDataChange(state);
+					}
+				}
+				instanse = false;
+			},
+		});
 	}
 }
 
@@ -270,7 +217,7 @@ function processDataChange(state) {
 }
 
 function updateStatusMessage() {
-	$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer - 1]);
+	$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer-1]);
 	$("#statusCurrentPileNumber").html("Current Pile: " + state.currentPile);
 }
 
@@ -369,12 +316,54 @@ function updateCurrentPile() {
 	$(".cardPile").removeClass(currentClass);
 	if (state.currentPile == 1) {
 		$("#cardPileOne").addClass(currentClass);
-	}
-	else if (state.currentPile == 2) {
+	} else if (state.currentPile == 2) {
 		$("#cardPileTwo").addClass(currentClass);
+	} else {
+		$("#cardPileThree").addClass(currentClass);
+	}
+}
+
+function currentPileAsString(pileNumber) {
+	if (pileNumber == 1) {
+		return "One";
+	}
+	else if (pileNumber == 2) {
+		return "Two";
+	}
+	else if (pileNumber == 3) {
+		return "Three";
 	}
 	else {
-		$("#cardPileThree").addClass(currentClass);
+		return "Error";
+	}
+}
+
+function takePile() {
+	$("#passPile").attr("disabled", true);
+	$("#takePile").attr("disabled", true);
+	// if (!confirm('Take pile?')) return;
+	if (!instanse) {
+		instanse = true;
+		$.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+				'function': 'takePile',
+				'draftName': draftName,
+				'changeTime': changeTime,
+				'playerNumber': playerNumber
+			},
+			dataType: "json",
+			success: function(data) {
+				state = data.state;
+				changeTime = data.changeTime;
+				processDataChange(state);
+				instanse = false;
+			},
+		});
+	}
+	else {
+		setTimeout(takePile, 100);
 	}
 }
 
@@ -384,25 +373,50 @@ function updateAll() {
 	updateDeckList(state.decks[playerNumber], state.sideboard[playerNumber]); //update this player's decklist
 }
 
-function updateDeck(deck, sideboard) {
-	$('#deckList').html($("")); //empty div
-	if (isDeckSorted) {
-		mtg.appendSortedCardNames('#deckList', deck);
+function passPile() {
+	$("#passPile").attr("disabled", true);
+	$("#takePile").attr("disabled", true);
+	// if (!confirm('Pass pile?')) return;
+	if (!instanse) {
+		instanse = true;
+		$.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+				'function': 'passPile',
+				'draftName': draftName,
+				'changeTime': changeTime,
+				'playerNumber': playerNumber
+			},
+			dataType: "json",
+			success: function(data) {
+				state = data.state;
+				changeTime = data.changeTime;
+				processDataChange(state);
+				instanse = false;
+			},
+		});
 	}
 	else {
+		setTimeout(passPile, 100);
+	}
+}
+
+function updateDeckList(deckList, sideboardList) {
+	$('#deckList').html($("")); //empty div
+	if (isDeckSorted) {
+		mtg.appendSortedCardNames('#deckList', deckList);
+	} else {
 		var cardList = "";
-		$.each(deck, function(index, card) {
+		$.each(deckList, function(index, card) {
 			cardList += "<div>" + card + "</div>";
 		});
 		$('#deckList').append(cardList);
 	}
-}
-function updateSideboard(sideboard) {
 	$('#sideboardList').html($("")); //empty div
 	if (isSideboardSorted) {
 		mtg.appendSortedCardNames('#sideboardList', sideboardList);
-	}
-	else {
+	} else {
 		var cardList = "";
 		$.each(sideboardList, function(index, card) {
 			cardList += "<div>" + card + "</div>";
@@ -417,7 +431,7 @@ function sortDeckList() {
 	isDeckSorted = true;
 	$("#showDeckSorted").hide();
 	$("#showDeckUnsorted").show();
-	updateDeckList(state.decks[playerNumber],
+	updateDeckList(state.decks[playerNumber], 
 		state.sideboard[playerNumber]);
 }
 
@@ -425,7 +439,7 @@ function unsortDeckList() {
 	isDeckSorted = false;
 	$("#showDeckSorted").show();
 	$("#showDeckUnsorted").hide();
-	updateDeckList(state.decks[playerNumber],
+	updateDeckList(state.decks[playerNumber], 
 		state.sideboard[playerNumber]);
 }
 
@@ -433,7 +447,7 @@ function sortSideboard() {
 	isSideboardSorted = true;
 	$("#showSideboardSorted").hide();
 	$("#showSideboardUnsorted").show();
-	updateDeckList(state.decks[playerNumber],
+	updateDeckList(state.decks[playerNumber], 
 		state.sideboard[playerNumber]);
 }
 
@@ -441,7 +455,7 @@ function unsortSideboard() {
 	isSideboardSorted = false;
 	$("#showSideboardSorted").show();
 	$("#showSideboardUnsorted").hide();
-	updateDeckList(state.decks[playerNumber],
+	updateDeckList(state.decks[playerNumber], 
 		state.sideboard[playerNumber]);
 }
 
@@ -476,4 +490,12 @@ function saveDeckToFile(deck) {
 	else {
 		setTimeout(saveDeckToFile, 100);
 	}
+}
+
+
+function Draft() {
+	"use strict";
+	this.update = updateDraft;
+	this.send = sendDraft;
+	this.getState = getStateOfDraft;
 }
