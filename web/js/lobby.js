@@ -110,18 +110,24 @@ function clearCreateForm() {
 }
 
 function deleteAllDrafts() {
+	var password = prompt("Password", "");
 	if (!instanse) {
 		instanse = true;
 		$.ajax({
 			type: "POST",
 			url: "draft_process.php",
 			data: {
-				'function': 'deleteDrafts'
+				'function': 'deleteDrafts',
+				'password': password
 			},
 			dataType: "json",
 			success: function(data) {
 				instanse = false;
-				listDrafts();
+				if (data.passwordValid) {
+					listDrafts();
+				} else {
+					alert("Password invalid");
+				}
 			}
 		});
 	}

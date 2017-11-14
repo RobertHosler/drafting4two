@@ -203,13 +203,16 @@ switch ($function) {
         break;
     
     case ('deleteDrafts'):
-        //TODO: delete all drafts from the winston/drafts folder - ability to change which drafts are being deleted?  Move drafts folder to web so its web/drafts/winston/
-        //TODO: create unique id for draft file rather than using the name of the draft.  makes clearing the draft folder less necessary
-        $files = glob(getDraftsPath() . "/*"); // get all file names
-        foreach($files as $file){ // iterate files
-          if(is_file($file))
-            unlink($file); // delete file
-        }
+        $password = $_POST['password'];
+        $response['passwordValid'] = false;
+        if ($password == "sleepygirl") {
+            $files = glob(getDraftsPath() . "/*"); // get all file names
+            foreach($files as $file){ // iterate files
+              if(is_file($file))
+                unlink($file); // delete file
+            }
+            $response['passwordValid'] = true;
+        } 
         break;
         
 }
