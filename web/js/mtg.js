@@ -87,15 +87,18 @@ var mtg = (function() {
 				//TODO: remove brackets from manacost
 				s += "<span class=\"manaCost\">" + prettySymbolText(card.manaCost) + "</span>";
 			}
-			s += "</div><div class=\"cardType row\">" + card.type + "</div>" + "<div class=\"cardText\">" + prettySymbolText(card.text) + "</div>";
-			s += "<div class=\"powerToughness row\">";
+			s += "</div><div class=\"cardType row\">" + card.type + "</div>" + "<div class=\"cardText row\">" + prettySymbolText(card.text) + "</div>";
+			if (card.power || card.loyalty) {
+			s += "<div class=\"row\" style=\"text-align: right;\"><span class=\"powerToughness\">";
 			if (card.power) {
 				s += card.power + "/" + card.toughness;
+				}
+				else if (card.loyalty) {
+					s += card.loyalty;
+				}
+				s += "</span></div>";
 			}
-			else if (card.loyalty) {
-				s += card.loyalty;
-			}
-			s += "</div></div></div>";
+			s += "</div></div>";
 			$(viewId).append(s);
 		});
 	};

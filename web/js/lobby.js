@@ -58,15 +58,14 @@ function listDrafts() {
 					}
 					lobbyEmpty = false;
 					var fileName = state.fileName;
-					var draftName = fileName.substr(0, fileName.lastIndexOf('.'));
-					var joinLink = "winston.php?draftName="+draftName;
+					var joinLink = "winston.php?draftName="+fileName;
 					if (first) {
 						first = false;
 					} else {
 						draftList += "<hr/>";
 					}
 					draftList += "<div class=\"row\"><div class=\"columns four\">";
-					draftList += "Draft: " + draftName + "</div><div class=\"columns four\">";
+					draftList += "Draft: " + fileName + "</div><div class=\"columns four\">";
 					draftList += "Players: "  + state.players.length + "</div><div class=\"columns four\">";
 					draftList += "<a href=\""+joinLink+"\">Join</a></div></div>";
 				});
@@ -107,5 +106,23 @@ function clearCreateForm() {
 		frm.submit();
 		frm.reset();
 		return false;
+	}
+}
+
+function deleteAllDrafts() {
+	if (!instanse) {
+		instanse = true;
+		$.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+				'function': 'deleteDrafts'
+			},
+			dataType: "json",
+			success: function(data) {
+				instanse = false;
+				listDrafts();
+			}
+		});
 	}
 }

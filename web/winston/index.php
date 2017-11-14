@@ -65,8 +65,13 @@
 					<button class="draftButton six columns" onclick="showOpenDrafts();">Show Open Drafts</button>
 					<button class="draftButton six columns" onclick="showAllDrafts();">Show All Drafts</button>
 				</div>
-				<div id="draftList" class="draftList">
-				
+				<div class="row">
+					<div id="draftList" class="draftList twelve columns">
+					
+					</div>
+				</div>
+				<div class="row">
+					<button class="draftButton twelve columns" onclick="deleteAllDrafts();">Delete All Drafts</button>
 				</div>
 			</div>
 		</div>
