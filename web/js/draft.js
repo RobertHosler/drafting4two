@@ -37,7 +37,7 @@ var draft = (function() {
 	var playerNumber;
 	var dfm;
 	var instanse = false;
-	var updating = false;//set to true once the draft begins updating
+	var updating = false; //set to true once the draft begins updating
 	var isDeckSorted = true;
 	var isSideboardSorted = true;
 
@@ -85,16 +85,43 @@ var draft = (function() {
 			setInterval(updateDraft, 1000);
 		}
 	};
-	
+
 	var updateStatusMessage = function() {
-		$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer-1]);
+		$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer - 1]);
 		$("#statusCurrentPileNumber").html("Current Pile: " + state.currentPile);
 	};
-	
+
 	var restartDraft = function() {
-		
+		if (!instanse) {
+			instanse = true;
+			$.ajax({
+				type: "POST",
+				url: "draft_process.php",
+				data: {
+					'function': 'restartDraft',
+					'draftName': draftName,
+					'cubeName': state.cubeName,
+					'playerName': playerName
+				},
+				dataType: "json",
+				success: function(data) {
+					state = data.state;
+					playerNumber = data.playerNumber;
+					changeTime = data.changeTime;
+					processDataChange(state);
+					$("#statusDraftName").html("Draft: " + draftName);
+					$("#statusPlayerNumber").html("Player Number: " + playerNumber);
+					instanse = false;
+				}
+			});
+		}
+		else {
+			setTimeout(function() {
+				restartDraft();
+			}, 100);
+		}
 	};
-	
+
 	/**
 	 * Checks to see if the state was updated, and if it was, overwrites 
 	 * the state with what is on the server.
@@ -129,14 +156,14 @@ var draft = (function() {
 			});
 		}
 	};
-	
-    var processDataChange = function() {
+
+	var processDataChange = function() {
 		updateCurrentPile();
 		updateDeck(state.decks[playerNumber]); //update this player's decklist and sideboard
 		updateSideboad(state.sideboard[playerNumber]);
 		updateStatusMessage();
-    };
-	
+	};
+
 	var updateCurrentPile = function() {
 		$('#currentPile').html(""); //empty div
 		if (!dfm.draftComplete && isActivePlayer() && state.activePile) {
@@ -147,11 +174,11 @@ var draft = (function() {
 			$('#currentPileNumber').html("");
 		}
 	};
-	
+
 	var isActivePlayer = function() {
 		return (state.activePlayer == playerNumber);
 	};
-	
+
 	var updateDeck = function(deck) {
 		$('#deckList').html($("")); //empty div
 		if (isDeckSorted) {
@@ -166,7 +193,7 @@ var draft = (function() {
 		}
 		$('#deckListNumber').html(cardCountString(deck ? deck.length : 0));
 	};
-	
+
 	var updateSideboad = function(sideboard) {
 		$('#sideboardList').html($("")); //empty div
 		if (isSideboardSorted) {
@@ -181,15 +208,65 @@ var draft = (function() {
 		}
 		$('#sideboardListNumber').html(cardCountString(sideboard ? sideboard.length : 0));
 	};
-	
-	var moveToDeck = function(cardName) {
-		
+
+	var moveToDeck = function(cardName, element) {
+		$(element).hide();
+		if (!instanse) {
+			instanse = true;
+			$.ajax({
+				type: "POST",
+				url: "draft_process.php",
+				data: {
+					'function': 'moveToDeck',
+					'draftName': draftName,
+					'cardName': cardName,
+					'playerNumber': playerNumber
+				},
+				dataType: "json",
+				success: function(data) {
+					state = data.state;
+					changeTime = data.changeTime;
+					processDataChange(data.state);
+					instanse = false;
+				},
+			});
+		}
+		else {
+			setTimeout(function() {
+				moveToDeck(cardName);
+			}, 100);
+		}
 	};
-	
-	var moveToSideboard = function(cardName) {
-		
+
+	var moveToSideboard = function(cardName, element) {
+		$(element).hide();
+		if (!instanse) {
+			instanse = true;
+			$.ajax({
+				type: "POST",
+				url: "draft_process.php",
+				data: {
+					'function': 'moveToSideboard',
+					'draftName': draftName,
+					'cardName': cardName,
+					'playerNumber': playerNumber
+				},
+				dataType: "json",
+				success: function(data) {
+					state = data.state;
+					changeTime = data.changeTime;
+					processDataChange(data.state);
+					instanse = false;
+				},
+			});
+		}
+		else {
+			setTimeout(function() {
+				moveToSideboard(cardName);
+			}, 100);
+		}
 	};
-	
+
 	var saveDeckToFile = function() {
 		var deck = dfm.state.decks[playerNumber];
 		var dt = new Date();
@@ -221,30 +298,30 @@ var draft = (function() {
 		else {
 			setTimeout(saveDeckToFile, 100);
 		}
-		
+
 	};
-	
+
 	var sortDeck = function() {
 		isDeckSorted = true;
 		$("#showDeckSorted").hide();
 		$("#showDeckUnsorted").show();
 		updateDeck(dfm.state.decks[playerNumber]);
 	};
-	
+
 	var unsortDeck = function() {
 		isDeckSorted = false;
 		$("#showDeckSorted").show();
 		$("#showDeckUnsorted").hide();
 		updateDeck(dfm.state.decks[playerNumber]);
 	};
-	
+
 	var sortSideboard = function() {
 		isSideboardSorted = true;
 		$("#showSideboardSorted").hide();
 		$("#showSideboardUnsorted").show();
 		updateSideboad(state.sideboard[playerNumber]);
 	};
-	
+
 	var unsortSideboard = function() {
 		isSideboardSorted = false;
 		$("#showSideboardSorted").show();
@@ -269,94 +346,3 @@ $.urlParam = function(name) {
 		return results[1] || 0;
 	}
 };
-
-var state;
-
-function restartDraft() {
-	if (!instanse) {
-		instanse = true;
-		$.ajax({
-			type: "POST",
-			url: "draft_process.php",
-			data: {
-				'function': 'restartDraft',
-				'draftName': draftName,
-				'cubeName': state.cubeName,
-				'playerName': playerName
-			},
-			dataType: "json",
-			success: function(data) {
-				state = data.state;
-				playerNumber = data.playerNumber;
-				changeTime = data.changeTime;
-				processDataChange(state);
-				$("#statusDraftName").html("Draft: " + draftName);
-				$("#statusPlayerNumber").html("Player Number: " + playerNumber);
-				instanse = false;
-			}
-		});
-	}
-	else {
-		setTimeout(function() {
-			restartDraft();
-		}, 100);
-	}
-}
-
-function moveToSideboard(cardName, element) {
-	$(element).hide();
-	if (!instanse) {
-		instanse = true;
-		$.ajax({
-			type: "POST",
-			url: "draft_process.php",
-			data: {
-				'function': 'moveToSideboard',
-				'draftName': draftName,
-				'cardName': cardName,
-				'playerNumber': playerNumber
-			},
-			dataType: "json",
-			success: function(data) {
-				state = data.state;
-				changeTime = data.changeTime;
-				processDataChange(data.state);
-				instanse = false;
-			},
-		});
-	}
-	else {
-		setTimeout(function() {
-			moveToSideboard(cardName);
-		}, 100);
-	}
-}
-
-function moveToDeck(cardName, element) {
-	$(element).hide();
-	if (!instanse) {
-		instanse = true;
-		$.ajax({
-			type: "POST",
-			url: "draft_process.php",
-			data: {
-				'function': 'moveToDeck',
-				'draftName': draftName,
-				'cardName': cardName,
-				'playerNumber': playerNumber
-			},
-			dataType: "json",
-			success: function(data) {
-				state = data.state;
-				changeTime = data.changeTime;
-				processDataChange(data.state);
-				instanse = false;
-			},
-		});
-	}
-	else {
-		setTimeout(function() {
-			moveToDeck(cardName);
-		}, 100);
-	}
-}
