@@ -1,6 +1,5 @@
 <?php
 include 'draft_state.php';
-include 'draft_winston.php';
 
 //this file is called by the draft.js file
 $function = $_POST['function'];
@@ -80,66 +79,6 @@ switch ($function) {
         $playerNumber = $_POST['playerNumber'];
         $state = getDraftState($draftName);
         $response['state'] = getPublicState($state, $playerNumber); //decode into an object
-        break;
-    
-    case ('takePile'):
-        $draftName = $_POST['draftName'];
-        $playerNumber = $_POST['playerNumber'];
-        $state = getDraftState($draftName);
-        //pop card off of current deck for setting to the pile taken
-        $topCard = isset($state['piles'][0]) ? array_pop($state['piles'][0]) : null;
-        //determine current pile
-        $pileNum = $state['currentPile'];
-        $player = $state['activePlayer'];
-        $pile = $state['piles'][$pileNum];
-        $deck = isset($state['decks'][$player]) ? $state['decks'][$player] : array();
-        $newPile;
-        if ($topCard != null) {
-            $newPile = array(
-                $topCard
-            );
-            //reset pile
-            $state['piles'][$pileNum] = $newPile;
-        } else {
-            //if no top card, pile should be set to an empty array
-            //$newPile = array();
-            unset($state['piles'][$pileNum]);
-        }
-        
-        //add pile to decklist
-        $state['decks'][$player] = addPileToDeckList($pile, $deck);
-        
-        //set current pile
-        if (isset($state['piles'][1])) {
-            $state['currentPile'] = 1;
-        } else if (isset($state['piles'][2])) {
-            $state['currentPile'] = 2;
-        } else {
-            $state['currentPile'] = 3;
-        }
-        
-        //change the active player
-        $state['activePlayer'] = ($state['activePlayer'] == 1) ? 2 : 1;
-        
-        //encode the state as json and write to file
-        saveDraftFile($state);
-        $publicState = getPublicState($state, $playerNumber);
-        $publicState['recentlyDrafted'] = $pile;
-        $response['state'] = $publicState;
-        break;
-    
-    case ('passPile'):
-        $draftName = $_POST['draftName'];
-        $playerNumber = $_POST['playerNumber'];
-        $state = getDraftState($draftName);
-        if ($state['activePlayer'] == $playerNumber) {
-            $previousTs = draftLastChange($draftName);
-            $state = passWinstonPile($state);
-            saveDraftFile($state);
-        }
-        $publicState = getPublicState($state, $playerNumber);
-        // $publicState['recentlyDrafted'] = $pile;
-        $response['state'] = $publicState;
         break;
     
     case ('saveDeck'):

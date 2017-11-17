@@ -1,92 +1,91 @@
 /* global $*/
 /* global mtg*/
+/* global draft*/
 
 var winston = (function() {
 
-    var format = "winston";
     var state;
-	var draftComplete = false;//TODO: move draftComplete to the state object
-    
-    var takePile = function(cardName) {
+	var isDraftComplete = false;//TODO: move draftComplete to the state object
+	
+	 var takePile = function(cardName) {
 		$("#passPile").attr("disabled", true);
 		$("#takePile").attr("disabled", true);
 		// if (!confirm('Take pile?')) return;
-		if (!instanse) {
-			instanse = true;
+		if (!draft.instanse) {
+			draft.instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_process.php",
+				url: "draft_winston.php",
 				data: {
 					'function': 'takePile',
 					'draftName': draftName,
-					'changeTime': changeTime,
 					'playerNumber': playerNumber
 				},
 				dataType: "json",
 				success: function(data) {
-					state = data.state;
-					changeTime = data.changeTime;
-					processDataChange(state);
-					instanse = false;
+					this.state = data.state;
+					processDataChange(data.state);
+					draft.processDataChange(data.state);
+					draft.instanse = false;
 				},
 			});
 		}
 		else {
 			setTimeout(takePile, 100);
 		}
-    };
-    
-    var passPile = function(cardName) {
-    	$("#passPile").attr("disabled", true);
+	};
+	
+	var passPile = function(cardName) {
+		$("#passPile").attr("disabled", true);
 		$("#takePile").attr("disabled", true);
 		// if (!confirm('Pass pile?')) return;
-		if (!instanse) {
-			instanse = true;
+		if (!draft.instanse) {
+			draft.instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_process.php",
+				url: "draft_winston.php",
 				data: {
 					'function': 'passPile',
 					'draftName': draftName,
-					'changeTime': changeTime,
 					'playerNumber': playerNumber
 				},
 				dataType: "json",
 				success: function(data) {
-					state = data.state;
-					changeTime = data.changeTime;
-					processDataChange(state);
-					instanse = false;
+					this.state = data.state;
+					processDataChange(data.state);
+					draft.processDataChange(data.state);
+					draft.instanse = false;
 				},
 			});
 		}
 		else {
 			setTimeout(passPile, 100);
 		}
-    };
+	};
+	
+	var isStateUpdated = function(_state) {
+		return this.state.currentPile != _state.currentPile
+					|| this.state.piles[0] != _state.piles[0]
+					|| this.state.players.length != _state.players.length;
+	};
     
-    var processDataChange = function() {
-    	//TODO configure page based on new state
+	var currentClass = "currentCardPile";
+
+	var	processDataChange = function(state, isActivePlayer) {
 		if (state.piles) {
-			updateAllPiles();
-			updateActivePlayer(state.activePlayer);
+			updateAllPiles(state);
+			updateActivePlayer(state, isActivePlayer);
 		}
 		else {
-			draftComplete = true;
+			isDraftComplete = true;
 			$("#draftComplete").show();
 			$("#topButtons").hide();
 			$("#buttonRow").hide();
 			$("#currentPileRow").hide();
 		}
-    };
-    
-    var isStateUpdated = function(_state) {
-    	//TODO compare current state to passed in state
-    };
-    
-	var currentClass = "currentCardPile";
+	};
 	
-	var updateCardPileIndicator = function() {
+	var updateCardPileIndicator = function(state) {
 		$(".cardPile").removeClass(currentClass);
 		if (state.currentPile == 1) {
 			$("#cardPileOne").addClass(currentClass);
@@ -99,11 +98,12 @@ var winston = (function() {
 		}
 	};
 	
-	var updateActivePlayer = function(activePlayer) {
-		if (!draftComplete && isActivePlayer() && state.players.length > 1) {
+	var updateActivePlayer = function(state, isActivePlayer) {
+		if (!isDraftComplete && isActivePlayer && state.players.length > 1) {
 			//enable buttons
 			$('#takePile').removeAttr('disabled');
 			$('#passPile').removeAttr('disabled');
+			$('#currentPileNumber').html(currentPileAsString(state.currentPile) + " - " + mtg.cardCountString(state.activePile.length));
 			updateButtons(state);
 		}
 		else {
@@ -112,7 +112,7 @@ var winston = (function() {
 			$('#passPile').attr('disabled', 'disabled');
 		}
 	};
-
+	
 	var updateButtons = function(state) {
 		//disable passing the pile if the next piles are empty
 		if ((state.currentPile == 1 && (!state.piles[2] || state.piles[2] === 0) && (!state.piles[3] || state.piles[3] === 0)) ||
@@ -126,7 +126,7 @@ var winston = (function() {
 		}
 	};
 	
-	var updateAllPiles = function() {
+	var updateAllPiles = function(state) {
 		if (!state.piles) { return; }
 		var mainPileSize = state.piles[0] ? state.piles[0] : 0;
 		var pileOneSize = state.piles[1] ? state.piles[1] : 0;
@@ -138,9 +138,10 @@ var winston = (function() {
 			updatePile('#pileOne', pileOneSize);
 			updatePile('#pileTwo', pileTwoSize);
 			updatePile('#pileThree', pileThreeSize);
+			updateCardPileIndicator(state);
 		}
 		else {
-			draftComplete = true;
+			isDraftComplete = true;
 			$("#draftComplete").show();
 			$("#topButtons").hide();
 			$("#buttonRow").hide();
@@ -159,7 +160,7 @@ var winston = (function() {
 		}
 		//Reset Number
 		$(id + 'Number').html($("")); //empty span
-		$(id).append(cardCountString(size));
+		$(id).append(mtg.cardCountString(size));
 	};
 	
 	var currentPileAsString = function(pileNumber) {
@@ -178,6 +179,10 @@ var winston = (function() {
 	};
 	
 	return {
-	    
+		processDataChange: processDataChange,
+		isDraftComplete: isDraftComplete,
+		isStateUpdated: isStateUpdated,
+		passPile: passPile,
+		takePile: takePile
 	};
 })();

@@ -7,11 +7,12 @@
 		<link rel="stylesheet" text="text/css" href="/css/mystyles.css" />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/mtg.js"></script>
+		<script type="text/javascript" src="/js/draft.js"></script>
 		<script type="text/javascript" src="/js/winston.js"></script>
 		
 	</head>
 	
-	<body onload="startDraft();">
+	<body>
 		<div class="container">
 		
 			<div class="row">
@@ -72,10 +73,10 @@
 					<div id="buttonRow" class="row">
 						<div class="six columns" style="height: 1px;"></div>
 						<div class="three columns">
-							<button id="takePile" class="draftButton" onclick="takePile();">Take Pile</button>
+							<button id="takePile" class="draftButton" onclick="winston.takePile();">Take Pile</button>
 						</div>
 						<div class="three columns">
-							<button id="passPile" class="draftButton" onclick="passPile();">Pass Pile</button>
+							<button id="passPile" class="draftButton" onclick="winston.passPile();">Pass Pile</button>
 						</div>
 					</div>
 					

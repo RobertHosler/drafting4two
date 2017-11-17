@@ -7,6 +7,7 @@ var draftName;
 var draftType;
 var cubeName;
 var playerName;
+var playerNumber;
 
 /**
  * Initialize all the variables from the request parameters
@@ -32,9 +33,8 @@ $(function() {
 	// draft.startDraft(pancake);
 });
 
-var draft = (function() {
+(function(exports) {
 
-	var playerNumber;
 	var dfm;
 	var instanse = false;
 	var updating = false; //set to true once the draft begins updating
@@ -43,8 +43,6 @@ var draft = (function() {
 
 	var startDraft = function(draftFormatModule) {
 		dfm = draftFormatModule;
-		draftFormatModule.format;
-		draftFormatModule.state;
 		if (!cubeName) {
 			cubeName = "default_cube";
 		}
@@ -65,9 +63,10 @@ var draft = (function() {
 				},
 				dataType: "json",
 				success: function(data) {
-					state = data.state;
+					dfm.state = data.state;
 					playerNumber = data.playerNumber;
-					processDataChange(state);
+					dfm.processDataChange(data.state, isActivePlayer(data.state.activePlayer));
+					processDataChange(data.state);
 					$("#statusDraftName").html("Draft: " + draftName);
 					$("#statusPlayerNumber").html("Player Number: " + playerNumber);
 					instanse = false;
@@ -85,13 +84,14 @@ var draft = (function() {
 			setInterval(updateDraft, 1000);
 		}
 	};
+	exports.startDraft = startDraft;
 
-	var updateStatusMessage = function() {
+	var updateStatusMessage = function(state) {
 		$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer - 1]);
 		$("#statusCurrentPileNumber").html("Current Pile: " + state.currentPile);
 	};
 
-	var restartDraft = function() {
+	exports.restartDraft = function() {
 		if (!instanse) {
 			instanse = true;
 			$.ajax({
@@ -105,10 +105,11 @@ var draft = (function() {
 				},
 				dataType: "json",
 				success: function(data) {
-					state = data.state;
+					dfm.state = data.state;
 					playerNumber = data.playerNumber;
 					changeTime = data.changeTime;
-					processDataChange(state);
+					dfm.processDataChange(data.state, isActivePlayer(data.state.activePlayer));
+					processDataChange(data.state);
 					$("#statusDraftName").html("Draft: " + draftName);
 					$("#statusPlayerNumber").html("Player Number: " + playerNumber);
 					instanse = false;
@@ -142,13 +143,13 @@ var draft = (function() {
 					dfm.processData
 					if (dfm.isStateUpdated(data.state)) {
 						dfm.state = data.state;
-						if (dfm.state.players[playerNumber - 1] != playerName) {
+						if (data.state.players[playerNumber - 1] != playerName) {
 							//draft was restarted, need to rejoin
 							startDraft(dfm);
 						}
 						else {
-							dfm.processDataChange();
-							this.processDataChange();
+							dfm.processDataChange(data.state);
+							processDataChange(data.state);
 						}
 					}
 					instanse = false;
@@ -156,27 +157,28 @@ var draft = (function() {
 			});
 		}
 	};
+	exports.updateDraft = updateDraft;
 
-	var processDataChange = function() {
-		updateCurrentPile();
+	var processDataChange = function(state) {
+		updateCurrentPile(state);
 		updateDeck(state.decks[playerNumber]); //update this player's decklist and sideboard
 		updateSideboad(state.sideboard[playerNumber]);
-		updateStatusMessage();
+		updateStatusMessage(state);
 	};
+	exports.processDataChange = processDataChange;
 
-	var updateCurrentPile = function() {
+	var updateCurrentPile = function(state) {
 		$('#currentPile').html(""); //empty div
-		if (!dfm.draftComplete && isActivePlayer() && state.activePile) {
+		if (!dfm.isDraftComplete && isActivePlayer(state.activePlayer) && state.activePile) {
 			mtg.appendCardImages('#currentPile', state.activePile);
-			$('#currentPileNumber').html(currentPileAsString(state.currentPile) + " - " + cardCountString(state.activePile.length));
 		}
 		else {
 			$('#currentPileNumber').html("");
 		}
 	};
 
-	var isActivePlayer = function() {
-		return (state.activePlayer == playerNumber);
+	var isActivePlayer = function(activePlayer) {
+		return (activePlayer == playerNumber);
 	};
 
 	var updateDeck = function(deck) {
@@ -191,7 +193,7 @@ var draft = (function() {
 			});
 			$('#deckList').append(cardList);
 		}
-		$('#deckListNumber').html(cardCountString(deck ? deck.length : 0));
+		$('#deckListNumber').html(mtg.cardCountString(deck ? deck.length : 0));
 	};
 
 	var updateSideboad = function(sideboard) {
@@ -206,10 +208,10 @@ var draft = (function() {
 			});
 			$('#sideboardList').append(cardList);
 		}
-		$('#sideboardListNumber').html(cardCountString(sideboard ? sideboard.length : 0));
+		$('#sideboardListNumber').html(mtg.cardCountString(sideboard ? sideboard.length : 0));
 	};
 
-	var moveToDeck = function(cardName, element) {
+	exports.moveToDeck = function(cardName, element) {
 		$(element).hide();
 		if (!instanse) {
 			instanse = true;
@@ -238,7 +240,7 @@ var draft = (function() {
 		}
 	};
 
-	var moveToSideboard = function(cardName, element) {
+	exports.moveToSideboard = function(cardName, element) {
 		$(element).hide();
 		if (!instanse) {
 			instanse = true;
@@ -267,7 +269,7 @@ var draft = (function() {
 		}
 	};
 
-	var saveDeckToFile = function() {
+	exports.saveDeckToFile = function() {
 		var deck = dfm.state.decks[playerNumber];
 		var dt = new Date();
 		var date = dt.getFullYear() + "" + (dt.getMonth() + 1) + "" + dt.getDate();
@@ -301,38 +303,45 @@ var draft = (function() {
 
 	};
 
-	var sortDeck = function() {
+	exports.sortDeck = function() {
 		isDeckSorted = true;
 		$("#showDeckSorted").hide();
 		$("#showDeckUnsorted").show();
 		updateDeck(dfm.state.decks[playerNumber]);
 	};
 
-	var unsortDeck = function() {
+	exports.unsortDeck = function() {
 		isDeckSorted = false;
 		$("#showDeckSorted").show();
 		$("#showDeckUnsorted").hide();
 		updateDeck(dfm.state.decks[playerNumber]);
 	};
 
-	var sortSideboard = function() {
+	exports.sortSideboard = function() {
 		isSideboardSorted = true;
 		$("#showSideboardSorted").hide();
 		$("#showSideboardUnsorted").show();
 		updateSideboad(state.sideboard[playerNumber]);
 	};
 
-	var unsortSideboard = function() {
+	exports.unsortSideboard = function() {
 		isSideboardSorted = false;
 		$("#showSideboardSorted").show();
 		$("#showSideboardUnsorted").hide();
 		updateSideboad(state.sideboard[playerNumber]);
 	};
 
-	return {
-
-	};
-})();
+	// return {
+	// 	startDraft: startDraft,
+	// 	updateDraft: updateDraft,
+	// 	restartDraft: restartDraft,
+	// 	moveToDeck: moveToDeck,
+	// 	moveToSideboard: moveToSideboard,
+	// 	saveDeckToFile: saveDeckToFile,
+	// 	sortDeck, sortDeck,
+	// 	sortSideboard, unsortSideboard
+	// };
+})(this.draft = {});
 
 /**
  * Get parameter froms the window location
