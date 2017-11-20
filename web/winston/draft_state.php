@@ -42,22 +42,33 @@
 		return $file_content;
 	}
 
-	function initState($draftName, $cubeName) {
+	function initState($draftName, $cubeName, $draftType) {
 		if(file_exists(getCubesPath()."/".$cubeName.".txt")){
-		   $cube = file(getCubesPath()."/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
-		   shuffle($cube);
-		   $mainPile = array_slice($cube, 0, 90);
-		   $pileOne = array(array_pop($mainPile));
-		   $pileTwo = array(array_pop($mainPile));
-		   $pileThree = array(array_pop($mainPile));
-		   $piles = array($mainPile, $pileOne, $pileTwo, $pileThree);
-		   $players = array();
-		 } else {
+		    $cube = file(getCubesPath()."/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
+		    shuffle($cube);
+			switch ($draftType) {
+				case ('winston'):
+					initWinstonState($draftName, $cube);
+					break;
+				case ('pancake'):
+					initPancakeState($draftName, $cube);
+					break;
+			}
+		} else {
 			 //What to do if the cube doesn't exist?  Retry with default_cube.txt
 			 //TODO notify user that default cube was used... somehow
 			$cubeName = 'default_cube';
-			initState($draftName, $cubeName);
+			initState($draftName, $cubeName, $draftType);
 		 }
+	}
+	
+	function initWinstonState($draftName, $cube) {
+	     $mainPile = array_slice($cube, 0, 90);
+	     $pileOne = array(array_pop($mainPile));
+	     $pileTwo = array(array_pop($mainPile));
+	     $pileThree = array(array_pop($mainPile));
+	     $piles = array($mainPile, $pileOne, $pileTwo, $pileThree);
+	     $players = array();
 		 $decks = array("", array(), array());
 		 $sideboard = array("", array(), array());
 		 $state = [
@@ -69,6 +80,37 @@
 			"activePlayer" => 1,
 			"currentPile" => 1,
 			"players" => $players
+		 ];
+		 return $state;
+	}
+	
+	function initPancakeState($draftName, $cube) {
+	     $pool = array_slice($cube, 0, 198);
+	     $packSize = 11;
+	     $numPacks = 18;
+		 $packs = array("");
+	     for ($i = 0; $i < $numPacks; $i++) {
+	     	$pack = array();
+		 	 for ($j = 0; $j < $packSize; $j++) {
+		 	 	$pack[] = array_pop($pool);
+		 	 }
+		 	 $packs[] = $pack;
+	     }
+	     $picks = array(0, 1, 2, 2);
+	     $burns = array(0, 0, 2, 4);
+		 $state = [
+			"fileName" => $draftName,
+			"cubeName" => $cubeName,
+			"packs" => $packs,
+			"currentPack" => array("", 1, 2),//current pack being view by player 1 and two,
+			
+			"decks" => array("", array(), array()),
+			"sideboard" => array("", array(), array()),
+			"players" => array(),
+			"turn" => 1,
+			"packSize" => $packSize,
+			"numPacks" => $numPacks,
+			"rounds" => 9
 		 ];
 		 return $state;
 	}

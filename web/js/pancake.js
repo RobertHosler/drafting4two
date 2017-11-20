@@ -12,8 +12,10 @@ State consists of 2 packs passed between two players.
 Round order:
 Pick 1
 Pass 10
-Pick 2
-Burn 2
+Pick 1
+Pick 1
+Burn 1
+Burn 1
 Pass 6
 Pick 2
 Burn 4
@@ -39,7 +41,8 @@ var pancake = (function() {
 				data: {
 					'function': 'makePick',
 					'draftName': draftName,
-					'playerNumber': playerNumber
+					'playerNumber': playerNumber,
+					'cardName': cardName
 				},
 				dataType: "json",
 				success: function(data) {
@@ -47,7 +50,7 @@ var pancake = (function() {
 					processDataChange(data.state);
 					draft.processDataChange(data.state);
 					draft.instanse = false;
-				},
+				}
 			});
 		}
 		else {
@@ -65,7 +68,8 @@ var pancake = (function() {
 				data: {
 					'function': 'burnPick',
 					'draftName': draftName,
-					'playerNumber': playerNumber
+					'playerNumber': playerNumber,
+					'cardName': cardName
 				},
 				dataType: "json",
 				success: function(data) {
@@ -73,7 +77,7 @@ var pancake = (function() {
 					processDataChange(data.state);
 					draft.processDataChange(data.state);
 					draft.instanse = false;
-				},
+				}
 			});
 		}
 		else {
