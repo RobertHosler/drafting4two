@@ -71,9 +71,10 @@ var winston = (function() {
     
 	var currentClass = "currentCardPile";
 
-	var	processDataChange = function(state, isActivePlayer) {
+	var	processDataChange = function(state) {
 		if (state.piles) {
 			updateAllPiles(state);
+			var isActivePlayer = (state.activePlayer == playerNumber);
 			updateActivePlayer(state, isActivePlayer);
 		}
 		else {
