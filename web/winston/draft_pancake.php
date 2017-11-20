@@ -48,7 +48,7 @@ switch ($function) {
         $state['packs'][$playerNumber] = $pack; //set the pack without the card
         $state['decks'][$playerNumber][] = $cardName; //add to decklist
         
-        $turn = $state['turn'];
+        $turn = $state['currentTurn'];
         switch ($turn) {
         	case 1:
         		

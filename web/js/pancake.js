@@ -10,15 +10,18 @@ State consists of 2 packs passed between two players.
 
 9 Rounds
 Round order:
+Turn 1
 Pick 1
 Pass 10
+Turn 2
 Pick 1
 Pick 1
 Burn 1
 Burn 1
 Pass 6
+Turn 3
 Pick 2
-Burn 4
+Burn 4 (all the remaining)
 */
 
 /**

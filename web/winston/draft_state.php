@@ -48,10 +48,10 @@
 		    shuffle($cube);
 			switch ($draftType) {
 				case ('winston'):
-					initWinstonState($draftName, $cube);
+					initWinstonState($draftName, $cubeName, $cube);
 					break;
 				case ('pancake'):
-					initPancakeState($draftName, $cube);
+					initPancakeState($draftName, $cubeName, $cube);
 					break;
 			}
 		} else {
@@ -62,7 +62,7 @@
 		 }
 	}
 	
-	function initWinstonState($draftName, $cube) {
+	function initWinstonState($draftName, $cubeName, $cube) {
 	     $mainPile = array_slice($cube, 0, 90);
 	     $pileOne = array(array_pop($mainPile));
 	     $pileTwo = array(array_pop($mainPile));
@@ -74,45 +74,52 @@
 		 $state = [
 			"fileName" => $draftName,
 			"cubeName" => $cubeName,
+			"players" => array(),
+			"decks" => array("", array(), array()),
+			"sideboard" => array("", array(), array()),
 			"piles" => $piles,
-			"decks" => $decks,
-			"sideboard" => $sideboard,
 			"activePlayer" => 1,
-			"currentPile" => 1,
-			"players" => $players
+			"currentPile" => 1
 		 ];
 		 return $state;
 	}
 	
-	function initPancakeState($draftName, $cube) {
+	function initPancakeState($draftName, $cubeName, $cube) {
 	     $pool = array_slice($cube, 0, 198);
 	     $packSize = 11;
 	     $numPacks = 18;
-		 $packs = array("");
-	     for ($i = 0; $i < $numPacks; $i++) {
-	     	$pack = array();
-		 	 for ($j = 0; $j < $packSize; $j++) {
-		 	 	$pack[] = array_pop($pool);
-		 	 }
-		 	 $packs[] = $pack;
-	     }
-	     $picks = array(0, 1, 2, 2);
-	     $burns = array(0, 0, 2, 4);
+		 $packs = buildPacks($pool, $packSize, $numPacks);
 		 $state = [
 			"fileName" => $draftName,
 			"cubeName" => $cubeName,
-			"packs" => $packs,
-			"currentPack" => array("", 1, 2),//current pack being view by player 1 and two,
-			
+			"players" => array(),
 			"decks" => array("", array(), array()),
 			"sideboard" => array("", array(), array()),
-			"players" => array(),
-			"turn" => 1,
+			"packs" => $packs,
+			"picks" => array(0, 1, 2, 2),//number of picks on each turn in a round
+			"burns" => array(0, 0, 2, 4),//number of burns on each turn in a round
+			"currentPack" => array("", 1, 2),//current pack being view by player one and two, this will be moved as the draft progresses
+			"currentTurn" => 1,//current turn in the round
+			"currentPicks" => array("", 0, 0),
+			"currentBurns" => array("", 0, 0),
 			"packSize" => $packSize,
 			"numPacks" => $numPacks,
-			"rounds" => 9
+			"round" => 1
+			"rounds" => 9,
 		 ];
 		 return $state;
+	}
+	
+	function buildPacks($pool, $packSize, $numPacks) {
+		$packs = array("");//blank value to offset array
+	     for ($i = 0; $i < $numPacks; $i++) {
+	     	$pack = array();//create a pack
+		 	 for ($j = 0; $j < $packSize; $j++) {
+		 	 	$pack[] = array_pop($pool);//add cards to pack
+		 	 }
+		 	 $packs[] = $pack;//add pack to packs list
+	     }
+	     return $packs;
 	}
 	
 	/**
