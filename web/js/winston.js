@@ -1,6 +1,8 @@
 /* global $*/
 /* global mtg*/
 /* global draft*/
+/* global draftName*/
+/* global playerNumber*/
 
 var winston = (function() {
 

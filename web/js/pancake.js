@@ -1,6 +1,8 @@
 /* global $*/
 /* global mtg*/
 /* global draft*/
+/* global draftName*/
+/* global playerNumber*/
 
 /*
 State consists of 2 packs passed between two players.
@@ -107,13 +109,13 @@ var pancake = (function() {
 			$("#currentPileRow").hide();
         } else {
 			if (currentPicks < picksInTurn) {
-				var num = picksInTurn - currentPicks;
+				var pickNum = picksInTurn - currentPicks;
 				$(".currentPile").addClass("picking");
-				$("#currentPileNumber").html("Pick " + mtg.cardCountString(num));
+				$("#currentPileNumber").html("Pick " + mtg.cardCountString(pickNum));
 			} else if (currentBurns < burnsInTurn) {
-				var num = burnsInTurn - currentBurns;
+				var burnNum = burnsInTurn - currentBurns;
 				$(".currentPile").addClass("burning");
-				$("#currentPileNumber").html("Burn " + mtg.cardCountString(num));
+				$("#currentPileNumber").html("Burn " + mtg.cardCountString(burnNum));
 			} else {
 				// alert("Error?");
 				$("#currentPileNumber").html("Waiting for other player");
@@ -133,6 +135,7 @@ var pancake = (function() {
 	};
 
 	return {
+		state: state,
 		startDraft: startDraft,
 		processDataChange: processDataChange,
 		updateStatusMessage: updateStatusMessage,

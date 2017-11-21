@@ -2,6 +2,7 @@
 /* global mtg*/
 /* global winston*/
 /* global pancake*/
+/* global draft*/
 
 var draftName;
 var draftType;
@@ -99,14 +100,13 @@ $(function() {
 					'function': 'restartDraft',
 					'draftName': draftName,
 					'draftType': draftType,
-					'cubeName': state.cubeName,
+					'cubeName': cubeName,
 					'playerName': playerName
 				},
 				dataType: "json",
 				success: function(data) {
 					dfm.state = data.state;
 					playerNumber = data.playerNumber;
-					changeTime = data.changeTime;
 					processDataChange(data.state);
 					$("#statusDraftName").html("Draft: " + draftName);
 					$("#statusPlayerNumber").html("Player Number: " + playerNumber);
@@ -116,7 +116,7 @@ $(function() {
 		}
 		else {
 			setTimeout(function() {
-				restartDraft();
+				this();
 			}, 100);
 		}
 	};
@@ -138,7 +138,6 @@ $(function() {
 				},
 				dataType: "json",
 				success: function(data) {
-					dfm.processData
 					if (dfm.isStateUpdated(data.state)) {
 						dfm.state = data.state;
 						if (data.state.players[playerNumber - 1] != playerName) {
@@ -224,8 +223,7 @@ $(function() {
 				},
 				dataType: "json",
 				success: function(data) {
-					state = data.state;
-					changeTime = data.changeTime;
+					dfm.state = data.state;
 					processDataChange(data.state);
 					instanse = false;
 				},
@@ -233,7 +231,7 @@ $(function() {
 		}
 		else {
 			setTimeout(function() {
-				moveToDeck(cardName);
+				this(cardName);
 			}, 100);
 		}
 	};
@@ -253,8 +251,7 @@ $(function() {
 				},
 				dataType: "json",
 				success: function(data) {
-					state = data.state;
-					changeTime = data.changeTime;
+					dfm.state = data.state;
 					processDataChange(data.state);
 					instanse = false;
 				},
@@ -262,7 +259,7 @@ $(function() {
 		}
 		else {
 			setTimeout(function() {
-				moveToSideboard(cardName);
+				this(cardName);
 			}, 100);
 		}
 	};
@@ -296,7 +293,7 @@ $(function() {
 			});
 		}
 		else {
-			setTimeout(saveDeckToFile, 100);
+			setTimeout(this, 100);
 		}
 
 	};
@@ -319,14 +316,14 @@ $(function() {
 		isSideboardSorted = true;
 		$("#showSideboardSorted").hide();
 		$("#showSideboardUnsorted").show();
-		updateSideboad(state.sideboard[playerNumber]);
+		updateSideboad(dfm.state.sideboard[playerNumber]);
 	};
 
 	exports.unsortSideboard = function() {
 		isSideboardSorted = false;
 		$("#showSideboardSorted").show();
 		$("#showSideboardUnsorted").hide();
-		updateSideboad(state.sideboard[playerNumber]);
+		updateSideboad(dfm.state.sideboard[playerNumber]);
 	};
 	
 	exports.pickCard = function(cardName) {

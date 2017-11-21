@@ -1,4 +1,4 @@
-*{ 
+* { 
 	margin: 0; 
 	padding: 0; 
 }
@@ -94,9 +94,11 @@ button {
 	float: right; 
 }
 
+/*
 .magicCard {
 	
 }
+*/
 .magicCard,
 .header {
 	max-width:100%;
@@ -118,11 +120,13 @@ button {
 	text-align: center;
 }
 
+/*
 .column,
 .columns {
-	/*background-color: light-gray;*/
-	/*text-align: center;*/
+	background-color: light-gray;
+	text-align: center;
 }
+*/
 
 .deck .columns {
 	min-height: 1px;
@@ -298,6 +302,7 @@ div.currentPile .magicCard {
 .writtenCard .cardType,
 .writtenCard .cardNameRow {
 	text-align: left;
+	background: #FFFFFF;
 	background: rgba(255, 255, 255, 0.7);
 	padding: 3px;
 	border-radius: 3px;
@@ -318,6 +323,7 @@ div.currentPile .magicCard {
 	text-align: right;
 	border: 1px solid;
 	border-radius: 8px;
+	background: #FFFFFF;
 	background: rgba(255, 255, 255, 0.7);
 }
 

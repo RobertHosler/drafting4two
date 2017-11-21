@@ -260,7 +260,7 @@ var mtg = (function() {
 		else {
 			return size + " Cards";
 		}
-	}
+	};
 
 	return {
 		appendCardNames: appendCardNames,
