@@ -16,6 +16,16 @@ function setWinchesterDefaults() {
     $("#draftDescription").html("Take turns picking from one of four piles.  Each turn a card is added to each pile.");
 }
 
+function setPancakeDefaults() {
+    $("#numberPacks").val(18);
+    $("#sizePacks").val(11);
+    var desc = "<div>9 Rounds of 3 turns</div>";
+    desc += "<div>Turn 1 Each player takes 1 card then passes the pack to the other player</div>";
+    desc += "<div>Turn 2 Each player takes 2 cards then burns 2 and passes back to the other player</div>";
+	desc += "<div>Turn 3 each player takes 2 cards then discards the remaining card</div>";
+    $("#draftDescription").html(desc);
+}
+
 function setDraftDefaults(dropdown) {
     switch ($(dropdown).val()) {
         case "grid":
@@ -26,6 +36,9 @@ function setDraftDefaults(dropdown) {
             break;
         case "winchester":
             setWinchesterDefaults();
+            break;
+        case "pancake":
+            setPancakeDefaults();
             break;
         default:
             alert("Draft Selection Error");

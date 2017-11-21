@@ -39,6 +39,7 @@
 					<select name="draftType" class="draftButton">
 						<option value="winston">Winston</option>
 						<option value="grid">Grid</option>
+						<option value="pancake">Pancake</option>
 						<option value="winchester">Winchester</option>
 					</select>
 					<label for="cubeName">Cube Name: </label>

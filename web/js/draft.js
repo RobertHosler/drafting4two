@@ -100,6 +100,7 @@ $(function() {
 				data: {
 					'function': 'restartDraft',
 					'draftName': draftName,
+					'draftType': draftType,
 					'cubeName': state.cubeName,
 					'playerName': playerName
 				},
@@ -178,7 +179,7 @@ $(function() {
 	};
 
 	var isActivePlayer = function(activePlayer) {
-		return (activePlayer == playerNumber);
+		return activePlayer ? (activePlayer == playerNumber) : true;
 	};
 
 	var updateDeck = function(deck) {

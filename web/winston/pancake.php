@@ -8,7 +8,6 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/mtg.js"></script>
 		<script type="text/javascript" src="/js/draft.js"></script>
-		<script type="text/javascript" src="/js/winston.js"></script>
 		<script type="text/javascript" src="/js/pancake.js"></script>
 		
 	</head>
@@ -39,7 +38,7 @@
 							</div>
 						</div>
 						<div class="five columns">
-							<div id="winstonPiles" class="row" style="display:none;">
+							<div class="row">
 								<div id="mainPileCount" class="three columns pileCount">
 									<div>Main Pile</div>
 									<div id="mainPileNumber">[pileNumber]</div>
@@ -73,10 +72,10 @@
 					<!-- Button Row -->
 					<div id="buttonRow" class="row">
 						<div class="six columns" style="height: 1px;"></div>
-						<div class="three columns winstonButtons" style="display:none;">
+						<div class="three columns">
 							<button id="takePile" class="draftButton" onclick="winston.takePile();">Take Pile</button>
 						</div>
-						<div class="three columns winstonButtons" style="display:none;">
+						<div class="three columns">
 							<button id="passPile" class="draftButton" onclick="winston.passPile();">Pass Pile</button>
 						</div>
 					</div>

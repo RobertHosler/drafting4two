@@ -33,9 +33,11 @@ var pancake = (function() {
     var state;
     var isDraftComplete = false;
 
+	var startDraft = function() {
+		
+	};
     
     var makePick = function(cardName) {
-        //TODO: process a card being chosen for a deck
         if (!draft.instanse) {
 			draft.instanse = true;
 			$.ajax({
@@ -62,7 +64,6 @@ var pancake = (function() {
     };
     
     var burnPick = function(cardName) {
-        //TODO: process removing a card from the pack
         if (!draft.instanse) {
 			draft.instanse = true;
 			$.ajax({
@@ -93,21 +94,15 @@ var pancake = (function() {
 	};
     
 	var	processDataChange = function(state) {
-		if (state.piles) {
-			updateAllPiles(state);
-			var isActivePlayer = (state.activePlayer == playerNumber);
-			updateActivePlayer(state, isActivePlayer);
-		}
-		else {
-			isDraftComplete = true;
-			$("#draftComplete").show();
-			$("#topButtons").hide();
-			$("#buttonRow").hide();
-			$("#currentPileRow").hide();
-		}
+			// isDraftComplete = true;
+			// $("#draftComplete").show();
+			// $("#topButtons").hide();
+			// $("#buttonRow").hide();
+			// $("#currentPileRow").hide();
 	};
 
 	return {
+		startDraft: startDraft,
 		processDataChange: processDataChange,
 		isDraftComplete: isDraftComplete,
 		isStateUpdated: isStateUpdated,

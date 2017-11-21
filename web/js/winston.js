@@ -7,6 +7,11 @@ var winston = (function() {
     var state;
 	var isDraftComplete = false;//TODO: move draftComplete to the state object
 	
+	var startDraft = function() {
+		$("#winstonPiles").show();
+		$(".winstonButtons").show();
+	};
+	
 	 var takePile = function(cardName) {
 		$("#passPile").attr("disabled", true);
 		$("#takePile").attr("disabled", true);
@@ -180,6 +185,7 @@ var winston = (function() {
 	};
 	
 	return {
+		startDraft: startDraft,
 		processDataChange: processDataChange,
 		isDraftComplete: isDraftComplete,
 		isStateUpdated: isStateUpdated,

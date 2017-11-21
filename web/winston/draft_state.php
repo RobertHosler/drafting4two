@@ -43,22 +43,23 @@
 	}
 
 	function initState($draftName, $cubeName, $draftType) {
+		error_log("draftType: ".$draftType);
 		if(file_exists(getCubesPath()."/".$cubeName.".txt")){
 		    $cube = file(getCubesPath()."/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
 		    shuffle($cube);
 			switch ($draftType) {
 				case ('winston'):
-					initWinstonState($draftName, $cubeName, $cube);
+					return initWinstonState($draftName, $cubeName, $cube);
 					break;
 				case ('pancake'):
-					initPancakeState($draftName, $cubeName, $cube);
+					return initPancakeState($draftName, $cubeName, $cube);
 					break;
 			}
 		} else {
 			 //What to do if the cube doesn't exist?  Retry with default_cube.txt
 			 //TODO notify user that default cube was used... somehow
 			$cubeName = 'default_cube';
-			initState($draftName, $cubeName, $draftType);
+			return initState($draftName, $cubeName, $draftType);
 		 }
 	}
 	
@@ -72,6 +73,7 @@
 		 $decks = array("", array(), array());
 		 $sideboard = array("", array(), array());
 		 $state = [
+			"format" => 'winston',
 			"fileName" => $draftName,
 			"cubeName" => $cubeName,
 			"players" => array(),
@@ -85,11 +87,13 @@
 	}
 	
 	function initPancakeState($draftName, $cubeName, $cube) {
+  		 error_log("initPancakeState");
 	     $pool = array_slice($cube, 0, 198);
 	     $packSize = 11;
 	     $numPacks = 18;
 		 $packs = buildPacks($pool, $packSize, $numPacks);
 		 $state = [
+			"format" => 'pancake',
 			"fileName" => $draftName,
 			"cubeName" => $cubeName,
 			"players" => array(),
@@ -100,12 +104,12 @@
 			"burns" => array(0, 0, 2, 4),//number of burns on each turn in a round
 			"currentPack" => array("", 1, 2),//current pack being view by player one and two, this will be moved as the draft progresses
 			"currentTurn" => 1,//current turn in the round
-			"currentPicks" => array("", 0, 0),
-			"currentBurns" => array("", 0, 0),
+			"currentPicks" => array("", 0, 0),//number of picks in the turn by each player 
+			"currentBurns" => array("", 0, 0),//number of burns in the turn by each player
 			"packSize" => $packSize,
 			"numPacks" => $numPacks,
-			"round" => 1
-			"rounds" => 9,
+			"round" => 1,
+			"rounds" => 9
 		 ];
 		 return $state;
 	}
@@ -126,6 +130,18 @@
 	 * Convert the state object into a publicly viewable version
 	 */
 	function getPublicState($state, $playerNumber) {
+		switch ($state['format']) {
+			case 'winston':
+				$state = getPublicWinstonState($state, $playerNumber);
+				break;
+			case 'pancake':
+				$state = getPublicPancakeState($state, $playerNumber);
+				break;
+		}
+		return $state;
+	}
+	
+	function getPublicWinstonState($state, $playerNumber) {
 		//clean piles - convert them to length of pile
 		if ($playerNumber == $state['activePlayer']) {
 			$state['activePile'] = $state['piles'][$state['currentPile']];//set activePile to visible pile
@@ -134,6 +150,19 @@
 		$state['piles'][1] = count($state['piles'][1]);
 		$state['piles'][2] = count($state['piles'][2]);
 		$state['piles'][3] = count($state['piles'][3]);
+		for ($i = 0; $i < count($state['decks']); $i++) {
+			if ($i != $playerNumber) {
+				$state['decks'][$i] = "";
+				$state['sideboard'][$i] = "";
+			}
+		}
+		return $state;		
+	}
+	
+	function getPublicPancakeState($state, $playerNumber) {
+		$currentPack = $state['currentPack'][$playerNumber];
+		$state['activePile'] = $state['packs'][$currentPack];//set activePile to visible pack
+		$state['packs'] = "";
 		for ($i = 0; $i < count($state['decks']); $i++) {
 			if ($i != $playerNumber) {
 				$state['decks'][$i] = "";
