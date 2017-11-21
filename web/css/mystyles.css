@@ -155,6 +155,9 @@ button {
 	vertical-align: middle;
 	width:100%;
 }
+.pickCard.draftButton {
+	background: white;
+}
 .draftButton[disabled] {
 	background: #eeeeee;
 	color: #bbbbbb;
@@ -269,6 +272,10 @@ div.currentPile .magicCard {
 .picking .pickCard,
 .burning .burnCard {
 	display: inherit;
+}
+.burnCard.draftButton,
+.pickCard.draftButton {
+	background: white;
 }
 .writtenCard {
 	display: table;
