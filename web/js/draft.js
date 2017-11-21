@@ -86,8 +86,7 @@ $(function() {
 	exports.startDraft = startDraft;
 
 	var updateStatusMessage = function(state) {
-		$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer - 1]);
-		$("#statusCurrentPileNumber").html("Current Pile: " + state.currentPile);
+		
 	};
 
 	exports.restartDraft = function() {
@@ -331,10 +330,12 @@ $(function() {
 	};
 	
 	exports.pickCard = function(cardName) {
+		$(".cardActions").hide();
 		dfm.pickCard(cardName);
 	};
 	
 	exports.burnCard = function(cardName) {
+		$(".cardActions > a").hide();
 		dfm.burnCard(cardName);
 	};
 

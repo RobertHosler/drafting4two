@@ -83,6 +83,9 @@ var mtg = (function() {
 				color = card.colors.length > 1 ? "gold" : card.colors[0].toLowerCase();
 			}
 			var s = "<div>";
+			s += "<div class=\"cardActions\">";
+			s += "<a class=\"burnCard\" href=\"javascript:void(0)\" onclick=\"draft.burnCard('" + safeString(card.name) + "', this)\" >Burn</a>";
+			s += "<a class=\"pickCard\" href=\"javascript:void(0)\" onclick=\"draft.pickCard('" + safeString(card.name) + "', this)\" >Pick</a></div>";
 			//Border
 			s += "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\">";
 			//Card name and manacost
@@ -107,9 +110,6 @@ var mtg = (function() {
 				s += "</span></div>";
 			}
 			s += "</div></div>";//end border divs
-			s += "<div class=\"cardActions\">";
-			s += "<a class=\"burnCard\" href=\"javascript:void(0)\" onclick=\"draft.burnCard('" + safeString(card.name) + "', this)\" >Burn</a>";
-			s += "<a class=\"pickCard\" href=\"javascript:void(0)\" onclick=\"draft.pickCard('" + safeString(card.name) + "', this)\" >Pick</a></div>";
 			s += "</div>";
 			$(viewId).append(s);
 		});

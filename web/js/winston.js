@@ -89,6 +89,17 @@ var winston = (function() {
 			$("#buttonRow").hide();
 			$("#currentPileRow").hide();
 		}
+        updateStatusMessage(state);
+	};
+	
+	var updateStatusMessage = function(state) {
+		if (isDraftComplete) {
+			$("#statusActivePlayer").hide();
+			$("#statusCurrentPileNumber").hide();
+		} else {
+			$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer - 1]);
+			$("#statusCurrentPileNumber").html("Current Pile: " + state.currentPile);
+		}
 	};
 	
 	var updateCardPileIndicator = function(state) {

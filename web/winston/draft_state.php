@@ -101,7 +101,7 @@
 			"sideboard" => array("", array(), array()),
 			"packs" => $packs,
 			"picks" => array(0, 1, 2, 2),//number of picks on each turn in a round
-			"burns" => array(0, 0, 2, 4),//number of burns on each turn in a round
+			"burns" => array(0, 0, 2, 0),//number of burns on each turn in a round
 			"currentPack" => array("", 1, 2),//current pack being view by player one and two, this will be moved as the draft progresses
 			"currentTurn" => 1,//current turn in the round
 			"currentPicks" => array("", 0, 0),//number of picks in the turn by each player 

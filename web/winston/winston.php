@@ -32,10 +32,12 @@
 						<div class="seven columns">
 							<div id="welcomeMessage"></div>
 							<div id="status">
-								<p id="statusDraftName"></p>
-								<p id="statusPlayerNumber" style="display: none;"></p>
-								<p id="statusActivePlayer"></p>
-								<p id="statusCurrentPileNumber" style="display: none;"></p>
+								<div id="statusDraftName"></div>
+								<div id="statusPlayerNumber" style="display: none;"></div>
+								<div id="statusActivePlayer"></div>
+								<div id="statusCurrentPileNumber" style="display: none;"></div>
+								<div id="statusCurrentRound"></div>
+								<div id="statusCurrentTurn"></div>
 							</div>
 						</div>
 						<div class="five columns">

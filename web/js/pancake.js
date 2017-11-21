@@ -101,25 +101,41 @@ var pancake = (function() {
 		var burnsInTurn = state.burns[state.currentTurn];
         var currentPicks = state.currentPicks[playerNumber];
         var currentBurns = state.currentBurns[playerNumber];
-		if (currentPicks < picksInTurn) {
-			$(".currentPile").addClass("picking");
-		} else if (currentBurns < burnsInTurn) {
-			$(".currentPile").addClass("burning");
+        if (state.round == 0) {
+			isDraftComplete = true;
+			$("#draftComplete").show();
+			$("#currentPileRow").hide();
+        } else {
+			if (currentPicks < picksInTurn) {
+				var num = picksInTurn - currentPicks;
+				$(".currentPile").addClass("picking");
+				$("#currentPileNumber").html("Pick " + mtg.cardCountString(num));
+			} else if (currentBurns < burnsInTurn) {
+				var num = burnsInTurn - currentBurns;
+				$(".currentPile").addClass("burning");
+				$("#currentPileNumber").html("Burn " + mtg.cardCountString(num));
+			} else {
+				// alert("Error?");
+				$("#currentPileNumber").html("Waiting for other player");
+			}
+        }
+        updateStatusMessage(state);
+	};
+	
+	var updateStatusMessage = function(state) {
+		if (isDraftComplete) {
+			$("#statusCurrentRound").hide();
+			$("#statusCurrentTurn").hide();
 		} else {
-			alert("Error?");
+			$("#statusCurrentRound").html("Round: " + state.round);
+			$("#statusCurrentTurn").html("Turn: " + state.currentTurn);
 		}
-		// $(".burnCard").show();
-		// $(".pickCard").show();
-			// isDraftComplete = true;
-			// $("#draftComplete").show();
-			// $("#topButtons").hide();
-			// $("#buttonRow").hide();
-			// $("#currentPileRow").hide();
 	};
 
 	return {
 		startDraft: startDraft,
 		processDataChange: processDataChange,
+		updateStatusMessage: updateStatusMessage,
 		isDraftComplete: isDraftComplete,
 		isStateUpdated: isStateUpdated,
 		burnCard: burnCard,

@@ -36,6 +36,14 @@ function startNewRound($state) {
 	return $state;
 }
 
+function endDraft($state) {
+    $state = startNewRound($state);
+    $state['round'] = 0;
+	$state['currentPack'][1] = 0;
+	$state['currentPack'][2] = 0;
+    return $state;
+}
+
 function passPack($state, $playerNumber, $packIndex) {
     if ($state['currentPack'][0] == "") {
 	    //other pack not yet passed
@@ -52,8 +60,6 @@ function passPack($state, $playerNumber, $packIndex) {
 	    }
 	    $state = startNewTurn($state);
 	}
-	$state['currentPicks'][$playerNumber] = 0;
-	$state['currentBurns'][$playerNumber] = 0;
     return $state;	
 }
 
@@ -126,6 +132,7 @@ switch ($function) {
                 }
             } else {
 		    	//TODO: handle last round
+		    	$state = endDraft($state);
             }
         } else if ($burnsInTurn > 0) {
           //switch to burning
