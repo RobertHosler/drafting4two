@@ -16,25 +16,44 @@ function removeCardFromPack($cardName, $pack) {
     return $pack;
 }
 
+function startNewTurn($state) {
+    $state['currentPack'][0] = "";
+	$state['currentPicks'][1] = 0;
+	$state['currentPicks'][2] = 0;
+	$state['currentBurns'][1] = 0;
+	$state['currentBurns'][2] = 0;
+    $state['currentTurn'] = $state['currentTurn'] + 1;
+    return $state;
+}
+
+function startNewRound($state) {
+    $state = startNewTurn($state);
+    $state['currentTurn'] = 1;
+	$nextRound = $state['round'] + 1;
+	$state['round'] = $nextRound;
+	$state['currentPack'][1] = ($nextRound * 2) - 1;//1,3,5,7,etc
+	$state['currentPack'][2] = $nextRound * 2;//2,4,6,8,etc
+	return $state;
+}
+
 function passPack($state, $playerNumber, $packIndex) {
     if ($state['currentPack'][0] == "") {
 	    //other pack not yet passed
-	    $state['currentPack'][0] = $pack;
+	    $state['currentPack'][0] = $packIndex;
+	    $state['currentPack'][$playerNumber] = 0;
 	} else {
 	    //swap packs!
 	    if ($playerNumber == 1) {
 	        $state['currentPack'][1] = $state['currentPack'][0];
-    	    $state['currentPack'][2] = $pack;
+    	    $state['currentPack'][2] = $packIndex;
 	    } else if ($playerNumber == 2) {
-    	    $state['currentPack'][1] = $pack;
+    	    $state['currentPack'][1] = $packIndex;
 	        $state['currentPack'][2] = $state['currentPack'][0];
 	    }
-	    $state['currentPack'][0] = "";
-    	$state['currentPicks'][1] = 0;
-    	$state['currentPicks'][2] = 0;
-    	$state['currentBurns'][1] = 0;
-    	$state['currentBurns'][2] = 0;
+	    $state = startNewTurn($state);
 	}
+	$state['currentPicks'][$playerNumber] = 0;
+	$state['currentBurns'][$playerNumber] = 0;
     return $state;	
 }
 
@@ -49,7 +68,7 @@ switch ($function) {
         $packIndex = $state['currentPack'][$playerNumber];
         $pack = $state['packs'][$packIndex];
         $pack = removeCardFromPack($cardName, $pack);
-        $state['currentPack'][$playerNumber] = $pack; //set the pack without the card
+        $state['packs'][$packIndex] = $pack;//set the pack without the card
         
         $currentTurn = $state['currentTurn'];
         $burnsInTurn = $state['burns'][$currentTurn];
@@ -69,16 +88,17 @@ switch ($function) {
 	    $response['state'] = $publicState;
 	    break;
 	    
-	case ('makePick'):
+	case ('pickCard'):
         $draftName = $_POST['draftName'];
         $playerNumber = $_POST['playerNumber'];
+        $cardName = $_POST['cardName'];
         $state = getDraftState($draftName);
         //Remove card from pack and add to players deck
 	    
         $packIndex = $state['currentPack'][$playerNumber];
         $pack = $state['packs'][$packIndex];
         $pack = removeCardFromPack($cardName, $pack);
-        $state['currentPack'][$playerNumber] = $pack; //set the pack without the card
+        $state['packs'][$packIndex] = $pack;//set the pack without the card
         $state['decks'][$playerNumber][] = $cardName; //add to decklist
         
         $currentTurn = $state['currentTurn'];
@@ -86,7 +106,6 @@ switch ($function) {
         $burnsInTurn = $state['burns'][$currentTurn];
         $currentPicks = $state['currentPicks'][$playerNumber] + 1;
         $state['currentPicks'][$playerNumber] = $currentPicks;
-        $picksInTurn = $state['picks'][$currentTurn];
         $round = $state['round'];
 
         if ($currentPicks < $picksInTurn) {
@@ -94,14 +113,20 @@ switch ($function) {
         	//handle in js
         } else if ($currentTurn == 3) {
 			//last turn, no more picks
-			//burn the rest of the pack and open a new pack
-			$nextRound = $round + 1;
-        	if ($playerNumber == 1) {
-	        	$packIndex = ($nextRound * 2) - 1;//1,3,5,7,etc
-        	} else if ($playerNumber == 2) {
- 		       	$packIndex = $nextRound * 2;//2,4,6,8,etc
-        	}
-        	$state['currentPack'][$playerNumber] = $packIndex;
+			//burn the rest of the pack and open a new pack if both players ready
+            $state['packs'][$packIndex] = array();//set an empty array
+            if ($round < $state['rounds']) {
+                if ($state['currentPack'][0] == "") {
+            	    //other pack not yet finished
+            	    $state['currentPack'][0] = $packIndex;
+            	    $state['currentPack'][$playerNumber] = 0;
+                } else {
+                    //Begin new round
+                    $state = startNewRound($state);
+                }
+            } else {
+		    	//TODO: handle last round
+            }
         } else if ($burnsInTurn > 0) {
           //switch to burning
           //handle in js

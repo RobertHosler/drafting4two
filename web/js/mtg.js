@@ -82,23 +82,35 @@ var mtg = (function() {
 			if (card.colors) {
 				color = card.colors.length > 1 ? "gold" : card.colors[0].toLowerCase();
 			}
-			var s = "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\"><div class=\"row cardNameRow\"><span class=\"cardName\">" + card.name + "</span>";
+			var s = "<div>";
+			//Border
+			s += "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\">";
+			//Card name and manacost
+			s += "<div class=\"row cardNameRow\"><span class=\"cardName\">" + card.name + "</span>";
 			if (card.manaCost) {
-				//TODO: remove brackets from manacost
 				s += "<span class=\"manaCost\">" + prettySymbolText(card.manaCost) + "</span>";
 			}
-			s += "</div><div class=\"cardType row\">" + card.type + "</div>" + "<div class=\"cardText row\">" + prettySymbolText(card.text) + "</div>";
+			s += "</div>";
+			//Type
+			s += "<div class=\"cardType row\">" + card.type + "</div>";
+			//Card Text
+			s += "<div class=\"cardText row\">" + prettySymbolText(card.text) + "</div>";
+			//Power/Toughness - Loyalty
 			if (card.power || card.loyalty) {
-			s += "<div class=\"row\" style=\"text-align: right;\"><span class=\"powerToughness\">";
-			if (card.power) {
-				s += card.power + "/" + card.toughness;
+				s += "<div class=\"row\" style=\"text-align: right;\"><span class=\"powerToughness\">";
+				if (card.power) {
+					s += card.power + "/" + card.toughness;
 				}
 				else if (card.loyalty) {
 					s += card.loyalty;
 				}
 				s += "</span></div>";
 			}
-			s += "</div></div>";
+			s += "</div></div>";//end border divs
+			s += "<div class=\"cardActions\">";
+			s += "<a class=\"burnCard\" href=\"javascript:void(0)\" onclick=\"draft.burnCard('" + safeString(card.name) + "', this)\" >Burn</a>";
+			s += "<a class=\"pickCard\" href=\"javascript:void(0)\" onclick=\"draft.pickCard('" + safeString(card.name) + "', this)\" >Pick</a></div>";
+			s += "</div>";
 			$(viewId).append(s);
 		});
 	};

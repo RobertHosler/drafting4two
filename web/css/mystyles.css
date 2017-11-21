@@ -188,6 +188,7 @@ div.deck .magicCard {
 	overflow: auto;
 	display: flex;
 	flex-wrap: wrap;
+	padding: 10px 0px 20px;
 	/*overflow-x: scroll;*/
 	/*white-space: nowrap;*/
 }
@@ -254,6 +255,17 @@ div.currentPile .magicCard {
 	background: #7cb9cd;
 }
 
+.cardActions {
+	text-align: center;
+}
+.burnCard,
+.pickCard {
+	display: none;
+}
+.picking .pickCard,
+.burning .burnCard {
+	display: inherit;
+}
 .writtenCard {
 	display: table;
 	width: 150px;

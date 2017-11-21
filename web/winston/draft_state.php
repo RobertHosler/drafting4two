@@ -160,7 +160,9 @@
 	}
 	
 	function getPublicPancakeState($state, $playerNumber) {
+		// error_log("playerNumber: ".$playerNumber);
 		$currentPack = $state['currentPack'][$playerNumber];
+		// error_log("currentPack: ".$currentPack);
 		$state['activePile'] = $state['packs'][$currentPack];//set activePile to visible pack
 		$state['packs'] = "";
 		for ($i = 0; $i < count($state['decks']); $i++) {

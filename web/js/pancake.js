@@ -37,14 +37,14 @@ var pancake = (function() {
 		
 	};
     
-    var makePick = function(cardName) {
+    var pickCard = function(cardName) {
         if (!draft.instanse) {
 			draft.instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_winston.php",
+				url: "draft_pancake.php",
 				data: {
-					'function': 'makePick',
+					'function': 'pickCard',
 					'draftName': draftName,
 					'playerNumber': playerNumber,
 					'cardName': cardName
@@ -52,25 +52,24 @@ var pancake = (function() {
 				dataType: "json",
 				success: function(data) {
 					this.state = data.state;
-					processDataChange(data.state);
 					draft.processDataChange(data.state);
 					draft.instanse = false;
 				}
 			});
 		}
 		else {
-			setTimeout(makePick, 100);
+			setTimeout(pickCard, 100);
 		}
     };
     
-    var burnPick = function(cardName) {
+    var burnCard = function(cardName) {
         if (!draft.instanse) {
 			draft.instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_winston.php",
+				url: "draft_pancake.php",
 				data: {
-					'function': 'burnPick',
+					'function': 'burnCard',
 					'draftName': draftName,
 					'playerNumber': playerNumber,
 					'cardName': cardName
@@ -78,22 +77,39 @@ var pancake = (function() {
 				dataType: "json",
 				success: function(data) {
 					this.state = data.state;
-					processDataChange(data.state);
 					draft.processDataChange(data.state);
 					draft.instanse = false;
 				}
 			});
 		}
 		else {
-			setTimeout(burnPick, 100);
+			setTimeout(burnCard, 100);
 		}
     };
 	
 	var isStateUpdated = function(_state) {
-		return this.state.players.length != _state.players.length;
+		return this.state.players.length != _state.players.length
+			|| this.state.currentTurn != _state.currentTurn
+			|| this.state.round != _state.round
+			|| this.state.currentPack[playerNumber] != _state.currentPack[playerNumber];
 	};
     
 	var	processDataChange = function(state) {
+		$(".currentPile").removeClass("burning");
+		$(".currentPile").removeClass("picking");
+		var picksInTurn = state.picks[state.currentTurn];
+		var burnsInTurn = state.burns[state.currentTurn];
+        var currentPicks = state.currentPicks[playerNumber];
+        var currentBurns = state.currentBurns[playerNumber];
+		if (currentPicks < picksInTurn) {
+			$(".currentPile").addClass("picking");
+		} else if (currentBurns < burnsInTurn) {
+			$(".currentPile").addClass("burning");
+		} else {
+			alert("Error?");
+		}
+		// $(".burnCard").show();
+		// $(".pickCard").show();
 			// isDraftComplete = true;
 			// $("#draftComplete").show();
 			// $("#topButtons").hide();
@@ -106,7 +122,7 @@ var pancake = (function() {
 		processDataChange: processDataChange,
 		isDraftComplete: isDraftComplete,
 		isStateUpdated: isStateUpdated,
-		burnPick: burnPick,
-		makePick: makePick
+		burnCard: burnCard,
+		pickCard: pickCard
 	};
 })();

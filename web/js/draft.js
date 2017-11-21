@@ -65,7 +65,6 @@ $(function() {
 				success: function(data) {
 					dfm.state = data.state;
 					playerNumber = data.playerNumber;
-					dfm.processDataChange(data.state, isActivePlayer(data.state.activePlayer));
 					processDataChange(data.state);
 					$("#statusDraftName").html("Draft: " + draftName);
 					$("#statusPlayerNumber").html("Player Number: " + playerNumber);
@@ -109,7 +108,6 @@ $(function() {
 					dfm.state = data.state;
 					playerNumber = data.playerNumber;
 					changeTime = data.changeTime;
-					dfm.processDataChange(data.state, isActivePlayer(data.state.activePlayer));
 					processDataChange(data.state);
 					$("#statusDraftName").html("Draft: " + draftName);
 					$("#statusPlayerNumber").html("Player Number: " + playerNumber);
@@ -149,7 +147,6 @@ $(function() {
 							startDraft(dfm);
 						}
 						else {
-							dfm.processDataChange(data.state);
 							processDataChange(data.state);
 						}
 					}
@@ -165,6 +162,7 @@ $(function() {
 		updateDeck(state.decks[playerNumber]); //update this player's decklist and sideboard
 		updateSideboad(state.sideboard[playerNumber]);
 		updateStatusMessage(state);
+		dfm.processDataChange(state, isActivePlayer(state.activePlayer));
 	};
 	exports.processDataChange = processDataChange;
 
@@ -330,6 +328,14 @@ $(function() {
 		$("#showSideboardSorted").show();
 		$("#showSideboardUnsorted").hide();
 		updateSideboad(state.sideboard[playerNumber]);
+	};
+	
+	exports.pickCard = function(cardName) {
+		dfm.pickCard(cardName);
+	};
+	
+	exports.burnCard = function(cardName) {
+		dfm.burnCard(cardName);
 	};
 
 	// return {
