@@ -33,7 +33,16 @@
 		//$state['draftOver'] = isDraftOver($state);//set the draftOver variable
 		$json = json_encode($state);
 		if (isSet($state['draftLock'])) {
-			fwrite($state['draftLock'], $json);//write content
+			$f = $state['draftLock'];
+			// error_log("Releasing draft lock: ".$f);
+	        flock($f, LOCK_UN);
+	        fclose($f);
+			$f = fopen($filePath, 'w');
+	        flock($f, LOCK_EX);
+			error_log("Writing json to ".$filePath);
+			fwrite($f, $json);//write content
+	        flock($f, LOCK_UN);
+	        fclose($f);
 		} else {
 			//no lock, just put contents
 			file_put_contents($filePath, $json);//overwrite content
@@ -155,7 +164,7 @@
 				$state['sideboard'][$i] = "";
 			}
 		}
-		releaseDraftLock($state['draftLock']);
+		// releaseDraftLock($state['draftLock']);
 		$state['draftLock'] = null;
 		return $state;
 	}
@@ -292,22 +301,22 @@
 	    // error_log("Getting draft state for: ".getDraftsPath()."/".$state_file_name);
 		if (file_exists(getDraftPath($draftName))) {
 			//Draft already exists, retrieve from file
-			$state = retrieveDraftFile($draftName);
-			error_log("Get draft state1: ".$state);
+			// $state = retrieveDraftFile($draftName);
+			// error_log("Get draft state1: ".$state);
 			$f = getDraftLock($draftName);
-			error_log("Get draft file: ".$draftName);
+			// error_log("Get draft file: ".$draftName);
 			$state = retrieveDraftFile($draftName);
 			// sleep(10);
-			error_log("Get draft state2: ".$state);
+			// error_log("Get draft state2: ".$state);
 			$state['draftLock'] = $f;
 		}
 		return $state;
 	}
 	
 	function getDraftLock($draftName) {
-		error_log("opening file ");
+		// error_log("opening file ");
 		$f = fopen(getDraftPath($draftName), 'r+');
-		error_log("Get draft lock: ".$f);
+		// error_log("Get draft lock: ".$f);
 		// sleep(10);
 		$got_lock = true;
 		$count = 0;
