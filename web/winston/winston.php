@@ -25,7 +25,7 @@
 					<div class="row">
 						<img class="header" src="/images/header_bg_4.jpg"/>
 						<a href="/">Return to Lobby</a>
-						<a href="javascript:void(0)" onclick="if (confirm('Are you sure you want to restart the draft?')) { restartDraft(); }">Restart Draft</a>
+						<a href="javascript:void(0)" onclick="if (confirm('Are you sure you want to restart the draft?')) { draft.restartDraft(); }">Restart Draft</a>
 					</div>
 					
 					<div id="topButtons"class="row">
@@ -42,7 +42,7 @@
 						</div>
 						<div class="five columns">
 							<div id="winstonPiles" class="row" style="display:none;">
-								<div id="mainPileCount" class="three columns pileCount">
+								<div id="mainPileCount" class="three columns pileCount cardPile">
 									<div>Main Pile</div>
 									<div id="mainPileNumber">[pileNumber]</div>
 									<div id="mainPile" class="mainWinstonPile"></div>
@@ -108,8 +108,8 @@
 						</div>
 						<div class="eight columns" style="height: 1px;"></div>
 						<div class="three columns">
-							<button id="showDeckSorted" class="draftButton" onclick="sortDeckList();" style="display:none;">Sorted</button>
-							<button id="showDeckUnsorted" class="draftButton" onclick="unsortDeckList();">Unsorted</button>
+							<button id="showDeckSorted" class="draftButton" onclick="draft.sortDeck();" style="display:none;">Sorted</button>
+							<button id="showDeckUnsorted" class="draftButton" onclick="draft.unsortDeck();">Unsorted</button>
 						</div>
 						<div id="deckList" class="twelve columns deck maindeck"></div>
 					</div>
@@ -120,8 +120,8 @@
 						</div>
 						<div class="eight columns" style="height: 1px;"></div>
 						<div class="three columns">
-							<button id="showSideboardSorted" class="draftButton" onclick="sortSideboard();" style="display:none;">Sorted</button>
-							<button id="showSideboardUnsorted" class="draftButton" onclick="unsortSideboard();">Unsorted</button>
+							<button id="showSideboardSorted" class="draftButton" onclick="draft.sortSideboard();" style="display:none;">Sorted</button>
+							<button id="showSideboardUnsorted" class="draftButton" onclick="draft.unsortSideboard();">Unsorted</button>
 						</div>
 						<div id="sideboardList" class="twelve columns deck sideboard"></div>
 					</div>

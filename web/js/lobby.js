@@ -1,3 +1,5 @@
+/* global $ */
+
 function setWinstonDefaults() {
     $("#numberPacks").val(6);
     $("#sizePacks").val(15);
@@ -71,16 +73,17 @@ function listDrafts() {
 					}
 					lobbyEmpty = false;
 					var fileName = state.fileName;
-					var joinLink = "winston.php?draftName="+fileName;
+					var joinLink = "winston.php?draftName="+fileName+"&draftType="+state.format+"&cubeName="+state.cubeName;
 					if (first) {
 						first = false;
 					} else {
 						draftList += "<hr/>";
 					}
-					draftList += "<div class=\"row\"><div class=\"columns four\">";
-					draftList += "Draft: " + fileName + "</div><div class=\"columns four\">";
-					draftList += "Players: "  + state.players.length + "</div><div class=\"columns four\">";
-					draftList += "<a href=\""+joinLink+"\">Join</a></div></div>";
+					draftList += "<div class=\"row\">";
+					draftList += "<div class=\"columns four\">Draft: " + fileName + "</div>";
+					// draftList += "<div class=\"columns four\">Players: "  + state.players.length + "</div>";
+					draftList += "<div class=\"columns four\">Format: "  + state.format + "</div>";
+					draftList += "<div class=\"columns four\"><a href=\""+joinLink+"\">Join</a></div></div>";
 				});
 				$("#draftList").append(draftList);
 				if (lobbyEmpty) {

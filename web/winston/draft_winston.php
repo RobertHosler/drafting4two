@@ -68,9 +68,13 @@ switch ($function) {
 	case ('passPile'):
 	    $draftName = $_POST['draftName'];
 	    $playerNumber = $_POST['playerNumber'];
+	    $currentPile = $_POST['currentPile'];
 	    $state = getDraftState($draftName);
-	    if ($state['activePlayer'] == $playerNumber) {
-	        $previousTs = draftLastChange($draftName);
+	    if ($state['activePlayer'] != $playerNumber) {
+	    	error_log("Can't pass, not active player");
+	    } else if ($state['currentPile'] != $currentPile) {
+	    	error_log("Can't pass, current pile is inconsistent");
+	    } else {
 	        $state = passWinstonPile($state);
 	        saveDraftFile($state);
 	    }
@@ -83,40 +87,46 @@ switch ($function) {
 	    $draftName = $_POST['draftName'];
 	    $playerNumber = $_POST['playerNumber'];
 	    $state = getDraftState($draftName);
-	    //pop card off of current deck for setting to the pile taken
-	    $topCard = isset($state['piles'][0]) ? array_pop($state['piles'][0]) : null;
-	    //determine current pile
-	    $pileNum = $state['currentPile'];
-	    $player = $state['activePlayer'];
-	    $pile = $state['piles'][$pileNum];
-	    $deck = isset($state['decks'][$player]) ? $state['decks'][$player] : array();
-	    $newPile;
-	    if ($topCard != null) {
-	        $newPile = array(
-	            $topCard
-	        );
-	        //reset pile
-	        $state['piles'][$pileNum] = $newPile;
+	    
+	    if ($state['activePlayer'] != $playerNumber) {
+	    	error_log("Can't take, not the active player!");
 	    } else {
-	        //if no top card, pile should be set to an empty array
-	        //$newPile = array();
-	        unset($state['piles'][$pileNum]);
+		    //pop card off of current deck for setting to the pile taken
+		    $topCard = isset($state['piles'][0]) ? array_pop($state['piles'][0]) : null;
+		    //determine current pile
+		    $pileNum = $state['currentPile'];
+		    $player = $state['activePlayer'];
+		    $pile = $state['piles'][$pileNum];
+		    $deck = isset($state['decks'][$player]) ? $state['decks'][$player] : array();
+		    $newPile;
+		    if ($topCard != null) {
+		        $newPile = array(
+		            $topCard
+		        );
+		        //reset pile
+		        $state['piles'][$pileNum] = $newPile;
+		    } else {
+		        //if no top card, pile should be set to an empty array
+		        //$newPile = array();
+		        unset($state['piles'][$pileNum]);
+		    }
+		    
+		    //add pile to decklist
+		    $state['decks'][$player] = addPileToDeckList($pile, $deck);
+		    
+		    //set current pile
+		    if (isset($state['piles'][1])) {
+		        $state['currentPile'] = 1;
+		    } else if (isset($state['piles'][2])) {
+		        $state['currentPile'] = 2;
+		    } else {
+		        $state['currentPile'] = 3;
+		    }
+		    
+		    //change the active player
+		    $state['activePlayer'] = ($state['activePlayer'] == 1) ? 2 : 1;
+		    
 	    }
-	    
-	    //add pile to decklist
-	    $state['decks'][$player] = addPileToDeckList($pile, $deck);
-	    
-	    //set current pile
-	    if (isset($state['piles'][1])) {
-	        $state['currentPile'] = 1;
-	    } else if (isset($state['piles'][2])) {
-	        $state['currentPile'] = 2;
-	    } else {
-	        $state['currentPile'] = 3;
-	    }
-	    
-	    //change the active player
-	    $state['activePlayer'] = ($state['activePlayer'] == 1) ? 2 : 1;
 	    
 	    //encode the state as json and write to file
 	    saveDraftFile($state);

@@ -1,3 +1,4 @@
+
 /* global $*/
 /* global mtg*/
 /* global winston*/
@@ -20,6 +21,7 @@ $(function() {
 	playerName = $.urlParam('playerName');
 	while (!playerName) {
 		playerName = prompt("Please enter your name", "");
+		// window.location += "&playerName="+playerName;
 	}
 	switch (draftType) {
 		case 'winston':
@@ -44,6 +46,7 @@ $(function() {
 
 	var startDraft = function(draftFormatModule) {
 		dfm = draftFormatModule;
+		dfm.startDraft();
 		if (!cubeName) {
 			cubeName = "default_cube";
 		}
@@ -76,7 +79,7 @@ $(function() {
 		else {
 			//instanse unavailable, try again shortly
 			setTimeout(function() {
-				startDraft();
+				draft.startDraft(draftFormatModule);
 			}, 100);
 		}
 		if (!updating) {
@@ -116,7 +119,7 @@ $(function() {
 		}
 		else {
 			setTimeout(function() {
-				this();
+				draft.restartDraft();
 			}, 100);
 		}
 	};
@@ -142,7 +145,7 @@ $(function() {
 						dfm.state = data.state;
 						if (data.state.players[playerNumber - 1] != playerName) {
 							//draft was restarted, need to rejoin
-							startDraft(dfm);
+							draft.startDraft(dfm);
 						}
 						else {
 							processDataChange(data.state);
@@ -226,12 +229,12 @@ $(function() {
 					dfm.state = data.state;
 					processDataChange(data.state);
 					instanse = false;
-				},
+				}
 			});
 		}
 		else {
 			setTimeout(function() {
-				this(cardName);
+				draft.moveToDeck(cardName);
 			}, 100);
 		}
 	};
@@ -254,12 +257,12 @@ $(function() {
 					dfm.state = data.state;
 					processDataChange(data.state);
 					instanse = false;
-				},
+				}
 			});
 		}
 		else {
 			setTimeout(function() {
-				this(cardName);
+				draft.moveToSideboard(cardName);
 			}, 100);
 		}
 	};
@@ -293,7 +296,7 @@ $(function() {
 			});
 		}
 		else {
-			setTimeout(this, 100);
+			setTimeout(draft.saveDeckToFile(), 100);
 		}
 
 	};

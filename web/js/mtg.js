@@ -193,8 +193,8 @@ var mtg = (function() {
 					colorList += "<div class=\"four columns mana\">" + prettySymbolText(item.manaCost) + "</div>";
 					//Make name of card clickable to provide options for moving to sideboard
 					colorList += "<div class=\"eight columns\">" + item.name;
-					colorList += " <a class=\"btn-sideboard\" href=\"javascript:void(0)\" onclick=\"moveToSideboard('" + safeString(item.name) + "', this)\" >SB</a>";
-					colorList += " <a class=\"btn-maindeck\" href=\"javascript:void(0)\" onclick=\"moveToDeck('" + safeString(item.name) + "', this)\" >MB</a>";
+					colorList += " <a class=\"btn-sideboard\" href=\"javascript:void(0)\" onclick=\"draft.moveToSideboard('" + safeString(item.name) + "', this)\" >SB</a>";
+					colorList += " <a class=\"btn-maindeck\" href=\"javascript:void(0)\" onclick=\"draft.moveToDeck('" + safeString(item.name) + "', this)\" >MB</a>";
 					colorList += "</div></div>";
 				});
 				colorList += "</div></div>";

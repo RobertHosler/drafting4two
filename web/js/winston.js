@@ -34,7 +34,7 @@ var winston = (function() {
 					processDataChange(data.state);
 					draft.processDataChange(data.state);
 					draft.instanse = false;
-				},
+				}
 			});
 		}
 		else {
@@ -54,7 +54,8 @@ var winston = (function() {
 				data: {
 					'function': 'passPile',
 					'draftName': draftName,
-					'playerNumber': playerNumber
+					'playerNumber': playerNumber,
+					'currentPile': this.state.currentPile
 				},
 				dataType: "json",
 				success: function(data) {
@@ -62,7 +63,7 @@ var winston = (function() {
 					processDataChange(data.state);
 					draft.processDataChange(data.state);
 					draft.instanse = false;
-				},
+				}
 			});
 		}
 		else {
@@ -99,7 +100,9 @@ var winston = (function() {
 			$("#statusActivePlayer").hide();
 			$("#statusCurrentPileNumber").hide();
 		} else {
-			$("#statusActivePlayer").html("Active Player: " + state.players[state.activePlayer - 1]);
+			var activePlayer = state.players[state.activePlayer - 1];
+			activePlayer = activePlayer ? activePlayer : "Drafter 2 will pick first. Waiting for them to join.";
+			$("#statusActivePlayer").html("Active Drafter: " + activePlayer);
 			$("#statusCurrentPileNumber").html("Current Pile: " + state.currentPile);
 		}
 	};
@@ -198,6 +201,7 @@ var winston = (function() {
 	};
 	
 	return {
+		state: state,
 		startDraft: startDraft,
 		processDataChange: processDataChange,
 		isDraftComplete: isDraftComplete,

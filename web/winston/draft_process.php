@@ -151,7 +151,7 @@ switch ($function) {
                 unlink($file); // delete file
             }
             $response['passwordValid'] = true;
-        } 
+        }
         break;
         
 }
