@@ -41,8 +41,11 @@ function startDraft() {
         $state = initState($draftName, $cubeName, $draftType);
     }
     $state['players'] = joinDraft($state['players'], $playerName);
+    error_log("State: ".$state);
     $playerNumber = getPlayerNumber($state['players'], $playerName);
+    error_log("State: ".$state);
     saveDraftFile($state);
+    error_log("State: ".$state);
     $response['state'] = getPublicState($state, $playerNumber); //sends the state object back
     $response['playerNumber'] = $playerNumber;
     return $response;

@@ -20,25 +20,30 @@
         <div>
             <?php 
                 
-                //open in read write
+                //open in read
 			    $f = fopen($filePath, 'r');
-    	        flock($f, LOCK_EX);//exclusive lock
+			    //exclusive lock
+    	        flock($f, LOCK_EX);
     	        //read
 			    $content = file_get_contents($filePath);
                 echo "State before ";
                 echo $content;
+                //close
     	        fclose($f);
                 
             ?>
             </div>
         <div>
             <?php 
+                //updates
 			    $content = "Hey ".$_REQUEST['name'];
     	        
+    	        //open in write
 			    $f = fopen($filePath, 'w');
     	        //write
     	        fwrite($f, $content);
     	        flock($f, LOCK_UN);//unlock
+    	        //close
     	        fclose($f);
     	        
 			 //   $f = fopen($filePath, 'r');
