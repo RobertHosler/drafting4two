@@ -109,7 +109,7 @@
             "packSize" => $packSize,
             "numPacks" => $numPacks,
             "round" => 1,
-            "rounds" => 9
+            "rounds" => 3
          ];
          return $state;
     }
