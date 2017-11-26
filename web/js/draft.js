@@ -331,12 +331,12 @@ $(function() {
 	};
 	
 	exports.pickCard = function(cardName) {
-		$(".cardActions").hide();
+		$(".cardActions > button").attr('disabled', 'disabled');
 		dfm.pickCard(cardName);
 	};
 	
 	exports.burnCard = function(cardName) {
-		$(".cardActions > a").hide();
+		$(".cardActions > button").attr('disabled', 'disabled');
 		dfm.burnCard(cardName);
 	};
 

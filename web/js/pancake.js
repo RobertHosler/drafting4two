@@ -117,7 +117,6 @@ var pancake = (function() {
 				$(".currentPile").addClass("burning");
 				$("#currentPileNumber").html("Burn " + mtg.cardCountString(burnNum));
 			} else {
-				// alert("Error?");
 				$("#currentPileNumber").html("Waiting for other player");
 			}
         }

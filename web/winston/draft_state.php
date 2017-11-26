@@ -91,7 +91,7 @@
          $pool = array_slice($cube, 0, 198);
          $packSize = 11;
          $numPacks = 18;
-         $packs = buildPacks($pool, $packSize, $numPacks);
+         $packs = buildPacks($pool, $packSize, $nupmPacks);
          $state = [
             "format" => 'pancake',
             "fileName" => $draftName,
@@ -109,7 +109,7 @@
             "packSize" => $packSize,
             "numPacks" => $numPacks,
             "round" => 1,
-            "rounds" => 3
+            "rounds" => 9
          ];
          return $state;
     }
