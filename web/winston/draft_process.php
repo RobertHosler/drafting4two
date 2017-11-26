@@ -56,7 +56,7 @@ function restartDraft() {
     $fileName = $_POST['fileName'];
     $playerName = $_POST['playerName'];
     //Create new state
-    $state = initState($draftName, $cubeName);
+    $state = initState($draftName, $cubeName, $draftType);
     $state['players'] = joinDraft($state['players'], $playerName);
     $playerNumber = getPlayerNumber($state['players'], $playerName);
     saveDraftFile($state);
