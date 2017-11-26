@@ -10,6 +10,7 @@ var draftType;
 var cubeName;
 var playerName;
 var playerNumber;
+var isManualUpdateOnly = false;
 
 /**
  * Initialize all the variables from the request parameters
@@ -82,7 +83,7 @@ $(function() {
 				draft.startDraft(draftFormatModule);
 			}, 100);
 		}
-		if (!updating) {
+		if (!updating && !isManualUpdateOnly) {
 			updating = true;
 			setInterval(updateDraft, 1000);
 		}

@@ -30,7 +30,7 @@ var winston = (function() {
 				},
 				dataType: "json",
 				success: function(data) {
-					this.state = data.state;
+					winston.state = data.state;
 					processDataChange(data.state);
 					draft.processDataChange(data.state);
 					draft.instanse = false;
@@ -47,6 +47,7 @@ var winston = (function() {
 		$("#takePile").attr("disabled", true);
 		// if (!confirm('Pass pile?')) return;
 		if (!draft.instanse) {
+			var cp = winston.state.currentPile;
 			draft.instanse = true;
 			$.ajax({
 				type: "POST",
@@ -55,11 +56,12 @@ var winston = (function() {
 					'function': 'passPile',
 					'draftName': draftName,
 					'playerNumber': playerNumber,
-					'currentPile': this.state.currentPile
+					'currentPile': cp
 				},
 				dataType: "json",
 				success: function(data) {
-					this.state = data.state;
+					var statePile = data.state.currentPile;
+					winston.state = data.state;
 					processDataChange(data.state);
 					draft.processDataChange(data.state);
 					draft.instanse = false;
@@ -72,9 +74,9 @@ var winston = (function() {
 	};
 	
 	var isStateUpdated = function(_state) {
-		return this.state.currentPile != _state.currentPile
-					|| this.state.piles[0] != _state.piles[0]
-					|| this.state.players.length != _state.players.length;
+		return winston.state.currentPile != _state.currentPile
+					|| winston.state.piles[0] != _state.piles[0]
+					|| winston.state.players.length != _state.players.length;
 	};
     
 	var currentClass = "currentCardPile";

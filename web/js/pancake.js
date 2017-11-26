@@ -53,7 +53,7 @@ var pancake = (function() {
 				},
 				dataType: "json",
 				success: function(data) {
-					this.state = data.state;
+					pancake.state = data.state;
 					draft.processDataChange(data.state);
 					draft.instanse = false;
 				}
@@ -78,7 +78,7 @@ var pancake = (function() {
 				},
 				dataType: "json",
 				success: function(data) {
-					this.state = data.state;
+					pancake.state = data.state;
 					draft.processDataChange(data.state);
 					draft.instanse = false;
 				}
@@ -90,10 +90,10 @@ var pancake = (function() {
     };
 	
 	var isStateUpdated = function(_state) {
-		return this.state.players.length != _state.players.length
-			|| this.state.currentTurn != _state.currentTurn
-			|| this.state.round != _state.round
-			|| this.state.currentPack[playerNumber] != _state.currentPack[playerNumber];
+		return pancake.state.players.length != _state.players.length
+			|| pancake.state.currentTurn != _state.currentTurn
+			|| pancake.state.round != _state.round
+			|| pancake.state.currentPack[playerNumber] != _state.currentPack[playerNumber];
 	};
     
 	var	processDataChange = function(state) {

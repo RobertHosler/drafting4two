@@ -73,7 +73,7 @@ switch ($function) {
 	    if ($state['activePlayer'] != $playerNumber) {
 	    	error_log("Can't pass, not active player");
 	    } else if ($state['currentPile'] != $currentPile) {
-	    	error_log("Can't pass, current pile is inconsistent");
+	    	error_log("Can't pass, current pile is inconsistent. CurrentPile: ".$currentPile." StatePile: ".$state['currentPile']);
 	    } else {
 	        $state = passWinstonPile($state);
 	        saveDraftFile($state);

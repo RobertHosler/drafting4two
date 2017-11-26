@@ -31,9 +31,9 @@
      */
     function writeStateToFile($state, $filePath) {
         //$state['draftOver'] = isDraftOver($state);//set the draftOver variable
-        error_log("State: ".$state);
+        // error_log("State: ".$state);
         $json = json_encode($state);
-        error_log("State to be saved: ".$json);
+        // error_log("State to be saved: ".$json);
         if (isSet($state['draftLock'])) {
             //open
             $f = fopen($filePath, 'w');
@@ -51,9 +51,9 @@
     function retrieveStateFromFile($filePath) {
         // $myfile=fopen($filePath,'rt');
         // flock($myfile,LOCK_SH);
-        error_log("Retrieve state from: ".$filePath);
+        // error_log("Retrieve state from: ".$filePath);
         $jsonString = file_get_contents($filePath);
-        error_log("State in file: ".$jsonString);
+        // error_log("State in file: ".$jsonString);
         // flock($myfile, LOCK_UN); 
         // fclose($myfile);
         $json = json_decode($jsonString, true);
@@ -310,7 +310,7 @@
             flock($f, LOCK_EX);
             //read
             $jsonString = file_get_contents($filePath);
-            error_log("State in file: ".$jsonString);
+            // error_log("State in file: ".$jsonString);
             //close
             fclose($f);
             //return value
@@ -339,7 +339,7 @@
     
     function releaseDraftLock($f) {
         if ($f != null) {
-            error_log("Releasing draft lock: ".$f);
+            // error_log("Releasing draft lock: ".$f);
             flock($f, LOCK_UN);
             fclose($f);
         }

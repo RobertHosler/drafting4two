@@ -26,6 +26,7 @@
 						<img class="header" src="/images/header_bg_4.jpg"/>
 						<a href="/">Return to Lobby</a>
 						<a href="javascript:void(0)" onclick="if (confirm('Are you sure you want to restart the draft?')) { draft.restartDraft(); }">Restart Draft</a>
+						<a href="#" onclick="draft.updateDraft();">Refresh Draft</a>
 					</div>
 					
 					<div id="topButtons"class="row">
