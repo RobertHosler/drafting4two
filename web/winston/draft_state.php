@@ -91,7 +91,7 @@
          $pool = array_slice($cube, 0, 198);
          $packSize = 11;
          $numPacks = 18;
-         $packs = buildPacks($pool, $packSize, $nupmPacks);
+         $packs = buildPacks($pool, $packSize, $numPacks);
          $state = [
             "format" => 'pancake',
             "fileName" => $draftName,

@@ -47,7 +47,6 @@ var winston = (function() {
 		$("#takePile").attr("disabled", true);
 		// if (!confirm('Pass pile?')) return;
 		if (!draft.instanse) {
-			var cp = winston.state.currentPile;
 			draft.instanse = true;
 			$.ajax({
 				type: "POST",
@@ -56,11 +55,10 @@ var winston = (function() {
 					'function': 'passPile',
 					'draftName': draftName,
 					'playerNumber': playerNumber,
-					'currentPile': cp
+					'currentPile': winston.state.currentPile
 				},
 				dataType: "json",
 				success: function(data) {
-					var statePile = data.state.currentPile;
 					winston.state = data.state;
 					processDataChange(data.state);
 					draft.processDataChange(data.state);
