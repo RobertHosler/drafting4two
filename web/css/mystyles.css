@@ -200,6 +200,16 @@ div.deck .magicCard {
 	/*white-space: nowrap;*/
 }
 
+.currentPile.burning {
+	background: red;
+}
+.currentPile.picking {
+	background: green;
+}
+.currentPile.waiting {
+	background: yellow;
+}
+
 .cardPile {
 	text-align: center;
 }
