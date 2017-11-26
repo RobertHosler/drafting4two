@@ -13,8 +13,8 @@
     <link rel="stylesheet" text="text/css" href="/css/lobby.css" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/lobby.js"></script>
+	<script type="text/javascript" src="/js/mtg.js"></script>
 
-		
 </head>
 
 <!-- onload sets to update the chat every second -->
@@ -30,7 +30,7 @@
 				
 				<div></div>
 								
-				<form id="createDraftForm" name="createDraftForm" action="winston.php" target="_blank">
+				<form id="createDraftForm" name="createDraftForm" action="winston.html" target="_blank">
 					<label for="playerName">Player Name: </label>
 					<input id="playerName" type="text" name="playerName" required class="draftButton"></input>
 					<label for="draftName">Draft Name: </label>
@@ -43,22 +43,16 @@
 						<option value="winchester">Winchester</option>
 					</select>
 					<label for="cubeName">Cube Name: </label>
-					<select name="cubeName" class="draftButton">
-						<option value="360">Roqb 360</option>
-						<option value="roqb_pauper">Roqb Pauper</option>
-						<option value="klug">Klug</option>
-						<option value="kranny">Kranny</option>
-						<option value="Usman">Usman</option>
-						<option value="pauper">Pauper</option>
-						<option value="usman_pauper">Usman Pauper</option>
-						<option value="mini">Mini (for testing)</option>
+					<select id="cubeLists" name="cubeName" class="draftButton">
 					</select>
 					<div class="row">
 						<input type="submit" value="Submit" onclick="clearCreateForm()" class="draftButton eight columns"></input>
 						<input type="reset" value="Reset" class="draftButton four columns"></input>
 					</div>
 				</form>
-			
+				<div>
+					<a href="cubelist.html">Add new cube</a>
+				</div>
 			</div>
 			<div class="six columns">
 				<h2>View Drafts</h2>

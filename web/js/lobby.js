@@ -1,5 +1,10 @@
 /* global $ */
 
+
+$(function() {
+	listCubes();	
+});
+
 function setWinstonDefaults() {
     $("#numberPacks").val(6);
     $("#sizePacks").val(15);
@@ -73,7 +78,7 @@ function listDrafts() {
 					}
 					lobbyEmpty = false;
 					var fileName = state.fileName;
-					var joinLink = "winston.php?draftName="+fileName+"&draftType="+state.format+"&cubeName="+state.cubeName;
+					var joinLink = "winston.html?draftName="+fileName+"&draftType="+state.format+"&cubeName="+state.cubeName;
 					if (first) {
 						first = false;
 					} else {
@@ -146,5 +151,68 @@ function deleteAllDrafts() {
 				}
 			}
 		});
+	}
+}
+
+function listCubes() {
+	"use strict";
+	if (!instanse) {
+		instanse = true;
+		$.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+				'function': 'listCubes'
+			},
+			dataType: "json",
+			success: function (data) {
+				$.each(data.cubes, function(index, cube){
+					var cubeName = cube.substr(0, cube.lastIndexOf('.'));//remove txt
+					$('#cubeLists').append($('<option>', {
+					    value: cubeName,
+					    text: cubeName
+					}));
+				});
+				instanse = false;
+			}
+		});
+	} else {
+		setTimeout(function() {
+			listCubes();
+		}, 100);
+	}
+}
+
+function addCubeList() {
+	"use strict";
+	if (!instanse) {
+		instanse = true;
+		var cubeName = $("#cubeName").val();
+		var cubeList = $("#cubeList").val();
+		$.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+				'function': 'addCubeList',
+				'cubeName': cubeName,
+				'cubeList': cubeList
+			},
+			dataType: "json",
+			success: function (data) {
+				$.each(data.cubes, function(index, cube) {
+					var cubeName = cube.substr(0, cube.lastIndexOf('.'));//remove txt
+					$('#cubeLists').append($('<option>', {
+					    value: cubeName,
+					    text: cubeName
+					}));
+				});
+				var cubeList = data.cubeList;
+				instanse = false;
+			}
+		});
+	} else {
+		setTimeout(function() {
+			addCubeList();
+		}, 100);
 	}
 }

@@ -1,5 +1,15 @@
 <?php
     
+    function saveCubeToFile($cubeName, $cubeList) {
+        $fileName = getCubesPath()."/".$cubeName.".txt";
+        file_put_contents($fileName, $cubeList);
+    }
+    
+    function retrieveCubeList($cubeName) {
+        $cubeList = file(getCubesPath()."/".$cubeName.".txt", FILE_IGNORE_NEW_LINES);//file reads a file into an array
+        return $cubeList;
+    }
+    
     /**
      * Save decklist to text file
      */
@@ -209,9 +219,24 @@
     }
     
     function retrieveAllDrafts() {
-        $draftsPath = getDraftsPath();
-        $allDrafts = scandir($draftsPath);
-        return $allDrafts;
+        // $draftsPath = getDraftsPath();
+        // $allDrafts = scandir($draftsPath);
+        // return $allDrafts;
+        return retrieveAllFiles(getDraftsPath());
+    }
+    
+    function retrieveAllCubes() {
+        return retrieveAllFiles(getCubesPath());
+    }
+    
+    function retrieveAllFiles($path) {
+        $allFiles = scandir($path);
+        $files = array_diff($allFiles, array(
+            '.',
+            '..',
+            '.gitignore'
+        ));
+        return $files;
     }
     
     function doesDraftExist($draftName) {

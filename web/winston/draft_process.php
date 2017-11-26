@@ -92,12 +92,7 @@ switch ($function) {
         break;
     
     case ('listDrafts'):
-        $allFiles = retrieveAllDrafts();
-        $drafts = array_diff($allFiles, array(
-            '.',
-            '..',
-            '.gitignore'
-        ));
+        $drafts = retrieveAllDrafts();
         $states = array();
         foreach ($drafts as $draft) {
             $state = retrieveDraftFile($draft);
@@ -105,6 +100,23 @@ switch ($function) {
         }
         $response['drafts'] = $drafts;
         $response['states'] = $states;
+        break;
+    
+    case ('listCubes'):
+        $response['cubes'] = retrieveAllCubes();
+        break;
+        
+    case ('addCubeList'):
+        $cubeName = $_POST['cubeName'];
+        $cubeList = $_POST['cubeList'];
+        saveCubeToFile($cubeName, $cubeList);
+        $response['cubes'] = retrieveAllCubes();
+        $response['cubeList'] = retrieveCubeList($cubeName);
+        break;
+        
+    case ('retrieveCubeList'):
+        $cubeName = $_POST['cubeName'];
+        $response['cubeList'] = retrieveCubeList($cubeName);
         break;
     
     case ('moveToSideboard'):
