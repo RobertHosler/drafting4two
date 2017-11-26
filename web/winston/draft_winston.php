@@ -5,6 +5,17 @@ include 'draft_state.php';
 $function = $_POST['function'];
 $response = array();
 
+/**
+ * Add list of cards to the given array
+ */
+function addPileToDeckList($pile, $deckList) {
+    foreach ($pile as $card) {
+        //array_push($deckList, $card);
+        $deckList[] = $card;//add card to decklist
+    }
+    return $deckList;
+}
+
 function passWinstonPile($state) {
 	$topCard = isset($state['piles'][0]) ? array_pop($state['piles'][0]) : null;
 	$pileNum = $state['currentPile'];

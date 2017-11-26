@@ -25,39 +25,21 @@
         error_log("Saving deck to file: ".$_SERVER['DOCUMENT_ROOT'].$file_name);
         file_put_contents($_SERVER['DOCUMENT_ROOT'].$file_name, implode("\r\n", $fileContents));
     }
-
-    /**
-     *	Converts state to json and writes to file
-     */
-    function writeStateToFile($state, $filePath) {
-        //$state['draftOver'] = isDraftOver($state);//set the draftOver variable
-        // error_log("State: ".$state);
-        $json = json_encode($state);
-        // error_log("State to be saved: ".$json);
-        if (isSet($state['draftLock'])) {
-            //open
-            $f = fopen($filePath, 'w');
-            //write
-            fwrite($f, $json);//write content
-            //release file lock and close
-            flock($f, LOCK_UN);
-            fclose($f);
-        } else {
-            //no lock, just put contents, this will happen when first created
-            file_put_contents($filePath, $json);//overwrite content
-        }
-    }
     
-    function retrieveStateFromFile($filePath) {
-        // $myfile=fopen($filePath,'rt');
-        // flock($myfile,LOCK_SH);
-        // error_log("Retrieve state from: ".$filePath);
-        $jsonString = file_get_contents($filePath);
-        // error_log("State in file: ".$jsonString);
-        // flock($myfile, LOCK_UN); 
-        // fclose($myfile);
-        $json = json_decode($jsonString, true);
-        return $json;
+    /**
+     * Extracted code from start draft.
+     * 
+     * Check draft state for if 
+     */
+    function joinDraft($players, $playerName) {
+        $playerNumber = array_search($playerName, $players);
+        if ($playerNumber === false) {
+            //player joined game - add to players list
+            $players[] = $playerName;//add to players array
+        } else {
+            //player rejoined, already in players list
+        }
+        return $players;
     }
 
     function initState($draftName, $cubeName, $draftType) {
@@ -162,7 +144,6 @@
                 $state['sideboard'][$i] = "";
             }
         }
-        // releaseDraftLock($state['draftLock']);
         $state['draftLock'] = null;
         return $state;
     }
@@ -202,35 +183,6 @@
         return $draftOver;
     }
     
-    /**
-     * TODO: change to addCardsToDeckList
-     *
-     * Add list of cards to the given array
-     */
-    function addPileToDeckList($pile, $deckList) {
-        foreach ($pile as $card) {
-            //array_push($deckList, $card);
-            $deckList[] = $card;//add card to decklist
-        }
-        return $deckList;
-    }
-    
-    /**
-     * Extracted code from start draft.
-     * 
-     * Check draft state for if 
-     */
-    function joinDraft($players, $playerName) {
-        $playerNumber = array_search($playerName, $players);
-        if ($playerNumber === false) {
-            //player joined game - add to players list
-            $players[] = $playerName;//add to players array
-        } else {
-            //player rejoined, already in players list
-        }
-        return $players;
-    }
-    
     function getPlayerNumber($players, $playerName) {
         $playerNumber = array_search($playerName, $players);
         if ($playerNumber === false) {
@@ -267,6 +219,48 @@
         return file_exists($draftsPath."/".$draftName);
     }
     
+    function getDraftState($draftName) {
+        $state = null;
+        // error_log("Getting draft state for: ".getDraftsPath()."/".$state_file_name);
+        if (file_exists(getDraftPath($draftName))) {
+            //Draft already exists, retrieve from file
+            $filePath = getDraftPath($draftName);
+            $f = fopen($filePath, 'r');
+            flock($f, LOCK_EX);
+            $jsonString = file_get_contents($filePath);
+            // error_log("State in file: ".$jsonString);
+            fclose($f);
+            $state = json_decode($jsonString, true);
+            $state['draftLock'] = true;
+        }
+        return $state;
+    }
+
+    /**
+     *	Converts state to json and writes to file
+     */
+    function writeStateToFile($state, $filePath) {
+        $json = json_encode($state);
+        // error_log("State to be saved: ".$json);
+        if (isSet($state['draftLock'])) {
+            $f = fopen($filePath, 'w');
+            fwrite($f, $json);
+            flock($f, LOCK_UN);
+            fclose($f);
+        } else {
+            //no lock, just put contents, this will happen when first created
+            file_put_contents($filePath, $json);//overwrite content
+        }
+    }
+    
+    function retrieveStateFromFile($filePath) {
+        // error_log("Retrieve state from: ".$filePath);
+        $jsonString = file_get_contents($filePath);
+        // error_log("State in file: ".$jsonString);
+        $json = json_decode($jsonString, true);
+        return $json;
+    }
+    
     $_draftsPath;
     $_cubesPath;
     
@@ -293,75 +287,5 @@
         }
         return $_cubesPath;
     }
-    
-    function getDraftState($draftName) {
-        $state = null;
-        // error_log("Getting draft state for: ".getDraftsPath()."/".$state_file_name);
-        if (file_exists(getDraftPath($draftName))) {
-            //Draft already exists, retrieve from file
-            // $state = retrieveDraftFile($draftName);
-            // error_log("Get draft state1: ".$state);
-            // $f = getDraftLock($filePath);
-            
-            //open
-            $filePath = getDraftPath($draftName);
-            $f = fopen($filePath, 'r');
-            //get lock
-            flock($f, LOCK_EX);
-            //read
-            $jsonString = file_get_contents($filePath);
-            // error_log("State in file: ".$jsonString);
-            //close
-            fclose($f);
-            //return value
-            $state = json_decode($jsonString, true);
-            $state['draftLock'] = true;
-        }
-        return $state;
-    }
-    
-    function getDraftLock($filePath) {
-        $f = fopen($filePath, 'r');
-        $got_lock = true;
-        $count = 0;
-        $timeout_secs = 5;
-        while (!flock($f, LOCK_EX | LOCK_NB)) {
-            if ($count++ < $timeout_secs) {
-                error_log("Waiting for draft lock");
-                sleep(1);
-            } else {
-                $got_lock = false;
-                break;
-            }
-        }
-        return $f;
-    }
-    
-    function releaseDraftLock($f) {
-        if ($f != null) {
-            // error_log("Releasing draft lock: ".$f);
-            flock($f, LOCK_UN);
-            fclose($f);
-        }
-    }
-    
-    function getContents($path, $waitIfLocked = true) { 
-        if(!file_exists($path)) { 
-            throw new Exception('File "'.$path.'" does not exists'); 
-        }
-        else {
-            $fo = fopen($path, 'r'); 
-            $locked = flock($fo, LOCK_SH, $waitIfLocked); 
-            if(!$locked) { 
-                return false;
-            } else { 
-                $cts = file_get_contents($path); 
-                
-                flock($fo, LOCK_UN);
-                fclose($fo); 
-                return $cts; 
-            } 
-        } 
-    } 
     
 ?>
