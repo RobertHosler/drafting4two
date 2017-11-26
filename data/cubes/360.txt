@@ -17,13 +17,13 @@ Stormfront Pegasus
 Syndic of Tithes
 Thalia, Guardian of Thraben
 Wall of Omens
+Aerial Responder
 Blade Splicer
 Fiend Hunter
 Flickerwisp
 Lingering Souls
 Mentor of the Meek
 Mirror Entity
-Stonecloaker
 Hero of Bladehold
 Ranger of Eos
 Restoration Angel
@@ -135,13 +135,13 @@ Doom Blade
 Go for the Throat
 Ultimate Price
 Dismember
+Murderous Cut
 Reanimate
 Collective Brutality
 Demonic Tutor
 Hymn to Tourach
 Sever the Bloodline
 Living Death
-Ribbons of Night
 Unburial Rites
 Life's Finale
 Profane Command
