@@ -191,6 +191,11 @@ div.deck .magicCard {
 	padding: 10px;
 }
 
+.deck .curve {
+	/*width: 100%;*/
+	/*text-align: center;*/
+}
+
 .currentPile {
 	overflow: auto;
 	display: flex;
@@ -287,6 +292,9 @@ div.currentPile .magicCard {
 .burnCard.draftButton,
 .pickCard.draftButton {
 	background: white;
+}
+.singleButton {
+	padding: 5px;
 }
 .writtenCard {
 	display: table;

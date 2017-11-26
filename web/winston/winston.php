@@ -95,9 +95,7 @@
 					</div>
 					
 					<div id="draftComplete" class="row" style="display: none;">
-						<div class="nine columns" style="height:1px">
-						</div>
-						<div class="three columns">
+						<div class="twelve columns">
 							<button id="downloadDeck" class="draftButton" onclick="saveDeckToFile();">Download Deck</button>
 						</div>
 					</div>
@@ -107,10 +105,9 @@
 						<div class="twelve columns heading">
 							Your Deck: <span id="deckListNumber">[pileNumber]</span>
 						</div>
-						<div class="eight columns" style="height: 1px;"></div>
-						<div class="three columns">
-							<button id="showDeckSorted" class="draftButton" onclick="draft.sortDeck();" style="display:none;">Sorted</button>
-							<button id="showDeckUnsorted" class="draftButton" onclick="draft.unsortDeck();">Unsorted</button>
+						<div class="twelve columns singleButton">
+							<button id="showDeckSorted" class="draftButton" onclick="draft.sortDeck();" style="display:none;">Show Sorted</button>
+							<button id="showDeckUnsorted" class="draftButton" onclick="draft.unsortDeck();">Show Unsorted</button>
 						</div>
 						<div id="deckList" class="twelve columns deck maindeck"></div>
 					</div>
@@ -119,10 +116,9 @@
 						<div class="twelve columns heading">
 							Your Sideboard: <span id="sideboardListNumber">[pileNumber]</span>
 						</div>
-						<div class="eight columns" style="height: 1px;"></div>
-						<div class="three columns">
-							<button id="showSideboardSorted" class="draftButton" onclick="draft.sortSideboard();" style="display:none;">Sorted</button>
-							<button id="showSideboardUnsorted" class="draftButton" onclick="draft.unsortSideboard();">Unsorted</button>
+						<div class="twelve columns singleButton">
+							<button id="showSideboardSorted" class="draftButton" onclick="draft.sortSideboard();" style="display:none;">Show Sorted</button>
+							<button id="showSideboardUnsorted" class="draftButton" onclick="draft.unsortSideboard();">Show Unsorted</button>
 						</div>
 						<div id="sideboardList" class="twelve columns deck sideboard"></div>
 					</div>

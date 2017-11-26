@@ -121,6 +121,8 @@ var mtg = (function() {
 	var appendSortedCardNames = function(divId, cardnames) {
 		getCardsThen(cardnames, function() {
 			var cards = getCards(cardnames);
+			var creatureCount = 0;
+			var nonLandCount = 0;
 			var cmcList = [];
 			var result = {
 				white: [],
@@ -137,6 +139,12 @@ var mtg = (function() {
 				var cmc = card.cmc;
 				cmcList[cmc] = cmcList[cmc] ? cmcList[cmc] + 1 : 1;
 				var colors = card.colors ? card.colors.length : 0;
+				if ($.inArray("Creature", card.types) > -1) {
+					creatureCount++;
+				}
+				if ($.inArray("Land", card.types) < 0) {
+					nonLandCount++;
+				}
 				switch (colors) {
 					case 0: //Colorless or land
 						switch (card.types[0]) {
@@ -170,10 +178,12 @@ var mtg = (function() {
 						result.multi.push(card);
 				}
 			});
-			var cmcOutput = "<div><div><strong>Curve</strong></div>";
+			var cmcOutput = "<div class=\"curve\"><div><strong>Curve</strong></div>";
 			$.each(cmcList, function(cmc, count) {
 				cmcOutput += "<div>" + prettySymbolText("{" + cmc + "}") + ": " + (count ? count : 0) + "</div>";
 			});
+			cmcOutput += "<div>Creatures: " + creatureCount + "</div>";
+			cmcOutput += "<div>NonLands: " + nonLandCount + "</div>";
 			cmcOutput += "</div>";
 			$(divId).append(cmcOutput);
 			result.white.sort(compareCmc);
@@ -185,6 +195,9 @@ var mtg = (function() {
 			result.colorless.sort(compareCmc);
 			var sortedCards = result;
 			$.each(sortedCards, function(index, array) {
+				if (array.length === 0) {
+					return;
+				}
 				var colorList = "";
 				colorList += "<div class=\"colorBlock\">";
 				colorList += "<div class=\"colorList\">" + index + " - " + array.length + "</div><div>";
