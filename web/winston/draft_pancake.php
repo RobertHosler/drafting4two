@@ -123,7 +123,7 @@ switch ($function) {
         if ($currentPicks < $picksInTurn) {
         	//make another pick
         	//handle in js
-        } else if ($currentTurn == 3) {
+        } else if ($currentTurn < $state['turns']) {
 			//last turn, no more picks
 			//burn the rest of the pack and open a new pack if both players ready
             $state['packs'][$packIndex] = array();//set an empty array
