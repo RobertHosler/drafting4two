@@ -94,6 +94,13 @@ button {
 	float: right; 
 }
 
+.pageheader {
+	padding: 10px 0px;
+	background: gainsboro;
+	font-weight: bold;
+	font-size: 16px;
+}
+
 /*
 .magicCard {
 	
