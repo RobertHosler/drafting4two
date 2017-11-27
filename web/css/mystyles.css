@@ -213,10 +213,10 @@ div.deck .magicCard {
 }
 
 .currentPile.burning {
-	background: red;
+	background: #e46565;
 }
 .currentPile.picking {
-	background: green;
+	background: #53ad53;
 }
 .currentPile.waiting {
 	background: yellow;
@@ -281,7 +281,7 @@ div.currentPile .magicCard {
 	background: lightblue;
 }
 #currentPileRow .heading {
-	background: #7cb9cd;
+	background: #a7a7a7;
 }
 
 .cardActions {
