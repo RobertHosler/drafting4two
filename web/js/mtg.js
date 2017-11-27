@@ -184,6 +184,7 @@ var mtg = (function() {
 			});
 			cmcOutput += "<div>Creatures: " + creatureCount + "</div>";
 			cmcOutput += "<div>NonLands: " + nonLandCount + "</div>";
+			cmcOutput += "<div>Total: " + cards.length + "</div>";
 			cmcOutput += "</div>";
 			$(divId).append(cmcOutput);
 			result.white.sort(compareCmc);

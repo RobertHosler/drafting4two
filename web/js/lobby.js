@@ -1,8 +1,9 @@
+/* global mtg*/
 /* global $ */
 
 
 $(function() {
-	listCubes();	
+	listCubes();
 });
 
 function setWinstonDefaults() {
@@ -213,6 +214,32 @@ function addCubeList() {
 	} else {
 		setTimeout(function() {
 			addCubeList();
+		}, 100);
+	}
+}
+
+function populateSortedList() {
+	if (!instanse) {
+		instanse = true;
+		$("#sortedCube").html("Loading...");
+		var cubeName = $("#cubeLists").val();
+		$.ajax({
+			type: "POST",
+			url: "draft_process.php",
+			data: {
+				'function': 'retrieveCubeList',
+				'cubeName': cubeName
+			},
+			dataType: "json",
+			success: function (data) {
+				$("#sortedCube").html("");
+				mtg.appendSortedCardNames("#sortedCube", data.cubeList);
+				instanse = false;
+			}
+		});
+	} else {
+		setTimeout(function() {
+			populateSortedList();
 		}, 100);
 	}
 }
