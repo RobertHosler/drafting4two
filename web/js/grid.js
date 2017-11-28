@@ -10,7 +10,9 @@ var grid = (function() {
 
 	var startDraft = function() {
 		//show grid
+		$("#grid").show();
 		//hide pile
+		$("#currentPileRow").hide();
 	};
 	
 	var isStateUpdated = function(_state) {
