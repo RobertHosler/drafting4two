@@ -31,7 +31,7 @@
 					</div>
 					
 					<div id="topButtons"class="row">
-						<div class="seven columns">
+						<div class="three columns">
 							<div id="welcomeMessage"></div>
 							<div id="status">
 								<div id="statusDraftName"></div>
@@ -42,7 +42,17 @@
 								<div id="statusCurrentTurn"></div>
 							</div>
 						</div>
-						<div class="five columns">
+						<div class="nine columns">
+							<!-- Opponent Pool -->
+							<div id="opponentPoolRow" class="row pileRow" style="display:none;">
+								<div class="twelve columns heading">
+									<button id="showOpponentPoolSorted" class="draftButton sortButton" onclick="draft.sortOpponentPool();" style="display:none;">Show Sorted</button>
+									<button id="showOpponentPoolUnsorted" class="draftButton sortButton" onclick="draft.unsortOpponentPool();">Show Unsorted</button>
+									<span>Opponent's Pool</span>
+								</div>
+								<div id="opponentPool" class="twelve columns deck maindeck sideboard"></div>
+							</div>
+							
 							<div id="winstonPiles" class="row" style="display:none;">
 								<div id="mainPileCount" class="three columns pileCount cardPile">
 									<div>Main Pile</div>
@@ -165,25 +175,21 @@
 					<!-- Deck -->					
 					<div id="deckRow" class="row pileRow">
 						<div class="twelve columns heading">
+							<button id="showDeckSorted" class="draftButton sortButton" onclick="draft.sortDeck();" style="display:none;">Show Sorted</button>
+							<button id="showDeckUnsorted" class="draftButton sortButton" onclick="draft.unsortDeck();">Show Unsorted</button>
 							Deck: <span id="deckListNumber">[pileNumber]</span>
 						</div>
 						<div id="deckList" class="twelve columns deck maindeck"></div>
-						<div class="twelve columns singleButton">
-							<button id="showDeckSorted" class="draftButton" onclick="draft.sortDeck();" style="display:none;">Show Sorted</button>
-							<button id="showDeckUnsorted" class="draftButton" onclick="draft.unsortDeck();">Show Unsorted</button>
-						</div>
 					</div>
 					
 					<!-- Sideboard -->	
 					<div id="deckRow" class="row pileRow">
 						<div class="twelve columns heading">
+							<button id="showSideboardSorted" class="draftButton sortButton" onclick="draft.sortSideboard();" style="display:none;">Show Sorted</button>
+							<button id="showSideboardUnsorted" class="draftButton sortButton" onclick="draft.unsortSideboard();">Show Unsorted</button>
 							Sideboard: <span id="sideboardListNumber">[pileNumber]</span>
 						</div>
 						<div id="sideboardList" class="twelve columns deck sideboard"></div>
-						<div class="twelve columns singleButton">
-							<button id="showSideboardSorted" class="draftButton" onclick="draft.sortSideboard();" style="display:none;">Show Sorted</button>
-							<button id="showSideboardUnsorted" class="draftButton" onclick="draft.unsortSideboard();">Show Unsorted</button>
-						</div>
 					</div>
 					
 					<div id="draftComplete" class="row" style="display: none;">

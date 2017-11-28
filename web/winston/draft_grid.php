@@ -9,7 +9,7 @@ function changeTurn($state, $playerNumber) {
     //change the active player or reset turn values for new round
     if ($state['turn'] == 1) {
         $state['turn'] = 2;
-		$state['activePlayer'] = ($player == 1) ? 2 : 1;
+		$state['activePlayer'] = ($playerNumber == 1) ? 2 : 1;
     } else if ($state['turn'] == 2) {
         //active player stays the same since players take turns going first in a round
         if ($state['currentGrid'] == $state['numGrids']) {
@@ -24,13 +24,15 @@ function changeTurn($state, $playerNumber) {
 
 function addRowToDeck($state, $playerNumber, $rowNum) {
     //Add all cards in a given row to active players deck
+    $currentGrid = $state['currentGrid'];
     $colSize = $state['colSize'];
     $cards = array();
     for ($i = 0; $i < $colSize; $i++) {
-        $card = $state['grids'][$currentGrid][$i][$rowNum];
+        $card = $state['grids'][$currentGrid][$rowNum][$i];
         if ($card != "") {//ignore if empty slot
             $state['decks'][$playerNumber][] = $card;//add card
-            $state['grids'][$currentGrid][$i][$rowNum] = "";//clear card from grid
+            $state['playerPools'][$playerNumber][] = $card;//add card
+            $state['grids'][$currentGrid][$rowNum][$i] = "";//clear card from grid
         }
     }
     return $state;
@@ -38,13 +40,15 @@ function addRowToDeck($state, $playerNumber, $rowNum) {
 
 function addColToDeck($state, $playerNumber, $colNum) {
     //Add all cards in a given column to active players
+    $currentGrid = $state['currentGrid'];
     $colSize = $state['colSize'];
     $cards = array();
     for ($i = 0; $i < $colSize; $i++) {
-        $card = $state['grids'][$currentGrid][$colNum][$i];
+        $card = $state['grids'][$currentGrid][$i][$colNum];
         if ($card != "") {//ignore if empty slot
             $state['decks'][$playerNumber][] = $card;//add card to decklist
-            $state['grids'][$currentGrid][$colNum][$i] = "";//clear card from grid
+            $state['playerPools'][$playerNumber][] = $card;//add card
+            $state['grids'][$currentGrid][$i][$colNum] = "";//clear card from grid
         }
     }
     return $state;

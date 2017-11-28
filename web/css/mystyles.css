@@ -167,6 +167,12 @@ button {
 	vertical-align: middle;
 	width:100%;
 }
+.sortButton {
+	width: 150px;
+	float: right;
+	background: #dec;
+	margin-bottom: 0px;
+}
 .pickCard.draftButton {
 	background: white;
 }

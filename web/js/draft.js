@@ -52,6 +52,7 @@ $(function() {
 	var updating = false; //set to true once the draft begins updating
 	var isDeckSorted = true;
 	var isSideboardSorted = true;
+	var isOpponentPoolSorted = true;
 
 	var startDraft = function(draftFormatModule) {
 		dfm = draftFormatModule;
@@ -171,6 +172,7 @@ $(function() {
 		updateCurrentPile(state);
 		updateDeck(state.decks[playerNumber]); //update this player's decklist and sideboard
 		updateSideboad(state.sideboard[playerNumber]);
+		if (state.playerPools) { updateOpponentPool(state.playerPools); }
 		updateStatusMessage(state);
 		dfm.processDataChange(state, isActivePlayer(state.activePlayer));
 	};
@@ -218,6 +220,20 @@ $(function() {
 			$('#sideboardList').append(cardList);
 		}
 		$('#sideboardListNumber').html(mtg.cardCountString(sideboard ? sideboard.length : 0));
+	};
+	
+	var updateOpponentPool = function(pools) {
+		var opponentNumber = playerNumber == 1 ? 2 : 1;
+		$('#opponentPool').html($("")); //empty div
+		if (isOpponentPoolSorted) {
+			mtg.appendSortedCardNames('#opponentPool', pools[opponentNumber]);
+		} else {
+			var cardList = "";
+			$.each(pools[opponentNumber], function(index, card) {
+				cardList += "<div>" + card + "</div>";
+			});
+			$('#opponentPool').append(cardList);
+		}
 	};
 
 	exports.moveToDeck = function(cardName, element) {
@@ -336,6 +352,20 @@ $(function() {
 		$("#showSideboardSorted").show();
 		$("#showSideboardUnsorted").hide();
 		updateSideboad(dfm.state.sideboard[playerNumber]);
+	};
+
+	exports.sortOpponentPool = function() {
+		isOpponentPoolSorted = true;
+		$("#showOpponentPoolSorted").hide();
+		$("#showOpponentPoolUnsorted").show();
+		updateOpponentPool(dfm.state.playerPools);
+	};
+
+	exports.unsortOpponentPool = function() {
+		isOpponentPoolSorted = false;
+		$("#showOpponentPoolSorted").show();
+		$("#showOpponentPoolUnsorted").hide();
+		updateOpponentPool(dfm.state.playerPools);
 	};
 	
 	exports.pickCard = function(cardName) {

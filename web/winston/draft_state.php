@@ -101,8 +101,10 @@
             "players" => array(),
             "decks" => array("", array(), array()),
             "sideboard" => array("", array(), array()),
+            "playerPools" => array("", array(), array()),
             "grids" => $grids,
             "currentGrid" => 1,
+            "turn" => 1,
             "colSize" => $colSize,
             "numGrids" => $numGrids,
             "activePlayer" => rand(1, 2),
@@ -249,7 +251,7 @@
             $isActivePlayer = true;
         }
         $state['isActivePlayer'] = $isActivePlayer;
-        $state['activePlayerName'] = $state['players'][$activePlayer];
+        $state['activePlayerName'] = $state['players'][$activePlayer - 1];
         return $state;
     }
     
