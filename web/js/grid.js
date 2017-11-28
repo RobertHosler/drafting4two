@@ -47,9 +47,23 @@ var grid = (function() {
 				}
 			}
 			updateActivePlayer(state);
+			disableTakenRowCol(state);
 		}
 		updateStatusMessage(state);
 	};
+	
+	var disableTakenRowCol = function(state) {
+		if (state.turn == 2) {
+			//determine which row was taken and disable that button
+			if (state.rowTaken >= 0) {
+				var disabledRow = parseFloat(state.rowTaken)+1;
+				$("#gridRow"+disabledRow).attr('disabled', 'disabled');
+			} else if (state.colTaken >= 0) {
+				var disabledCol = parseFloat(state.colTaken)+1;
+				$("#gridCol"+disabledCol).attr('disabled', 'disabled');
+			}
+		}
+	}
 	
 	var updateActivePlayer = function(state) {
 		if (!state.draftComplete && state.isActivePlayer && state.players.length > 1) {

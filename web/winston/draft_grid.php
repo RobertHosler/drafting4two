@@ -18,6 +18,8 @@ function changeTurn($state, $playerNumber) {
             $state['turn'] = 1;
             $state['currentGrid'] = $state['currentGrid'] + 1;
         }
+        $state['rowTaken'] = -1;
+        $state['colTaken'] = -1;
     }
     return $state;
 }
@@ -35,6 +37,7 @@ function addRowToDeck($state, $playerNumber, $rowNum) {
             $state['grids'][$currentGrid][$rowNum][$i] = "";//clear card from grid
         }
     }
+    $state['rowTaken'] = $rowNum;
     return $state;
 }
 
@@ -51,6 +54,7 @@ function addColToDeck($state, $playerNumber, $colNum) {
             $state['grids'][$currentGrid][$i][$colNum] = "";//clear card from grid
         }
     }
+    $state['colTaken'] = $colNum;
     return $state;
 }
 

@@ -105,6 +105,8 @@
             "grids" => $grids,
             "currentGrid" => 1,
             "turn" => 1,
+            "rowTaken" => -1,
+            "colTaken" => -1,
             "colSize" => $colSize,
             "numGrids" => $numGrids,
             "activePlayer" => rand(1, 2),
