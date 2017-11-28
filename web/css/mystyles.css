@@ -311,6 +311,9 @@ div.currentPile .magicCard {
 	border-radius: 5px;
 	background: black;
 }
+#grid .writtenCard {
+	width: 100%;
+}
 .writtenCard .row {
 	margin-bottom: 5px;
 	margin-top: 5px;

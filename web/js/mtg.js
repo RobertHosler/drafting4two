@@ -77,6 +77,7 @@ var mtg = (function() {
 	};
 
 	var addCardsToView = function(viewId, cards) {
+		$(viewId).html("");
 		$.each(cards, function(index, card) {
 			var color = "brown";
 			if (card.colors) {
@@ -195,6 +196,7 @@ var mtg = (function() {
 			result.multi.sort(compareCmc);
 			result.colorless.sort(compareCmc);
 			var sortedCards = result;
+			$(divId).html("");
 			$.each(sortedCards, function(index, array) {
 				if (array.length === 0) {
 					return;

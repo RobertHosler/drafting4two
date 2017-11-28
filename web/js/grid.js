@@ -17,10 +17,23 @@ var grid = (function() {
 	
 	var isStateUpdated = function(_state) {
 		//determine if state has been updated based on turn, active player, player list size, and round
+		return grid.state.players.length != _state.players.length
+			|| grid.state.currentTurn != _state.currentTurn
+			|| grid.state.round != _state.round
+			|| grid.state.currentGrid != _state.currentGrid;
 	};
 	
 	var	processDataChange = function(state) {
 		//update grid
+		var colSize = 3;
+		for (var i = 0; i < colSize; i++) {
+			for (var j = 0; j < colSize; j++) {
+				var gridSelector = "#grid"+i+j;
+				$(gridSelector).html("Loading...");
+				var slot = [ state.activeGrid[i][j] ];
+				mtg.appendCardImages(gridSelector, slot);
+			}
+		}
 	};
 	
 	var updateStatusMessage = function(state) {
