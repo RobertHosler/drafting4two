@@ -111,6 +111,11 @@ button {
 	max-width:100%;
 	max-height:100%;
 }
+#grid .magicCard {
+	width: 70%;
+	margin: auto;
+	display: block;
+}
 .manaSymbol {
 	height: 14px;
 	margin-left: 2px;

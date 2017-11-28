@@ -103,6 +103,8 @@
             "sideboard" => array("", array(), array()),
             "grids" => $grids,
             "currentGrid" => 1,
+            "colSize" => $colSize,
+            "numGrids" => $numGrids,
             "activePlayer" => rand(1, 2),
             "draftComplete" => false
          ];
@@ -221,6 +223,7 @@
         switch ($state['format']) {
             case 'winston':
             case 'winston100':
+                $state = getActivePlayerState($state, $playerNumber);
                 $state = getPublicWinstonState($state, $playerNumber);
                 break;
             case 'pancake':
@@ -230,16 +233,33 @@
                 break;
             case 'grid':
             case 'grid20':
+                $state = getActivePlayerState($state, $playerNumber);
                 $state = getPublicGridState($state, $playerNumber);
                 break;
         }
+        $state = getPublicDeckState($state, $playerNumber);
+        $state['draftLock'] = null;
+        return $state;
+    }
+    
+    function getActivePlayerState($state, $playerNumber) {
+		$isActivePlayer = false;
+        $activePlayer = $state['activePlayer'];
+        if ($playerNumber == $activePlayer) {
+            $isActivePlayer = true;
+        }
+        $state['isActivePlayer'] = $isActivePlayer;
+        $state['activePlayerName'] = $state['players'][$activePlayer];
+        return $state;
+    }
+    
+    function getPublicDeckState($state, $playerNumber) {
         for ($i = 0; $i < count($state['decks']); $i++) {
             if ($i != $playerNumber) {
                 $state['decks'][$i] = "";
                 $state['sideboard'][$i] = "";
             }
         }
-        $state['draftLock'] = null;
         return $state;
     }
     

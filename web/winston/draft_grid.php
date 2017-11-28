@@ -5,23 +5,49 @@ include 'draft_state.php';
 $function = $_POST['function'];
 $response = array();
 
-function changeRound() {
-    //change the round or end the draft
-}
-
-function changeTurn() {
+function changeTurn($state, $playerNumber) {
     //change the active player or reset turn values for new round
-    
+    if ($state['turn'] == 1) {
+        $state['turn'] = 2;
+		$state['activePlayer'] = ($player == 1) ? 2 : 1;
+    } else if ($state['turn'] == 2) {
+        //active player stays the same since players take turns going first in a round
+        if ($state['currentGrid'] == $state['numGrids']) {
+            $state['draftComplete'] = true;
+        } else {
+            $state['turn'] = 1;
+            $state['currentGrid'] = $state['currentGrid'] + 1;
+        }
+    }
+    return $state;
 }
 
-function addRowToDeck() {
+function addRowToDeck($state, $playerNumber, $rowNum) {
     //Add all cards in a given row to active players deck
-    
+    $colSize = $state['colSize'];
+    $cards = array();
+    for ($i = 0; $i < $colSize; $i++) {
+        $card = $state['grids'][$currentGrid][$i][$rowNum];
+        if ($card != "") {//ignore if empty slot
+            $state['decks'][$playerNumber][] = $card;//add card
+            $state['grids'][$currentGrid][$i][$rowNum] = "";//clear card from grid
+        }
+    }
+    return $state;
 }
 
-function addColToDeck() {
+function addColToDeck($state, $playerNumber, $colNum) {
     //Add all cards in a given column to active players
-    
+    $colSize = $state['colSize'];
+    $cards = array();
+    for ($i = 0; $i < $colSize; $i++) {
+        $card = $state['grids'][$currentGrid][$colNum][$i];
+        if ($card != "") {//ignore if empty slot
+            $state['decks'][$playerNumber][] = $card;//add card to decklist
+            $state['grids'][$currentGrid][$colNum][$i] = "";//clear card from grid
+        }
+    }
+    return $state;
 }
 
 switch ($function) {
@@ -30,7 +56,8 @@ switch ($function) {
         $playerNumber = $_POST['playerNumber'];
         $colNum = $_POST['colNum'];
         $state = getDraftState($draftName);
-
+        $state = addColToDeck($state, $playerNumber, $colNum);
+        $state = changeTurn($state, $playerNumber);
 	    saveDraftFile($state);
 	    $publicState = getPublicState($state, $playerNumber);
 	    $response['state'] = $publicState;
@@ -41,7 +68,8 @@ switch ($function) {
         $playerNumber = $_POST['playerNumber'];
         $rowNum = $_POST['rowNum'];
         $state = getDraftState($draftName);
-
+        $state = addRowToDeck($state, $playerNumber, $rowNum);
+        $state = changeTurn($state, $playerNumber);
 	    saveDraftFile($state);
 	    $publicState = getPublicState($state, $playerNumber);
 	    $response['state'] = $publicState;

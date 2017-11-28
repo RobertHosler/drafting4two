@@ -29,14 +29,43 @@ var grid = (function() {
 		for (var i = 0; i < colSize; i++) {
 			for (var j = 0; j < colSize; j++) {
 				var gridSelector = "#grid"+i+j;
-				$(gridSelector).html("Loading...");
-				var slot = [ state.activeGrid[i][j] ];
-				mtg.appendCardImages(gridSelector, slot);
+				var card = state.activeGrid[i][j];
+				if (card != "") {
+					$(gridSelector).html("Loading...");
+					var slot = [ card ];
+					mtg.appendCardImages(gridSelector, slot);
+				} else {
+					$(gridSelector).html("");
+					$(gridSelector).append($("<img class=\"magicCard\" src=\"/images/Magic_the_gathering-card_back.jpg\">"));
+				}
 			}
 		}
+		updateActivePlayer(state);
 	};
 	
+	var updateActivePlayer = function(state) {
+		if (!state.draftComplete && state.isActivePlayer && state.players.length > 1) {
+			//enable buttons
+			$('.gridButton').removeAttr('disabled');
+			$('#statusCurrentGridNumber').html(state.currentGrid);
+		}
+		else {
+			//disable buttons
+			$('.gridButton').attr('disabled', 'disabled');
+			$('.gridButton').attr('disabled', 'disabled');
+		}
+	}
+	
 	var updateStatusMessage = function(state) {
+		if (!state.draftComplete) {
+			$('#statusActivePlayer').html(state.activePlayerName);
+			$('#statusCurrentRound').html(state.currentGrid);
+			$('#statusCurrentTurn').html(1);
+		} else {
+			$('#statusActivePlayer').hide();
+			$('#statusCurrentRound').hide();
+			$('#statusCurrentTurn').hide();
+		}
 		//update active player, turn, and round
 	};
 	

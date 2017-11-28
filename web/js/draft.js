@@ -178,7 +178,7 @@ $(function() {
 
 	var updateCurrentPile = function(state) {
 		$('#currentPile').html(""); //empty div
-		if (!state.draftComplete && isActivePlayer(state.activePlayer) && state.activePile) {
+		if (state.activePile && !state.draftComplete && isActivePlayer(state.activePlayer)) {
 			mtg.appendCardImages('#currentPile', state.activePile);
 		}
 		else {
