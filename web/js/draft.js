@@ -3,6 +3,7 @@
 /* global mtg*/
 /* global winston*/
 /* global pancake*/
+/* global grid*/
 /* global draft*/
 
 var draftName;
@@ -26,19 +27,17 @@ $(function() {
 	}
 	switch (draftType) {
 		case 'winston':
-			draft.startDraft(winston);
-			break;
 		case 'winston100':
 			draft.startDraft(winston);
 			break;
 		case 'pancake':
-			draft.startDraft(pancake);
-			break;
 		case 'burnfour':
-			draft.startDraft(pancake);
-			break;
 		case 'glimpse':
 			draft.startDraft(pancake);
+			break;
+		case 'grid':
+		case 'grid20':
+			draft.startDraft(grid);
 			break;
 		default:
 			draft.startDraft(winston);

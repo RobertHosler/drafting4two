@@ -73,6 +73,12 @@
                 case ('glimpse'):
                     return initGlimpseState($draftName, $cubeName, $cube);
                     break;
+                case ('grid'):
+                    return initGridState($draftName, $cubeName, $cube, 18);
+                    break;
+                case ('grid20'):
+                    return initGridState($draftName, $cubeName, $cube, 20);
+                    break;
             }
         } else {
              //What to do if the cube doesn't exist?  Retry with default_cube.txt
@@ -82,15 +88,47 @@
          }
     }
     
+    function initGridState($draftName, $cubeName, $cube, $numGrids) {
+         $colSize = 3;
+         $gridSize = $colSize * $colSize;
+         $poolSize = $gridSize * $numGrids;
+         $pool = array_slice($cube, 0, $poolSize);
+         $grids = buildGrids($pool, $numGrids, $colSize);
+         $state = [
+            "format" => 'grid',
+            "fileName" => $draftName,
+            "cubeName" => $cubeName,
+            "players" => array(),
+            "decks" => array("", array(), array()),
+            "sideboard" => array("", array(), array()),
+            "grids" => $grids,
+            "currentGrid" => 1,
+            "activePlayer" => rand(1, 2),
+            "draftComplete" => false
+         ];
+         return $state;
+    }
+    
+    function buildGrids($pool, $numGrids, $colSize) {
+        $grids = array("");
+         for ($n = 0; $n < $numGrids; $n++) {
+            $grid = array(array(), array(), array());
+            for ($i = 0; $i < $colSize; $i++) {
+                for ($j = 0; $j < $colSize; $j++) {
+                    $grid[$i][$j] = array_pop($pool);
+                }
+            }
+            $grids[] = $grid;
+         }
+        return $grids;
+    }
+    
     function initWinstonState($draftName, $cubeName, $cube, $poolSize) {
          $mainPile = array_slice($cube, 0, $poolSize);
          $pileOne = array(array_pop($mainPile));
          $pileTwo = array(array_pop($mainPile));
          $pileThree = array(array_pop($mainPile));
          $piles = array($mainPile, $pileOne, $pileTwo, $pileThree);
-         $players = array();
-         $decks = array("", array(), array());
-         $sideboard = array("", array(), array());
          $state = [
             "format" => 'winston',
             "fileName" => $draftName,
@@ -182,10 +220,17 @@
     function getPublicState($state, $playerNumber) {
         switch ($state['format']) {
             case 'winston':
+            case 'winston100':
                 $state = getPublicWinstonState($state, $playerNumber);
                 break;
             case 'pancake':
+            case 'glimpse':
+            case 'burnfour':
                 $state = getPublicPancakeState($state, $playerNumber);
+                break;
+            case 'grid':
+            case 'grid20':
+                $state = getPublicGridState($state, $playerNumber);
                 break;
         }
         for ($i = 0; $i < count($state['decks']); $i++) {
@@ -216,6 +261,13 @@
         // error_log("currentPack: ".$currentPack);
         $state['activePile'] = $state['packs'][$currentPack];//set activePile to visible pack
         $state['packs'] = "";
+        return $state;
+    }
+    
+    function getPublicGridState($state, $playerNumber) {
+        $currentGrid = $state['currentGrid'];
+        $state['activeGrid'] = $state['grids'][$currentGrid];//set activeGrid to current visible grid
+        $state['grids'] = "";//hide the rest of the grids
         return $state;
     }
     
