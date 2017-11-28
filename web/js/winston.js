@@ -7,7 +7,6 @@
 var winston = (function() {
 
     var state;
-	var isDraftComplete = false;//TODO: move draftComplete to the state object
 	
 	var startDraft = function() {
 		$("#winstonPiles").show();
@@ -80,13 +79,11 @@ var winston = (function() {
 	var currentClass = "currentCardPile";
 
 	var	processDataChange = function(state) {
-		if (state.piles) {
+		if (!state.draftComplete) {
 			updateAllPiles(state);
 			var isActivePlayer = (state.activePlayer == playerNumber);
 			updateActivePlayer(state, isActivePlayer);
-		}
-		else {
-			isDraftComplete = true;
+		} else {
 			$("#draftComplete").show();
 			$("#topButtons").hide();
 			$("#buttonRow").hide();
@@ -96,7 +93,7 @@ var winston = (function() {
 	};
 	
 	var updateStatusMessage = function(state) {
-		if (isDraftComplete) {
+		if (state.draftComplete) {
 			$("#statusActivePlayer").hide();
 			$("#statusCurrentPileNumber").hide();
 		} else {
@@ -121,7 +118,7 @@ var winston = (function() {
 	};
 	
 	var updateActivePlayer = function(state, isActivePlayer) {
-		if (!isDraftComplete && isActivePlayer && state.players.length > 1) {
+		if (!state.draftComplete && isActivePlayer && state.players.length > 1) {
 			//enable buttons
 			$('#takePile').removeAttr('disabled');
 			$('#passPile').removeAttr('disabled');
@@ -155,15 +152,13 @@ var winston = (function() {
 		var pileTwoSize = state.piles[2] ? state.piles[2] : 0;
 		var pileThreeSize = state.piles[3] ? state.piles[3] : 0;
 		var totalCardsLeft = mainPileSize + pileOneSize + pileTwoSize + pileThreeSize;
-		if (totalCardsLeft > 0) {
+		if (!state.draftComplete) {
 			updatePile('#mainPile', mainPileSize);
 			updatePile('#pileOne', pileOneSize);
 			updatePile('#pileTwo', pileTwoSize);
 			updatePile('#pileThree', pileThreeSize);
 			updateCardPileIndicator(state);
-		}
-		else {
-			isDraftComplete = true;
+		} else {
 			$("#draftComplete").show();
 			$("#topButtons").hide();
 			$("#buttonRow").hide();
@@ -204,7 +199,6 @@ var winston = (function() {
 		state: state,
 		startDraft: startDraft,
 		processDataChange: processDataChange,
-		isDraftComplete: isDraftComplete,
 		isStateUpdated: isStateUpdated,
 		passPile: passPile,
 		takePile: takePile

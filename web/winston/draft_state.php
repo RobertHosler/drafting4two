@@ -59,10 +59,19 @@
             shuffle($cube);
             switch ($draftType) {
                 case ('winston'):
-                    return initWinstonState($draftName, $cubeName, $cube);
+                    return initWinstonState($draftName, $cubeName, $cube, 90);
+                    break;
+                case ('winston100'):
+                    return initWinstonState($draftName, $cubeName, $cube, 100);
                     break;
                 case ('pancake'):
                     return initPancakeState($draftName, $cubeName, $cube);
+                    break;
+                case ('burnfour'):
+                    return initBurnFourState($draftName, $cubeName, $cube);
+                    break;
+                case ('glimpse'):
+                    return initGlimpseState($draftName, $cubeName, $cube);
                     break;
             }
         } else {
@@ -73,8 +82,8 @@
          }
     }
     
-    function initWinstonState($draftName, $cubeName, $cube) {
-         $mainPile = array_slice($cube, 0, 90);
+    function initWinstonState($draftName, $cubeName, $cube, $poolSize) {
+         $mainPile = array_slice($cube, 0, $poolSize);
          $pileOne = array(array_pop($mainPile));
          $pileTwo = array(array_pop($mainPile));
          $pileThree = array(array_pop($mainPile));
@@ -91,7 +100,8 @@
             "sideboard" => array("", array(), array()),
             "piles" => $piles,
             "activePlayer" => rand(1, 2),
-            "currentPile" => 1
+            "currentPile" => 1,
+            "draftComplete" => false
          ];
          return $state;
     }
@@ -148,7 +158,8 @@
             "numPacks" => $numPacks,
             "round" => 1,
             "rounds" => ($numPacks/2),
-            "turns" => $turns
+            "turns" => $turns,
+            "draftComplete" => false
          ];
          return $state;
     }

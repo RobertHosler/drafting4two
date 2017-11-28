@@ -28,7 +28,16 @@ $(function() {
 		case 'winston':
 			draft.startDraft(winston);
 			break;
+		case 'winston100':
+			draft.startDraft(winston);
+			break;
 		case 'pancake':
+			draft.startDraft(pancake);
+			break;
+		case 'burnfour':
+			draft.startDraft(pancake);
+			break;
+		case 'glimpse':
 			draft.startDraft(pancake);
 			break;
 		default:
@@ -170,7 +179,7 @@ $(function() {
 
 	var updateCurrentPile = function(state) {
 		$('#currentPile').html(""); //empty div
-		if (!dfm.isDraftComplete && isActivePlayer(state.activePlayer) && state.activePile) {
+		if (!state.draftComplete && isActivePlayer(state.activePlayer) && state.activePile) {
 			mtg.appendCardImages('#currentPile', state.activePile);
 		}
 		else {

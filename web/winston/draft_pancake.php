@@ -41,6 +41,7 @@ function endDraft($state, $playerNumber, $packIndex) {
 	    //other pack not yet passed
 	    $state['currentPack'][0] = $packIndex;
 	    $state['currentPack'][$playerNumber] = 0;
+	    $state['draftComplete'] = true;
 	} else {
         $state = startNewRound($state);
         $state['round'] = 0;

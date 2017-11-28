@@ -48,12 +48,19 @@
 					<label for="draftName">Draft Name: </label>
 					<input type="text" name="draftName" required class="draftButton"></input>
 					<label for="draftType">Draft Type: </label>
-					<select name="draftType" class="draftButton">
-						<option value="winston">Winston</option>
-						<option value="grid">Grid</option>
-						<option value="pancake">Pancake</option>
-						<option value="winchester">Winchester</option>
-					</select>
+					<select id="draftType" onchange="setDraftDefaults(this);" name="draftType" class="draftButton">
+	                    <option value="winston">Winston 90</option>
+	                    <option value="winston100">Winston 100</option>
+	                    <option value="pancake">Pancake</option>
+	                    <option value="burnfour">Burn Four</option>
+	                    <option value="glimpse">Glimpse</option>
+	                    <option value="grid">Grid</option>
+	                    <option value="winchester">Winchester</option>
+	                </select>
+	                <p id="draftDescription"></p>
+	                <script type="text/javascript">
+	                	setDraftDefaults("#draftType");
+	                </script>
 					<label for="cubeName">Cube Name: </label>
 					<select id="cubeLists" name="cubeName" class="draftButton">
 					</select>

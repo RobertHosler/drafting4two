@@ -31,9 +31,7 @@ Burn 4 (all the remaining)
  */
 var pancake = (function() {
     
-    var format = "pancake";
     var state;
-    var isDraftComplete = false;
 
 	var startDraft = function() {
 		
@@ -103,8 +101,7 @@ var pancake = (function() {
 		var burnsInTurn = state.burns[state.currentTurn];
         var currentPicks = state.currentPicks[playerNumber];
         var currentBurns = state.currentBurns[playerNumber];
-        if (state.round == 0) {
-			isDraftComplete = true;
+        if (state.draftComplete) {
 			$("#draftComplete").show();
 			$("#currentPileRow").hide();
         } else {
@@ -124,7 +121,7 @@ var pancake = (function() {
 	};
 	
 	var updateStatusMessage = function(state) {
-		if (isDraftComplete) {
+		if (state.draftComplete) {
 			$("#statusCurrentRound").hide();
 			$("#statusCurrentTurn").hide();
 		} else {
@@ -138,7 +135,6 @@ var pancake = (function() {
 		startDraft: startDraft,
 		processDataChange: processDataChange,
 		updateStatusMessage: updateStatusMessage,
-		isDraftComplete: isDraftComplete,
 		isStateUpdated: isStateUpdated,
 		burnCard: burnCard,
 		pickCard: pickCard

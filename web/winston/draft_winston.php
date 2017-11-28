@@ -130,8 +130,11 @@ switch ($function) {
 		        $state['currentPile'] = 1;
 		    } else if (isset($state['piles'][2])) {
 		        $state['currentPile'] = 2;
-		    } else {
+		    } else if (isset($state['piles'][3])) {
 		        $state['currentPile'] = 3;
+		    } else {
+		        $state['currentPile'] = 0;
+		    	$state['draftComplete'] = true;
 		    }
 		    
 		    //change the active player
