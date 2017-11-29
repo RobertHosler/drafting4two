@@ -206,7 +206,18 @@ var mtg = (function() {
 				colorList += "<div class=\"colorList\">" + index + " - " + array.length + "</div><div>";
 				$.each(array, function(index, item) {
 					colorList += "<div class=\"row\">";
-					colorList += "<div class=\"four columns mana\">" + prettySymbolText(item.manaCost) + "</div>";
+					if (item.types[0] == "Land") {
+						var colors = "";
+						$.each(item.colorIdentity, function(i, color) { colors += "{"+color+"}"; });
+						if (item.text.indexOf("Plains") >= 0) { 	colors += "{W}"; }
+						if (item.text.indexOf("Island") >= 0) { 	colors += "{U}"; }
+						if (item.text.indexOf("Swamp") >= 0) { 	colors += "{B}"; }
+						if (item.text.indexOf("Mountain") >= 0) { 	colors += "{R}"; }
+						if (item.text.indexOf("Forest") >= 0) { 	colors += "{G}"; }
+						colorList += "<div class=\"four columns mana\">" + prettySymbolText(colors) + "</div>";
+					} else {
+						colorList += "<div class=\"four columns mana\">" + prettySymbolText(item.manaCost) + "</div>";
+					}
 					//Make name of card clickable to provide options for moving to sideboard
 					colorList += "<div class=\"eight columns\">" + item.name;
 					colorList += " <a class=\"btn-sideboard\" href=\"javascript:void(0)\" onclick=\"draft.moveToSideboard('" + safeString(item.name) + "', this)\" >SB</a>";
