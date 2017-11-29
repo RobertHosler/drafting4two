@@ -79,7 +79,11 @@ var grid = (function() {
 	
 	var updateStatusMessage = function(state) {
 		if (!state.draftComplete) {
-			$('#statusActivePlayer').html("Active Player: " + state.activePlayerName);
+			var activePlayerName = state.activePlayerName;
+			if (!activePlayerName) {
+				activePlayerName = "Other drafter has been chose to play first. Waiting for them to join.";
+			}
+			$('#statusActivePlayer').html("Active Player: " + activePlayerName);
 			$('#statusCurrentRound').html("Grid: " + state.currentGrid + " of 18");
 			$('#statusCurrentTurn').html("Turn: " + state.turn);
 		} else {
