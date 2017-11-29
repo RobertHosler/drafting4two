@@ -90,27 +90,27 @@ var mtg = (function() {
 			//Border
 			s += "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\">";
 			//Card name and manacost
-			s += "<div class=\"row cardNameRow\"><span class=\"cardName\">" + card.name + "</span>";
-			if (card.manaCost) {
-				s += "<span class=\"manaCost\">" + prettySymbolText(card.manaCost) + "</span>";
-			}
+			s += "<div class=\"row cardNameRow\">";
+			if (card.manaCost) { s += "<span class=\"manaCost\">" + prettySymbolText(card.manaCost) + "</span>"; }
+			s += "<span class=\"cardName\">" + card.name + "</span>";
 			s += "</div>";
 			//Type
 			s += "<div class=\"cardType row\">" + card.type + "</div>";
 			//Card Text
 			s += "<div class=\"cardText row\">" + prettySymbolText(card.text) + "</div>";
 			//Power/Toughness - Loyalty
+			s += "<div class=\"cardNumber row\" style=\"text-align: right;\">";
 			if (card.power || card.loyalty) {
-				s += "<div class=\"row\" style=\"text-align: right;\"><span class=\"powerToughness\">";
+				s += "<span class=\"powerToughness\">";
 				if (card.power) {
 					s += card.power + "/" + card.toughness;
 				}
 				else if (card.loyalty) {
 					s += card.loyalty;
 				}
-				s += "</span></div>";
+				s += "</span>";
 			}
-			s += "</div></div>";//end border divs
+			s += "</div></div></div>";//end border divs
 			s += "</div>";
 			$(viewId).append(s);
 		});
@@ -251,6 +251,12 @@ var mtg = (function() {
 			var regex = new RegExp(element, "g");
 			textWithSymbols = textWithSymbols.replace(regex, manaSymbol(element));
 		});
+		// var keyboards = ["Flying", "Battle cry", "Soulbond", "First strike", "Trample", "Hexproof", "Shroud", "Haste"];
+		// keyboards.forEach(function(element) {
+		// 	var regex = new RegExp(element, "g");
+		// 	textWithSymbols = textWithSymbols.replace(regex, "<strong>"+element+"</strong>");
+		// });
+		textWithSymbols = textWithSymbols.replace(/(?:\r\n|\r|\n)/g, '<div></div>');
 		textWithSymbols = textWithSymbols.replace(/\{|\}/g, ''); //remove braces
 		return textWithSymbols;
 	};

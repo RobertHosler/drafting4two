@@ -316,11 +316,13 @@ div.currentPile .magicCard {
 }
 .writtenCard {
 	display: table;
-	width: 150px;
+	width: 193px;
 	padding: 1px;
-	margin: 5px 0px 5px 5px;
 	border-radius: 5px;
 	background: black;
+}
+.currentPile .writtenCard {
+	margin: 5px 0px 5px 5px;
 }
 #grid .writtenCard {
 	width: 100%;
@@ -339,11 +341,16 @@ div.currentPile .magicCard {
     background: white;
     border-radius: 4px;
     padding: 3px;
+    min-height: 28px;
 }
 .writtenCard  .cardName {
-	float: left;
+	/* float: left; */
 	font-size: 12px;
 	color: black !important;
+	/* width: 68%; */
+}
+.writtenCard .cardType {
+	min-height: 22px;
 }
 .writtenCard .cardText,
 .writtenCard .cardType,
@@ -357,11 +364,19 @@ div.currentPile .magicCard {
 	font-size: 10px;
 }
 .writtenCard .cardText {
-	min-height: 50px;
+	min-height: 120px;
+}
+.writtenCard .cardText > div {
+	margin-bottom: 3px;
+}
+.writtenCard .cardNumber {
+	min-height: 14px;
 }
 .writtenCard  .manaCost {
 	float: right;
 	font-size: 12px;
+	max-width: 35%;
+	text-align: right;
 }
 .writtenCard  .loyalty,
 .writtenCard  .powerToughness {
