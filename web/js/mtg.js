@@ -85,8 +85,8 @@ var mtg = (function() {
 			}
 			var s = "<div>";
 			s += "<div class=\"cardActions\">";
-			s += "<button class=\"burnCard draftButton\" onclick=\"draft.burnCard('" + safeString(card.name) + "', this)\" >Burn</button>";
-			s += "<button class=\"pickCard draftButton\" onclick=\"draft.pickCard('" + safeString(card.name) + "', this)\" >Pick</button></div>";
+			s += "<button class=\"burnCard draftButton btn btn-default\" onclick=\"draft.burnCard('" + safeString(card.name) + "', this)\" >Burn</button>";
+			s += "<button class=\"pickCard draftButton btn btn-default\" onclick=\"draft.pickCard('" + safeString(card.name) + "', this)\" >Pick</button></div>";
 			//Border
 			s += "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\">";
 			//Card name and manacost
