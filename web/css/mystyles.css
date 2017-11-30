@@ -1,6 +1,6 @@
-* { 
-	margin: 0; 
-	padding: 0; 
+* {
+	margin: 0;
+	padding: 0;
 }
 
 p {
@@ -44,7 +44,10 @@ button {
 }
 
 .colorBlock {
-	min-width: 200px;
+	width: 193px;
+}
+#opponentPool .colorBlock {
+	width: 179px;
 }
 
 #chat-area{ 
@@ -116,12 +119,15 @@ button {
 	margin: auto;
 	display: block;
 }
+.gridRow {
+	min-height: 200px;
+}
 .manaSymbol {
 	height: 14px;
 	margin-left: 2px;
 }
 .cardNameRow .manaSymbol {
-	height: 10px;
+	height: 14px;
 	padding: 2px 0px 2px 0px;
 }
 .cardText .manaSymbol {
@@ -205,13 +211,35 @@ div.deck .magicCard {
 	flex-wrap: wrap;
 	flex-direction: row;
 }
+.collapse.deck {
+	display: none;
+}
+.collapse.in.deck {
+	display: flex;
+}
+
 .deck > div {
 	padding: 10px;
+}
+.deck .col-xs-4,
+.deck .col-xs-8 {
+	padding: 0px;
+}
+.deck .col-xs-4 {
+	padding-right: 5px;
+	width: 31%;
+}
+.deck .col-xs-8 {
+	width: 69%;
 }
 
 .deck .curve {
 	/*width: 100%;*/
 	/*text-align: center;*/
+}
+
+#opponentPool {
+	overflow-y: hidden;
 }
 
 .currentPile {
@@ -271,7 +299,7 @@ div.currentPile .magicCard {
 }
 
 .pileRow {
-	min-height: 200px;
+	/*min-height: 200px;*/
 	border-radius: 5px;
 	border: 1px solid;
 }
@@ -362,6 +390,7 @@ div.currentPile .magicCard {
 	border-radius: 3px;
 	border: 1px solid #666;
 	font-size: 10px;
+	margin: 5px 0px;
 }
 .writtenCard .cardText {
 	min-height: 120px;
@@ -370,7 +399,7 @@ div.currentPile .magicCard {
 	margin-bottom: 3px;
 }
 .writtenCard .cardNumber {
-	min-height: 14px;
+	min-height: 18px;
 }
 .writtenCard  .manaCost {
 	float: right;

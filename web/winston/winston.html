@@ -2,10 +2,13 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-		<link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/normalize.css" />
-		<link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/skeleton.css" />
+		<!--<link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/normalize.css" />-->
+		<!--<link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/skeleton.css" />-->
+	    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap.min.css"/>
+	    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap-theme.min.css"/>
 		<link rel="stylesheet" text="text/css" href="/css/mystyles.css" />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    	<script type="text/javascript" src="/libs/bootstrap/3.3.5/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/js/mtg.js"></script>
 		<script type="text/javascript" src="/js/draft.js"></script>
 		<script type="text/javascript" src="/js/winston.js"></script>
@@ -19,7 +22,7 @@
 		
 			<div class="row">
 		
-				<div class="twelve columns">
+				<div class="col-xs-12">
 					
 					<!-- Header -->
 					
@@ -31,7 +34,7 @@
 					</div>
 					
 					<div id="topButtons"class="row">
-						<div class="three columns">
+						<div class="col-xs-3">
 							<div id="welcomeMessage"></div>
 							<div id="status">
 								<div id="statusDraftName"></div>
@@ -42,38 +45,39 @@
 								<div id="statusCurrentTurn"></div>
 							</div>
 						</div>
-						<div class="nine columns">
+						<div class="col-xs-9">
 							<!-- Opponent Pool -->
 							<div id="opponentPoolRow" class="row pileRow" style="display:none;">
-								<div class="twelve columns heading">
-									<button id="showOpponentPoolSorted" class="draftButton sortButton" onclick="draft.sortOpponentPool();" style="display:none;">Show Sorted</button>
-									<button id="showOpponentPoolUnsorted" class="draftButton sortButton" onclick="draft.unsortOpponentPool();">Show Unsorted</button>
+								<div class="col-xs-12 heading">
+									<button class="btn btn-default sortButton" type="button" data-toggle="collapse" data-target="#opponentPool" aria-expanded="false" aria-controls="collapseExample">Toggle</button>
+									<button id="showOpponentPoolSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortOpponentPool();" style="display:none;">Show Sorted</button>
+									<button id="showOpponentPoolUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortOpponentPool();">Show Unsorted</button>
 									<span>Opponent's Pool</span>
 								</div>
-								<div id="opponentPool" class="twelve columns deck maindeck sideboard"></div>
+								<div id="opponentPool" class="col-xs-12 deck maindeck sideboard collapse"></div>
 							</div>
 							
 							<div id="winstonPiles" class="row" style="display:none;">
-								<div id="mainPileCount" class="three columns pileCount cardPile">
+								<div id="mainPileCount" class="col-xs-3 pileCount cardPile">
 									<div>Main Pile</div>
 									<div id="mainPileNumber">[pileNumber]</div>
 									<div id="mainPile" class="mainWinstonPile"></div>
 								</div>
-								<div id="cardPileOne" class="three columns cardPile">
+								<div id="cardPileOne" class="col-xs-3 cardPile">
 									<div>Pile One</div>
 									<div id="pileOneNumber">[pileNumber]</div>
 									<div class="pileBorder">
 										<div id="pileOne" class="winstonPile"></div>
 									</div>
 								</div>
-								<div id="cardPileTwo" class="three columns cardPile">
+								<div id="cardPileTwo" class="col-xs-3 cardPile">
 									<div>Pile Two</div>
 									<div id="pileTwoNumber">[pileNumber]</div>
 									<div class="pileBorder">
 										<div id="pileTwo" class="winstonPile"></div>
 									</div>
 								</div>
-								<div id="cardPileThree" class="three columns cardPile">
+								<div id="cardPileThree" class="col-xs-3 cardPile">
 									<div>Pile Three</div>
 									<div id="pileThreeNumber">[pileNumber]</div>
 									<div class="pileBorder">
@@ -86,70 +90,70 @@
 					
 					<!-- Button Row -->
 					<div id="buttonRow" class="row">
-						<div class="six columns" style="height: 1px;"></div>
-						<div class="three columns winstonButtons" style="display:none;">
-							<button id="takePile" class="draftButton" onclick="winston.takePile();">Take Pile</button>
+						<div class="col-xs-6" style="height: 1px;"></div>
+						<div class="col-xs-3 winstonButtons" style="display:none;">
+							<button id="takePile" class="draftButton btn btn-default" onclick="winston.takePile();">Take Pile</button>
 						</div>
-						<div class="three columns winstonButtons" style="display:none;">
-							<button id="passPile" class="draftButton" onclick="winston.passPile();">Pass Pile</button>
+						<div class="col-xs-3 winstonButtons" style="display:none;">
+							<button id="passPile" class="draftButton btn btn-default" onclick="winston.passPile();">Pass Pile</button>
 						</div>
 					</div>
 					
 					<div id="grid" style="display:none;">
 						<div class="row">
-							<div class="three columns">
+							<div class="col-xs-3">
 								<span>Current Grid: </span>
 								<span id="statusCurrentGridNumber">1</span>
 							</div>
-							<div class="three columns">
-								<button id="gridCol1" class="draftButton gridButton" onclick="grid.takeCol(0);">Column One</button>
+							<div class="col-xs-3">
+								<button id="gridCol1" class="draftButton gridButton btn btn-default" onclick="grid.takeCol(0);">Column One</button>
 							</div>
-							<div class="three columns">
-								<button id="gridCol2" class="draftButton gridButton" onclick="grid.takeCol(1);">Column Two</button>
+							<div class="col-xs-3">
+								<button id="gridCol2" class="draftButton gridButton btn btn-default" onclick="grid.takeCol(1);">Column Two</button>
 							</div>
-							<div class="three columns">
-								<button id="gridCol3" class="draftButton gridButton" onclick="grid.takeCol(2);">Column Three</button>
-							</div>
-						</div>
-						<div class="row">
-							<div class="three columns">
-								<button id="gridRow1" class="draftButton gridButton" onclick="grid.takeRow(0);">Row One</button>
-							</div>
-							<div id="grid00" class="three columns">
-								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
-							</div>
-							<div id="grid01" class="three columns">
-								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
-							</div>
-							<div id="grid02" class="three columns">
-								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
+							<div class="col-xs-3">
+								<button id="gridCol3" class="draftButton gridButton btn btn-default" onclick="grid.takeCol(2);">Column Three</button>
 							</div>
 						</div>
-						<div class="row">
-							<div class="three columns">
-								<button id="gridRow2" class="draftButton gridButton" onclick="grid.takeRow(1);">Row Two</button>
+						<div class="row gridRow">
+							<div class="col-xs-3">
+								<button id="gridRow1" class="draftButton gridButton btn btn-default" onclick="grid.takeRow(0);">Row One</button>
 							</div>
-							<div id="grid10" class="three columns">
+							<div id="grid00" class="col-xs-3">
 								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
 							</div>
-							<div id="grid11" class="three columns">
+							<div id="grid01" class="col-xs-3">
 								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
 							</div>
-							<div id="grid12" class="three columns">
+							<div id="grid02" class="col-xs-3">
 								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
 							</div>
 						</div>
-						<div class="row">
-							<div class="three columns">
-								<button id="gridRow3" class="draftButton gridButton" onclick="grid.takeRow(2);">Row Three</button>
+						<div class="row gridRow">
+							<div class="col-xs-3">
+								<button id="gridRow2" class="draftButton gridButton btn btn-default" onclick="grid.takeRow(1);">Row Two</button>
 							</div>
-							<div id="grid20" class="three columns">
+							<div id="grid10" class="col-xs-3">
 								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
 							</div>
-							<div id="grid21" class="three columns">
+							<div id="grid11" class="col-xs-3">
 								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
 							</div>
-							<div id="grid22" class="three columns">
+							<div id="grid12" class="col-xs-3">
+								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
+							</div>
+						</div>
+						<div class="row gridRow">
+							<div class="col-xs-3">
+								<button id="gridRow3" class="draftButton gridButton btn btn-default" onclick="grid.takeRow(2);">Row Three</button>
+							</div>
+							<div id="grid20" class="col-xs-3">
+								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
+							</div>
+							<div id="grid21" class="col-xs-3">
+								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
+							</div>
+							<div id="grid22" class="col-xs-3">
 								<img class="magicCard" src="/images/Magic_the_gathering-card_back.jpg">
 							</div>
 						</div>
@@ -157,45 +161,45 @@
 					
 					<!-- Draft Pile Row -->
 					<div id="currentPileRow" class="pileRow row">
-						<div class="twelve columns heading">
+						<div class="col-xs-12 heading">
 							CurrentPile: <span id="currentPileNumber">[pileNumber]</span>
 						</div>
-						<div id="currentPile" class="twelve columns currentPile">
+						<div id="currentPile" class="col-xs-12 currentPile">
 						
 						</div>
 					</div>
 					
 					<!-- Download -->
 					<div id="draftComplete" class="row" style="display: none;">
-						<div class="twelve columns">
+						<div class="col-xs-12">
 							<button id="downloadDeck" class="draftButton" onclick="draft.saveDeckToFile();">Download Deck</button>
 						</div>
 					</div>
 					
 					<!-- Deck -->					
 					<div id="deckRow" class="row pileRow">
-						<div class="twelve columns heading">
-							<button id="showDeckSorted" class="draftButton sortButton" onclick="draft.sortDeck();" style="display:none;">Show Sorted</button>
-							<button id="showDeckUnsorted" class="draftButton sortButton" onclick="draft.unsortDeck();">Show Unsorted</button>
+						<div class="col-xs-12 heading">
+							<button id="showDeckSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortDeck();" style="display:none;">Show Sorted</button>
+							<button id="showDeckUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortDeck();">Show Unsorted</button>
 							Deck: <span id="deckListNumber">[pileNumber]</span>
 						</div>
-						<div id="deckList" class="twelve columns deck maindeck"></div>
+						<div id="deckList" class="col-xs-12 deck maindeck"></div>
 					</div>
 					
 					<!-- Sideboard -->	
 					<div id="deckRow" class="row pileRow">
-						<div class="twelve columns heading">
-							<button id="showSideboardSorted" class="draftButton sortButton" onclick="draft.sortSideboard();" style="display:none;">Show Sorted</button>
-							<button id="showSideboardUnsorted" class="draftButton sortButton" onclick="draft.unsortSideboard();">Show Unsorted</button>
+						<div class="col-xs-12 heading">
+							<button id="showSideboardSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortSideboard();" style="display:none;">Show Sorted</button>
+							<button id="showSideboardUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortSideboard();">Show Unsorted</button>
 							Sideboard: <span id="sideboardListNumber">[pileNumber]</span>
 						</div>
-						<div id="sideboardList" class="twelve columns deck sideboard"></div>
+						<div id="sideboardList" class="col-xs-12 deck sideboard"></div>
 					</div>
 					
 					<div id="draftComplete" class="row" style="display: none;">
-						<div class="nine columns" style="height:1px">
+						<div class="col-xs-9" style="height:1px">
 						</div>
-						<div class="three columns">
+						<div class="col-xs-3">
 							<button id="downloadDeck" class="draftButton" onclick="draft.saveDeckToFile();">Download Deck</button>
 						</div>
 					</div>
@@ -203,7 +207,7 @@
 				</div>
 
 				<!-- Messaging Column -->
-				<div class="three columns" style="display: none;">
+				<div class="col-xs-3" style="display: none;">
 					<h2>Winston Drafting</h2>
 					
 					<p id="name-area"></p>

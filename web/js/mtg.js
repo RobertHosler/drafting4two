@@ -90,16 +90,16 @@ var mtg = (function() {
 			//Border
 			s += "<div class=\"writtenCard " + color + "\"><div class=\"innerWrittenCard\">";
 			//Card name and manacost
-			s += "<div class=\"row cardNameRow\">";
+			s += "<div class=\"cardNameRow\">";
 			if (card.manaCost) { s += "<span class=\"manaCost\">" + prettySymbolText(card.manaCost) + "</span>"; }
 			s += "<span class=\"cardName\">" + card.name + "</span>";
 			s += "</div>";
 			//Type
-			s += "<div class=\"cardType row\">" + card.type + "</div>";
+			s += "<div class=\"cardType\">" + card.type + "</div>";
 			//Card Text
-			s += "<div class=\"cardText row\">" + prettySymbolText(card.text) + "</div>";
+			s += "<div class=\"cardText\">" + prettySymbolText(card.text) + "</div>";
 			//Power/Toughness - Loyalty
-			s += "<div class=\"cardNumber row\" style=\"text-align: right;\">";
+			s += "<div class=\"cardNumber\" style=\"text-align: right;\">";
 			if (card.power || card.loyalty) {
 				s += "<span class=\"powerToughness\">";
 				if (card.power) {
@@ -214,12 +214,12 @@ var mtg = (function() {
 						if (item.text.indexOf("Swamp") >= 0) { 	colors += "{B}"; }
 						if (item.text.indexOf("Mountain") >= 0) { 	colors += "{R}"; }
 						if (item.text.indexOf("Forest") >= 0) { 	colors += "{G}"; }
-						colorList += "<div class=\"four columns mana\">" + prettySymbolText(colors) + "</div>";
+						colorList += "<div class=\"col-xs-4 mana\">" + prettySymbolText(colors) + "</div>";
 					} else {
-						colorList += "<div class=\"four columns mana\">" + prettySymbolText(item.manaCost) + "</div>";
+						colorList += "<div class=\"col-xs-4 mana\">" + prettySymbolText(item.manaCost) + "</div>";
 					}
 					//Make name of card clickable to provide options for moving to sideboard
-					colorList += "<div class=\"eight columns\">" + item.name;
+					colorList += "<div class=\"col-xs-8\">" + item.name;
 					colorList += " <a class=\"btn-sideboard\" href=\"javascript:void(0)\" onclick=\"draft.moveToSideboard('" + safeString(item.name) + "', this)\" >SB</a>";
 					colorList += " <a class=\"btn-maindeck\" href=\"javascript:void(0)\" onclick=\"draft.moveToDeck('" + safeString(item.name) + "', this)\" >MB</a>";
 					colorList += "</div></div>";
