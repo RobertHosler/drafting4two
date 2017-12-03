@@ -85,11 +85,10 @@
 					
 					<!-- Button Row -->
 					<div id="buttonRow" class="row">
-						<div class="col-xs-6" style="height: 1px;"></div>
-						<div class="col-xs-3 winstonButtons" style="display:none;">
-							<button id="takePile" class="draftButton btn btn-default" onclick="winston.takePile();">Take Pile</button>
+						<div class="col-xs-6 winstonButtons" style="display:none;">
+							<button id="takePile" class="draftButton btn btn-primary" onclick="winston.takePile();">Take Pile</button>
 						</div>
-						<div class="col-xs-3 winstonButtons" style="display:none;">
+						<div class="col-xs-6 winstonButtons" style="display:none;">
 							<button id="passPile" class="draftButton btn btn-default" onclick="winston.passPile();">Pass Pile</button>
 						</div>
 					</div>
@@ -155,40 +154,52 @@
 					</div>
 					
 					<!-- Draft Pile Row -->
-					<div id="currentPileRow" class="pileRow row">
-						<div class="col-xs-12 heading">
-							CurrentPile: <span id="currentPileNumber">[pileNumber]</span>
-						</div>
-						<div id="currentPile" class="col-xs-12 currentPile">
-						
+					<div class="row">
+						<div class="col-xs-12">			
+							<div id="currentPileRow" class="pileRow">
+								<div class="heading">
+									CurrentPile: <span id="currentPileNumber">[pileNumber]</span>
+								</div>
+								<div id="currentPile" class="currentPile">
+								
+								</div>
+							</div>
 						</div>
 					</div>
 					
 					<!-- Download -->
 					<div id="draftComplete" class="row" style="display: none;">
 						<div class="col-xs-12">
-							<button id="downloadDeck" class="draftButton btn btn-primary" onclick="draft.saveDeckToFile();">Download Deck</button>
+							<button id="downloadDeck" class="draftButton btn btn-primary btn-lg" onclick="draft.saveDeckToFile();">Download Deck</button>
 						</div>
 					</div>
 					
-					<!-- Deck -->					
-					<div id="deckRow" class="row pileRow">
-						<div class="col-xs-12 heading">
-							<button id="showDeckSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortDeck();" style="display:none;">Show Sorted</button>
-							<button id="showDeckUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortDeck();">Show Unsorted</button>
-							Deck: <span id="deckListNumber">[pileNumber]</span>
+					<!-- Deck -->		
+					<div class="row">
+						<div class="col-xs-12">			
+							<div id="deckRow" class="pileRow">
+								<div class="heading">
+									<button id="showDeckSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortDeck();" style="display:none;">Show Sorted</button>
+									<button id="showDeckUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortDeck();">Show Unsorted</button>
+									Deck: <span id="deckListNumber">[pileNumber]</span>
+								</div>
+								<div id="deckList" class="deck maindeck"></div>
+							</div>
 						</div>
-						<div id="deckList" class="col-xs-12 deck maindeck"></div>
 					</div>
 					
 					<!-- Sideboard -->	
-					<div id="deckRow" class="row pileRow">
-						<div class="col-xs-12 heading">
-							<button id="showSideboardSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortSideboard();" style="display:none;">Show Sorted</button>
-							<button id="showSideboardUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortSideboard();">Show Unsorted</button>
-							Sideboard: <span id="sideboardListNumber">[pileNumber]</span>
+					<div class="row">
+						<div class="col-xs-12">
+							<div id="deckRow" class="pileRow">
+								<div class="heading">
+									<button id="showSideboardSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortSideboard();" style="display:none;">Show Sorted</button>
+									<button id="showSideboardUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortSideboard();">Show Unsorted</button>
+									Sideboard: <span id="sideboardListNumber">[pileNumber]</span>
+								</div>
+								<div id="sideboardList" class="deck sideboard"></div>
+							</div>
 						</div>
-						<div id="sideboardList" class="col-xs-12 deck sideboard"></div>
 					</div>
 					
 					<div id="draftComplete" class="row" style="display: none;">
