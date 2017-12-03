@@ -225,8 +225,8 @@ var mtg = (function() {
 				colorList += "</div></div>";
 			});
 			$(divId).html("");
-			$(divId).append(cmcOutput);
 			$(divId).append(colorList);
+			$(divId).append(cmcOutput);
 		});
 	};
 
