@@ -42,7 +42,7 @@ var pancake = (function() {
 			draft.instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_pancake.php",
+				url: "process/draft_pancake.php",
 				data: {
 					'function': 'pickCard',
 					'draftName': draftName,
@@ -67,7 +67,7 @@ var pancake = (function() {
 			draft.instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_pancake.php",
+				url: "process/draft_pancake.php",
 				data: {
 					'function': 'burnCard',
 					'draftName': draftName,

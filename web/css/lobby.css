@@ -14,7 +14,7 @@
     overflow: auto;
     border: #ccc 1px solid;
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px 0px;
 }
 .draftList .row {
     margin: 15px;

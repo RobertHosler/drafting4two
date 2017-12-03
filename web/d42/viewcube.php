@@ -7,43 +7,36 @@
     
     <title>Cube List</title>
     
-    <link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/normalize.css" />
-    <link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/skeleton.css" />
+    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap.min.css"/>
+    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap-theme.min.css"/>
     <link rel="stylesheet" text="text/css" href="/css/mystyles.css" />
     <link rel="stylesheet" text="text/css" href="/css/lobby.css" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap/3.3.5/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/js/lobby.js"></script>
 	<script type="text/javascript" src="/js/mtg.js"></script>
 
 </head>
 
 <body>
-		
-	<div class="pageheader">
-		<div class="container">
-			<div class="row">
-				<a href="/">Home</a>
-				|
-				<a href="addcube.html">Add Cube</a>
-				|
-				<a href="viewcube.html">View Cube</a>
-			</div>
-		</div>
-	</div>
+	
+	<?php include 'shared/header.php';?>
 
 	<div class="container">
 		
 		<div class="row">
 
-			<div id="page-wrap" class="twelve columns">
+			<div id="page-wrap" class="col-xs-12">
 			
 				<h2>View Cube List</h2>
 				
 				<div>
 					<label for="cubeName">Cube Name: </label>
-					<select id="cubeLists" name="cubeName" class="draftButton" onchange="populateSortedList();">
+					<select id="cubeLists" name="cubeName" class="draftButton form-control" onchange="populateSortedList();">
 					</select>
 				</div>
+				
+				<br/>
 				
 				<div id="sortedCube" class="deck maindeck sideboard">Sorted cube list</div>
 				
@@ -53,11 +46,11 @@
 					});
 				</script>
 				
-				<div>View card images</div>
-				
 			</div>
 		</div>
 	</div>
+	
+	<?php include 'shared/footer.php';?>
 </body>
 
 </html>

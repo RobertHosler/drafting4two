@@ -187,7 +187,6 @@ var mtg = (function() {
 			cmcOutput += "<div>NonLands: " + nonLandCount + "</div>";
 			cmcOutput += "<div>Total: " + cards.length + "</div>";
 			cmcOutput += "</div>";
-			$(divId).append(cmcOutput);
 			result.white.sort(compareCmc);
 			result.blue.sort(compareCmc);
 			result.black.sort(compareCmc);
@@ -196,12 +195,11 @@ var mtg = (function() {
 			result.multi.sort(compareCmc);
 			result.colorless.sort(compareCmc);
 			var sortedCards = result;
-			$(divId).html("");
+			var colorList = "";
 			$.each(sortedCards, function(index, array) {
 				if (array.length === 0) {
 					return;
 				}
-				var colorList = "";
 				colorList += "<div class=\"colorBlock\">";
 				colorList += "<div class=\"colorList\">" + index + " - " + array.length + "</div><div>";
 				$.each(array, function(index, item) {
@@ -225,8 +223,10 @@ var mtg = (function() {
 					colorList += "</div></div>";
 				});
 				colorList += "</div></div>";
-				$(divId).append(colorList);
 			});
+			$(divId).html("");
+			$(divId).append(cmcOutput);
+			$(divId).append(colorList);
 		});
 	};
 

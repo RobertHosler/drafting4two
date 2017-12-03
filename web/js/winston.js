@@ -21,7 +21,7 @@ var winston = (function() {
 			draft.instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_winston.php",
+				url: "process/draft_winston.php",
 				data: {
 					'function': 'takePile',
 					'draftName': draftName,
@@ -49,7 +49,7 @@ var winston = (function() {
 			draft.instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_winston.php",
+				url: "process/draft_winston.php",
 				data: {
 					'function': 'passPile',
 					'draftName': draftName,

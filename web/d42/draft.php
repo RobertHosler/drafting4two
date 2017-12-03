@@ -1,7 +1,12 @@
+<?php include 'shared/start_authenticated_session.php';?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+	    <script type="text/javascript">
+	    var username='<?php echo $_SESSION["username"];?>';
+	    </script>
 		<!--<link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/normalize.css" />-->
 		<!--<link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/skeleton.css" />-->
 	    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap.min.css"/>
@@ -18,20 +23,10 @@
 	</head>
 	
 	<body>
+		
+		<?php include 'shared/header.php';?>
+					
 		<div class="container">
-		
-			<div class="row">
-		
-				<div class="col-xs-12">
-					
-					<!-- Header -->
-					
-					<div class="row">
-						<img class="header" src="/images/header_bg_4.jpg"/>
-						<a href="/">Return to Lobby</a>
-						<a href="javascript:void(0)" onclick="if (confirm('Are you sure you want to restart the draft?')) { draft.restartDraft(); }">Restart Draft</a>
-						<a href="#" onclick="draft.updateDraft();">Refresh Draft</a>
-					</div>
 					
 					<div id="topButtons"class="row">
 						<div class="col-xs-3">
@@ -172,7 +167,7 @@
 					<!-- Download -->
 					<div id="draftComplete" class="row" style="display: none;">
 						<div class="col-xs-12">
-							<button id="downloadDeck" class="draftButton" onclick="draft.saveDeckToFile();">Download Deck</button>
+							<button id="downloadDeck" class="draftButton btn btn-primary" onclick="draft.saveDeckToFile();">Download Deck</button>
 						</div>
 					</div>
 					
@@ -220,9 +215,9 @@
 					</form>
 				</div>
 				
-			</div>
-			
 		</div>
 	</body>
+	
+	<?php include 'shared/footer.php';?>
 	
 </html>

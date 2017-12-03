@@ -102,7 +102,7 @@ var grid = (function() {
 			var row = rowNum;
 			$.ajax({
 				type: "POST",
-				url: "draft_grid.php",
+				url: "process/draft_grid.php",
 				data: {
 					'function': 'pickRow',
 					'draftName': draftName,
@@ -133,7 +133,7 @@ var grid = (function() {
 			var column = colNum;
 			$.ajax({
 				type: "POST",
-				url: "draft_grid.php",
+				url: "process/draft_grid.php",
 				data: {
 					'function': 'pickCol',
 					'draftName': draftName,

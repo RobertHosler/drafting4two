@@ -92,7 +92,7 @@ function listDrafts() {
 		instanse = true;
 		$.ajax({
 			type: "POST",
-			url: "draft_process.php",
+			url: "process/draft_process.php",
 			data: {
 				'function': 'listDrafts'
 			},
@@ -115,10 +115,10 @@ function listDrafts() {
 						draftList += "<hr/>";
 					}
 					draftList += "<div class=\"row\">";
-					draftList += "<div class=\"columns four\">Draft: " + fileName + "</div>";
-					// draftList += "<div class=\"columns four\">Players: "  + state.players.length + "</div>";
-					draftList += "<div class=\"columns four\">Format: "  + state.format + "</div>";
-					draftList += "<div class=\"columns four\"><a href=\""+joinLink+"\">Join</a></div></div>";
+					draftList += "<div class=\"col-xs-4\"><label>Draft:</label> " + fileName + "</div>";
+					// draftList += "<div class=\"columns four\"><label>Players:</label> "  + state.players.length + "</div>";
+					draftList += "<div class=\"col-xs-4\"><label>Format:</label> "  + state.format + "</div>";
+					draftList += "<div class=\"col-xs-4\"><a href=\""+joinLink+"\">Join</a></div></div>";
 				});
 				$("#draftList").append(draftList);
 				if (lobbyEmpty) {
@@ -166,7 +166,7 @@ function deleteAllDrafts() {
 		instanse = true;
 		$.ajax({
 			type: "POST",
-			url: "draft_process.php",
+			url: "process/draft_process.php",
 			data: {
 				'function': 'deleteDrafts',
 				'password': password
@@ -190,7 +190,7 @@ function listCubes() {
 		instanse = true;
 		$.ajax({
 			type: "POST",
-			url: "draft_process.php",
+			url: "process/draft_process.php",
 			data: {
 				'function': 'listCubes'
 			},
@@ -221,7 +221,7 @@ function addCubeList() {
 		var cubeList = $("#cubeList").val();
 		$.ajax({
 			type: "POST",
-			url: "draft_process.php",
+			url: "process/draft_process.php",
 			data: {
 				'function': 'addCubeList',
 				'cubeName': cubeName,
@@ -254,7 +254,7 @@ function populateSortedList() {
 		var cubeName = $("#cubeLists").val();
 		$.ajax({
 			type: "POST",
-			url: "draft_process.php",
+			url: "process/draft_process.php",
 			data: {
 				'function': 'retrieveCubeList',
 				'cubeName': cubeName

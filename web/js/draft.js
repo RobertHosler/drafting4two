@@ -5,6 +5,7 @@
 /* global pancake*/
 /* global grid*/
 /* global draft*/
+/* global username*/
 
 var draftName;
 var draftType;
@@ -20,7 +21,7 @@ $(function() {
 	draftName = $.urlParam('draftName');
 	draftType = $.urlParam('draftType');
 	cubeName = $.urlParam('cubeName');
-	playerName = $.urlParam('playerName');
+	playerName = username ? username : $.urlParam('playerName');
 	while (!playerName) {
 		playerName = prompt("Please enter your name", "");
 		// window.location += "&playerName="+playerName;
@@ -67,7 +68,7 @@ $(function() {
 			instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_process.php",
+				url: "process/draft_process.php",
 				data: {
 					'function': 'startDraft',
 					'draftName': draftName,
@@ -108,7 +109,7 @@ $(function() {
 			instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_process.php",
+				url: "process/draft_process.php",
 				data: {
 					'function': 'restartDraft',
 					'draftName': draftName,
@@ -143,7 +144,7 @@ $(function() {
 			instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_process.php",
+				url: "process/draft_process.php",
 				data: {
 					'function': 'update',
 					'draftName': draftName,
@@ -242,7 +243,7 @@ $(function() {
 			instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_process.php",
+				url: "process/draft_process.php",
 				data: {
 					'function': 'moveToDeck',
 					'draftName': draftName,
@@ -270,7 +271,7 @@ $(function() {
 			instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_process.php",
+				url: "process/draft_process.php",
 				data: {
 					'function': 'moveToSideboard',
 					'draftName': draftName,
@@ -301,7 +302,7 @@ $(function() {
 			instanse = true;
 			$.ajax({
 				type: "POST",
-				url: "draft_process.php",
+				url: "process/draft_process.php",
 				data: {
 					'function': 'saveDeck',
 					'draftName': draftName,

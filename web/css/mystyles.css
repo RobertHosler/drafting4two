@@ -97,11 +97,17 @@ button {
 	float: right; 
 }
 
-.pageheader {
+.pageheader,
+.pagefooter {
 	padding: 10px 0px;
 	background: gainsboro;
+}
+.pageheader {
 	font-weight: bold;
 	font-size: 16px;
+}
+.pagefooter {
+	text-align: center;
 }
 
 /*

@@ -7,11 +7,12 @@
     
     <title>Lobby</title>
     
-    <link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/normalize.css" />
-    <link rel="stylesheet" text="text/css" href="/libs/skeleton/2.0.4/skeleton.css" />
+    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap.min.css"/>
+    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap-theme.min.css"/>
     <link rel="stylesheet" text="text/css" href="/css/mystyles.css" />
     <link rel="stylesheet" text="text/css" href="/css/lobby.css" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap/3.3.5/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/js/lobby.js"></script>
 	<script type="text/javascript" src="/js/mtg.js"></script>
 
@@ -22,7 +23,7 @@
 		
 	<div class="pageheader">
 		<div class="container">
-			<div class="row">
+			<div class="">
 				<a href="/">Home</a>
 				|
 				<a href="addcube.html">Add Cube</a>
@@ -31,24 +32,28 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<div class="container">
 		
 		<div class="row">
 
-			<div id="page-wrap" class="six columns">
+			<div id="page-wrap" class="col-xs-6">
 			
-				<h2>Create Draft</h2>
+				<div class="row">
+					<div class="col-xs-12">
+						<h2>Create Draft</h2>
+					</div>
+				</div>
 				
 				<div></div>
 								
 				<form id="createDraftForm" name="createDraftForm" action="winston.html" target="_blank">
 					<label for="playerName">Player Name: </label>
-					<input id="playerName" type="text" name="playerName" required class="draftButton"></input>
+					<input id="playerName" type="text" name="playerName" required class="draftButton form-control"></input>
 					<label for="draftName">Draft Name: </label>
-					<input type="text" name="draftName" required class="draftButton"></input>
+					<input type="text" name="draftName" required class="draftButton form-control"></input>
 					<label for="draftType">Draft Type: </label>
-					<select id="draftType" onchange="setDraftDefaults(this);" name="draftType" class="draftButton">
+					<select id="draftType" onchange="setDraftDefaults(this);" name="draftType" class="draftButton form-control">
 	                    <option value="winston">Winston 90</option>
 	                    <option value="winston100">Winston 100</option>
 	                    <option value="pancake">Pancake</option>
@@ -62,27 +67,39 @@
 	                	setDraftDefaults("#draftType");
 	                </script>
 					<label for="cubeName">Cube Name: </label>
-					<select id="cubeLists" name="cubeName" class="draftButton">
+					<select id="cubeLists" name="cubeName" class="draftButton form-control">
 					</select>
-					<div class="row">
-						<input type="submit" value="Submit" onclick="clearCreateForm()" class="draftButton eight columns"></input>
-						<input type="reset" value="Reset" class="draftButton four columns"></input>
+					<div class="btn-group">
+						<input type="submit" value="Submit" onclick="clearCreateForm()" class=" btn btn-default"></input>
+						<input type="reset" value="Reset" class=" btn btn-default"></input>
 					</div>
 				</form>
 			</div>
-			<div class="six columns">
-				<h2>View Drafts</h2>
+			<div class="col-xs-6">
+			
 				<div class="row">
-					<button class="draftButton six columns" onclick="showOpenDrafts();">Show Open Drafts</button>
-					<button class="draftButton six columns" onclick="showAllDrafts();">Show All Drafts</button>
+					<div class="col-xs-12">
+						<h2>View Drafts</h2>
+					</div>
 				</div>
+				
 				<div class="row">
-					<div id="draftList" class="draftList twelve columns">
-					
+					<div class="col-xs-12">
+						<span class="btn-group">
+							<button class="btn btn-default" onclick="showOpenDrafts();">Show Open Drafts</button>
+							<button class="btn btn-default" onclick="showAllDrafts();">Show All Drafts</button>
+						</span>
+						<span class="">
+							<button class="btn btn-default" onclick="deleteAllDrafts();">Delete All Drafts</button>
+						</span>
 					</div>
 				</div>
 				<div class="row">
-					<button class="draftButton twelve columns" onclick="deleteAllDrafts();">Delete All Drafts</button>
+					<div class="col-xs-12">
+						<div id="draftList" class="draftList">
+							
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

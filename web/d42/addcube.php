@@ -18,18 +18,8 @@
 </head>
 
 <body>
-		
-	<div class="pageheader">
-		<div class="container">
-			<div class="row">
-				<a href="/">Home</a>
-				|
-				<a href="addcube.html">Add Cube</a>
-				|
-				<a href="viewcube.html">View Cube</a>
-			</div>
-		</div>
-	</div>
+	
+	<?php include 'shared/header.php';?>
 
 	<div class="container">
 		
@@ -58,6 +48,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<?php include 'shared/footer.php';?>
 </body>
 
 </html>

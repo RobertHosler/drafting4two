@@ -6,8 +6,12 @@
 		$uri = 'http://';
 	}
 	$uri .= $_SERVER['HTTP_HOST'];
+	
 	if (isset($_SESSION["username"])) {
-		$uri .= '/d42/';
+		$uri .= '/d42/lobby.php';
+	} else if (isset($_POST["username"])) {
+		$_SESSION["username"] = $_POST["username"];
+		$uri .= '/d42/lobby.php';
 	} else {
 		$uri .= '/d42/login.php';
 	}
