@@ -29,45 +29,7 @@
 		
 		<div class="row">
 
-			<div id="page-wrap" class="col-xs-6">
-			
-				<div class="row">
-					<div class="col-xs-12">
-						<h2>Create Draft</h2>
-					</div>
-				</div>
-				
-				<div></div>
-								
-				<form id="createDraftForm" name="createDraftForm" action="draft.php" target="_blank">
-					<!--<label for="playerName">Player Name: </label>-->
-					<!--<input id="playerName" type="text" name="playerName" required class="draftButton form-control"></input>-->
-					<label for="draftName">Draft Name: </label>
-					<input type="text" name="draftName" required class="draftButton form-control"></input>
-					<label for="draftType">Draft Type: </label>
-					<select id="draftType" onchange="setDraftDefaults(this);" name="draftType" class="draftButton form-control">
-	                    <option value="winston">Winston 90</option>
-	                    <option value="winston100">Winston 100</option>
-	                    <option value="pancake">Pancake</option>
-	                    <option value="burnfour">Burn Four</option>
-	                    <option value="glimpse">Glimpse</option>
-	                    <option value="grid">Grid</option>
-	                    <option value="winchester">Winchester</option>
-	                </select>
-	                <p id="draftDescription"></p>
-	                <script type="text/javascript">
-	                	setDraftDefaults("#draftType");
-	                </script>
-					<label for="cubeName">Cube Name: </label>
-					<select id="cubeLists" name="cubeName" class="draftButton form-control">
-					</select>
-					<div class="btn-group">
-						<input type="submit" value="Submit" onclick="clearCreateForm()" class=" btn btn-default"></input>
-						<input type="reset" value="Reset" class=" btn btn-default"></input>
-					</div>
-				</form>
-			</div>
-			<div class="col-xs-6">
+			<div class="col-xs-12 col-sm-6">
 			
 				<div class="row">
 					<div class="col-xs-12">
@@ -93,6 +55,44 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			
+			<div id="page-wrap" class="col-xs-12 col-sm-6">
+			
+				<form id="createDraftForm" name="createDraftForm" action="draft.php">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3>Create Draft</h3>
+						</div>
+						<div class="panel-body">
+							<!--<label for="playerName">Player Name: </label>-->
+							<!--<input id="playerName" type="text" name="playerName" required class="draftButton form-control"></input>-->
+							<label for="draftName">Draft Name: </label>
+							<input type="text" name="draftName" required class="draftButton form-control"></input>
+							<label for="draftType">Draft Type: </label>
+							<select id="draftType" onchange="setDraftDefaults(this);" name="draftType" class="draftButton form-control">
+			                    <option value="winston">Winston 90</option>
+			                    <option value="winston100">Winston 100</option>
+			                    <option value="pancake">Pancake</option>
+			                    <option value="burnfour">Burn Four</option>
+			                    <option value="glimpse">Glimpse</option>
+			                    <option value="grid">Grid</option>
+			                    <option value="winchester">Winchester</option>
+			                </select>
+			                <p id="draftDescription"></p>
+			                <script type="text/javascript">
+			                	setDraftDefaults("#draftType");
+			                </script>
+							<label for="cubeName">Cube Name: </label>
+							<select id="cubeLists" name="cubeName" class="draftButton form-control">
+							</select>
+						</div>
+						<div class="panel-footer">
+							<input type="submit" value="Submit" onclick="clearCreateForm()" class=" btn btn-primary"></input>
+							<input type="reset" value="Reset" class=" btn btn-default"></input>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

@@ -108,7 +108,7 @@ function listDrafts() {
 					}
 					lobbyEmpty = false;
 					var fileName = state.fileName;
-					var joinLink = "winston.html?draftName="+fileName+"&draftType="+state.format+"&cubeName="+state.cubeName;
+					var joinLink = "draft.php?draftName="+fileName+"&draftType="+state.format+"&cubeName="+state.cubeName;
 					if (first) {
 						first = false;
 					} else {

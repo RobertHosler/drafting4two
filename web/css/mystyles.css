@@ -110,6 +110,10 @@ button {
 	text-align: center;
 }
 
+.panel-heading > h3 {
+	margin: 0px;
+}
+
 /*
 .magicCard {
 	

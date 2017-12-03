@@ -30,7 +30,7 @@
 		<div class="container">
 					
 					<div id="topButtons"class="row">
-						<div class="col-xs-3">
+						<div class="col-xs-12 col-sm-3">
 							<div id="welcomeMessage"></div>
 							<div id="status">
 								<div id="statusDraftName"></div>
@@ -41,17 +41,7 @@
 								<div id="statusCurrentTurn"></div>
 							</div>
 						</div>
-						<div class="col-xs-9">
-							<!-- Opponent Pool -->
-							<div id="opponentPoolRow" class="row pileRow" style="display:none;">
-								<div class="col-xs-12 heading">
-									<button class="btn btn-default sortButton" type="button" data-toggle="collapse" data-target="#opponentPool" aria-expanded="false" aria-controls="collapseExample">Toggle</button>
-									<button id="showOpponentPoolSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortOpponentPool();" style="display:none;">Show Sorted</button>
-									<button id="showOpponentPoolUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortOpponentPool();">Show Unsorted</button>
-									<span>Opponent's Pool</span>
-								</div>
-								<div id="opponentPool" class="col-xs-12 deck maindeck sideboard collapse"></div>
-							</div>
+						<div class="col-xs-12 col-sm-9">
 							
 							<div id="winstonPiles" class="row" style="display:none;">
 								<div id="mainPileCount" class="col-xs-3 pileCount cardPile">
@@ -199,6 +189,21 @@
 									Sideboard: <span id="sideboardListNumber">[pileNumber]</span>
 								</div>
 								<div id="sideboardList" class="deck sideboard"></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-xs-12">
+							<!-- Opponent Pool -->
+							<div id="opponentPoolRow" class="pileRow" style="display:none;">
+								<div class="heading">
+									<button class="btn btn-default sortButton" type="button" data-toggle="collapse" data-target="#opponentPool" aria-expanded="false" aria-controls="collapseExample">Toggle</button>
+									<button id="showOpponentPoolSorted" class="draftButton sortButton btn btn-default" onclick="draft.sortOpponentPool();" style="display:none;">Show Sorted</button>
+									<button id="showOpponentPoolUnsorted" class="draftButton sortButton btn btn-default" onclick="draft.unsortOpponentPool();">Show Unsorted</button>
+									<span>Opponent's Pool</span>
+								</div>
+								<div id="opponentPool" class="deck maindeck sideboard collapse"></div>
 							</div>
 						</div>
 					</div>
