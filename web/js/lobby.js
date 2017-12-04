@@ -85,11 +85,14 @@ function setDraftDefaults(dropdown) {
 var instanse = false;
 
 var openDraftsOnly = true;
+var yourDraftsOnly = true;
 
 function listDrafts() {
 	"use strict";
 	if (!instanse) {
 		instanse = true;
+		var loading = "<div class=\"row\">Loading...</div>";
+		$("#draftList").html(loading);
 		$.ajax({
 			type: "POST",
 			url: "process/draft_process.php",
@@ -103,7 +106,9 @@ function listDrafts() {
 				var draftList = "";
 				var first = true;
 				$.each(data.states, function(index, state){
-					if (openDraftsOnly && state.players.length > 1) {
+					if (yourDraftsOnly && jQuery.inArray(username, state.players) === -1) {
+						return;
+					} else if (openDraftsOnly && state.players.length > 1) {
 						return;
 					}
 					lobbyEmpty = false;
@@ -115,10 +120,13 @@ function listDrafts() {
 						draftList += "<hr/>";
 					}
 					draftList += "<div class=\"row\">";
-					draftList += "<div class=\"col-xs-4\"><label>Draft:</label> " + fileName + "</div>";
-					// draftList += "<div class=\"columns four\"><label>Players:</label> "  + state.players.length + "</div>";
-					draftList += "<div class=\"col-xs-4\"><label>Format:</label> "  + state.format + "</div>";
-					draftList += "<div class=\"col-xs-4\"><a href=\""+joinLink+"\">Join</a></div></div>";
+					draftList += "<div class=\"col-xs-4\"><label>Draft:</label> " + fileName + "<br/><label>Format:</label> "  + state.format + "</div>";
+					draftList += "<div class=\"col-xs-4\"><label>Players:</label> ";
+					$.each(state.players, function(n, player) {
+						draftList += "<br/>" + player;
+					});
+					draftList += "</div>";
+					draftList += "<div class=\"col-xs-4\"><a href=\""+joinLink+"\" class=\"btn btn-default\">Join</a></div></div>";
 				});
 				$("#draftList").append(draftList);
 				if (lobbyEmpty) {
@@ -135,14 +143,27 @@ function listDrafts() {
 
 function showAllDrafts() {
 	openDraftsOnly = false;
+	yourDraftsOnly = false;
 	$("#allDrafts").addClass("active");
 	$("#openDrafts").removeClass("active");
+	$("#yourDrafts").removeClass("active");
 	listDrafts();
 }
 
 function showOpenDrafts() {
 	openDraftsOnly = true;
+	yourDraftsOnly = false;
 	$("#openDrafts").addClass("active");
+	$("#allDrafts").removeClass("active");
+	$("#yourDrafts").removeClass("active");
+	listDrafts();
+}
+
+function showYourDrafts() {
+	openDraftsOnly = false;
+	yourDraftsOnly = true;
+	$("#yourDrafts").addClass("active");
+	$("#openDrafts").removeClass("active");
 	$("#allDrafts").removeClass("active");
 	listDrafts();
 }

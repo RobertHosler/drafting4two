@@ -112,6 +112,10 @@ button {
 	padding: 6px 6px;
 	display: inline-block;
 }
+.pagefooter a {
+	font-;
+	text-decoration: underline;
+}
 .pageheader {
 	font-weight: bold;
 	font-size: 16px;

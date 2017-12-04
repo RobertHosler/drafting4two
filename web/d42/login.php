@@ -30,9 +30,14 @@
 						<!--<div class="panel-heading">-->
 						<!--	Login to start drafting-->
 						<!--</div>-->
+						<div class="panel-heading">
+							<h3>Login</h3>
+						</div>
 						<form action="/d42/" method="post">
 						<div class="panel-body">
-								<label for="username">Username: </label><input type="text" name="username" class="form-control"><br>
+								<label for="username">Username </label><input type="text" name="username" class="form-control" required><br>
+								<em>Provide a username to identify you while you draft.  Your account will not be saved at this time.</em>
+		 						<!--<label for="password">Password </label><input type="password" name="password" class="form-control" required><br>-->
 								<!--E-mail: <input type="text" name="email"><br>-->
 						</div>
 						<div class="panel-footer">

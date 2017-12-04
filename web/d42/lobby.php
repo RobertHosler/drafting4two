@@ -4,6 +4,9 @@
 
 <head>
     <title>Lobby</title>
+    <script type="text/javascript">
+    	var username='<?php echo $_SESSION["username"];?>';
+    </script>
 	<?php include 'shared/html_head.php';?>
 </head>
 
@@ -26,11 +29,12 @@
 					</div>
 					<div class="panel-footer">
 						<span class="btn-group">
-							<button id="openDrafts" class="btn btn-default active" onclick="showOpenDrafts();">Show Open Drafts</button>
-							<button id="allDrafts" class="btn btn-default" onclick="showAllDrafts();">Show All Drafts</button>
+							<button id="openDrafts" class="btn btn-default active" onclick="showOpenDrafts();">Open Drafts</button>
+							<button id="yourDrafts" class="btn btn-default" onclick="showYourDrafts();">Your Drafts</button>
+							<button id="allDrafts" class="btn btn-default" onclick="showAllDrafts();">All Drafts</button>
 						</span>
 						<span class="">
-							<button class="btn btn-default" onclick="deleteAllDrafts();" style="float:right;">Delete All Drafts</button>
+							<button class="btn btn-default" onclick="deleteAllDrafts();" style="float:right;">Delete Drafts</button>
 						</span>
 					</div>
 				</div>

@@ -11,7 +11,7 @@
 			Magic: The Gathering is © Wizards of the Coast. Drafting4two is unaffiliated with Wizards of the Coast. 
 		</div>
 		<div>
-			Drafting4two is an opensource project by Robert Hosler.  Check out the <a href="https://github.com/RobertHosler/drafting4two/" target="_blank">repository on github</a>.
+			Drafting4two is an opensource project by Robert Hosler.  Check out the <a href="https://github.com/RobertHosler/drafting4two/" target="_blank">repository on Github</a>.
 		</div>
 	</div>
 </div>
