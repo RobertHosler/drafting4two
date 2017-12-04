@@ -4,17 +4,7 @@
 <head>
 </head>
 <body>
-
-
-<div style="background: white; display: none;">
-	<div class="container" style="height: 70px;">
-		<h1 class="pagetitle" style=""
-			>drafting<span style="color: #4e79f7; padding: 0px 2px;">4</span>two</h1>
-		<img src="/images/tgttm_roqb.jpg" class="flipped" style="height: 100%;padding: 5px 0px;float:left;margin-right: 10px;"></img>
-		<img src="/images/tgttm_roqb.jpg" style="height: 100%;padding: 5px 0px;float:left;/* margin-left: 10px; *//* margin-right: 10px; */"></img>
-	</div>
-</div>
-
+    
 <nav class="navbar navbar-default">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -25,7 +15,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand brandtitle" href="/">
+      <a class="navbar-brand brandtitle" href="#">
           <span style="float:left;">drafting<span style="color: #4e79f7; padding: 0px 2px;">4</span>two</span>
           <img src="/images/tgttm_roqb.jpg" class="flipped" style="height: 50px;padding: 5px 0px;float:left;margin-right: 5px;margin-top: -17px;margin-left: 5px;"></img>
           <img src="/images/tgttm_roqb.jpg" style="height: 50px;padding: 5px 0px;float:left;/* margin-left: 5px; *//* margin-right: 10px; */ margin-top: -17px;"></img>
@@ -50,11 +40,18 @@
           </ul>
         </li>
       </ul>
-		<?php 
-    		if (isset($_SESSION["username"])) {
-    		    include 'shared/user_actions.php';
-    	    }
-	    ?>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION["username"]; ?> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="shared/sign_out.php">Sign Out</a></li>
+          </ul>
+        </li>
+      </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

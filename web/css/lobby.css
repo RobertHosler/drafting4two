@@ -12,8 +12,8 @@
 .draftList {
     height: 400px;
     overflow: auto;
-    border: #ccc 1px solid;
-    border-radius: 5px;
+    /* border: #ccc 1px solid; */
+    /* border-radius: 5px; */
     padding: 5px 0px;
 }
 .draftList .row {

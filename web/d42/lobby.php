@@ -3,21 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
     <title>Lobby</title>
-    
-    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap.min.css"/>
-    <link rel="stylesheet" text="text/css" href="/libs/bootstrap/3.3.5/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" text="text/css" href="/css/mystyles.css" />
-    <link rel="stylesheet" text="text/css" href="/css/lobby.css" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script type="text/javascript" src="/libs/bootstrap/3.3.5/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/js/lobby.js"></script>
-	<script type="text/javascript" src="/js/mtg.js"></script>
-
+	<?php include 'shared/html_head.php';?>
 </head>
 
 <!-- onload sets to update the chat every second -->
@@ -31,14 +18,13 @@
 
 			<div class="col-xs-12 col-sm-6">
 			
-				<div class="row">
-					<div class="col-xs-12">
-						<h2>View Drafts</h2>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3>View Drafts</h3>
 					</div>
-				</div>
-				
-				<div class="row">
-					<div class="col-xs-12">
+					<div id="draftList" class="panel-body draftList">
+					</div>
+					<div class="panel-footer">
 						<span class="btn-group">
 							<button class="btn btn-default" onclick="showOpenDrafts();">Show Open Drafts</button>
 							<button class="btn btn-default" onclick="showAllDrafts();">Show All Drafts</button>
@@ -46,13 +32,6 @@
 						<span class="">
 							<button class="btn btn-default" onclick="deleteAllDrafts();">Delete All Drafts</button>
 						</span>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<div id="draftList" class="draftList">
-							
-						</div>
 					</div>
 				</div>
 			</div>

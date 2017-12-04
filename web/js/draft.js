@@ -17,34 +17,36 @@ var isManualUpdateOnly = false;
 /**
  * Initialize all the variables from the request parameters
  */
-$(function() {
-	draftName = $.urlParam('draftName');
-	draftType = $.urlParam('draftType');
-	cubeName = $.urlParam('cubeName');
-	playerName = username ? username : $.urlParam('playerName');
-	while (!playerName) {
-		playerName = prompt("Please enter your name", "");
-		// window.location += "&playerName="+playerName;
-	}
-	switch (draftType) {
-		case 'winston':
-		case 'winston100':
-			draft.startDraft(winston);
-			break;
-		case 'pancake':
-		case 'burnfour':
-		case 'glimpse':
-			draft.startDraft(pancake);
-			break;
-		case 'grid':
-		case 'grid20':
-			draft.startDraft(grid);
-			break;
-		default:
-			draft.startDraft(winston);
-	}
-	// draft.startDraft(pancake);
-});
+function initDraft() {
+	$(function() {
+		draftName = $.urlParam('draftName');
+		draftType = $.urlParam('draftType');
+		cubeName = $.urlParam('cubeName');
+		playerName = username ? username : $.urlParam('playerName');
+		while (!playerName) {
+			playerName = prompt("Please enter your name", "");
+			// window.location += "&playerName="+playerName;
+		}
+		switch (draftType) {
+			case 'winston':
+			case 'winston100':
+				draft.startDraft(winston);
+				break;
+			case 'pancake':
+			case 'burnfour':
+			case 'glimpse':
+				draft.startDraft(pancake);
+				break;
+			case 'grid':
+			case 'grid20':
+				draft.startDraft(grid);
+				break;
+			default:
+				draft.startDraft(winston);
+		}
+		// draft.startDraft(pancake);
+	});
+}
 
 (function(exports) {
 

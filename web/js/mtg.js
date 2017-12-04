@@ -275,7 +275,7 @@ var mtg = (function() {
 	var manaSymbol = function(symbol) {
 		symbol = symbol.replace(/\/|\[|\]|\{|\}/g, ''); //remove braces
 		var result = "";
-		var imgSrc = "../images/" + symbol + ".svg";
+		var imgSrc = "../images/mana/" + symbol + ".svg";
 		result = "<img class=\"manaSymbol\" src=\"" + imgSrc + "\">";
 		return result;
 	};

@@ -12,10 +12,10 @@ body {
 	/*background: url(images/bg.png); */
 }
 
-h2 { 
-	color: #fa9f00; 
-	font: 30px Helvetica, Sans-Serif; 
-	margin: 0 0 10px 0; 
+h2 {
+	/* color: #4e79f7; */
+	font: 30px Helvetica, Sans-Serif;
+	margin: 0 0 10px 0;
 }
 
 button {
@@ -100,7 +100,17 @@ button {
 .pageheader,
 .pagefooter {
 	padding: 10px 0px;
-	background: gainsboro;
+	background: #4e79f7;
+}
+.pageheader,
+.pagefooter,
+.pageheader a,
+.pagefooter a {
+	color: white;
+}
+.pageheader a {
+	padding: 6px 6px;
+	display: inline-block;
 }
 .pageheader {
 	font-weight: bold;
@@ -109,11 +119,32 @@ button {
 .pagefooter {
 	text-align: center;
 }
+.pagetitle {
+	float:left;
+	margin: 22px 10px 0px 0px;
+	/* margin: 0px; */
+	font-family: x-locale-heading-primary,zillaslab,Palatino,'Palatino Linotype',x-locale-heading-secondary,serif;
+	font-weight: bold;
+	color: #333;
+}
+.navbar-brand.brandtitle {
+	font-weight: bold;
+	color: #333;
+	font-family: x-locale-heading-primary,zillaslab,Palatino,'Palatino Linotype',x-locale-heading-secondary,serif
+}
 
 .panel-heading > h3 {
 	margin: 0px;
 }
+.flipped {5px
 
+	-moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
 /*
 .magicCard {
 	
@@ -449,4 +480,9 @@ div.currentPile .magicCard {
 .writtenCard.black > .innerWrittenCard {
 	background: #484848;
 	/* color: white; */
+}
+
+.navbar-default {
+	/* background: linear-gradient(to bottom,#4e79f7 0,#4e79f7 100%); */
+	border-bottom-color: #4e79f7;
 }
