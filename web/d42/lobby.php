@@ -26,11 +26,11 @@
 					</div>
 					<div class="panel-footer">
 						<span class="btn-group">
-							<button class="btn btn-default" onclick="showOpenDrafts();">Show Open Drafts</button>
-							<button class="btn btn-default" onclick="showAllDrafts();">Show All Drafts</button>
+							<button id="openDrafts" class="btn btn-default active" onclick="showOpenDrafts();">Show Open Drafts</button>
+							<button id="allDrafts" class="btn btn-default" onclick="showAllDrafts();">Show All Drafts</button>
 						</span>
 						<span class="">
-							<button class="btn btn-default" onclick="deleteAllDrafts();">Delete All Drafts</button>
+							<button class="btn btn-default" onclick="deleteAllDrafts();" style="float:right;">Delete All Drafts</button>
 						</span>
 					</div>
 				</div>
@@ -65,6 +65,7 @@
 							<label for="cubeName">Cube Name: </label>
 							<select id="cubeLists" name="cubeName" class="draftButton form-control">
 							</select>
+							<div><a href="addcube.php">Add a new cube to dropdown</a></div>
 						</div>
 						<div class="panel-footer">
 							<input type="submit" value="Submit" onclick="clearCreateForm()" class=" btn btn-primary"></input>

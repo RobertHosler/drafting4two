@@ -123,9 +123,8 @@ function listDrafts() {
 				$("#draftList").append(draftList);
 				if (lobbyEmpty) {
 					draftList += "<div class=\"row\">";
-					draftList += "<div class=\"col-xs-4\">";
 					draftList += "No open drafts";
-					draftList += "</div></div>";
+					draftList += "</div>";
 					$("#draftList").append(draftList);
 				}
 				instanse = false;
@@ -136,11 +135,15 @@ function listDrafts() {
 
 function showAllDrafts() {
 	openDraftsOnly = false;
+	$("#allDrafts").addClass("active");
+	$("#openDrafts").removeClass("active");
 	listDrafts();
 }
 
 function showOpenDrafts() {
 	openDraftsOnly = true;
+	$("#openDrafts").addClass("active");
+	$("#allDrafts").removeClass("active");
 	listDrafts();
 }
 
