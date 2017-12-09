@@ -2,11 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
+	<?php include 'shared/html_head.php';?>
     <script type="text/javascript">
     	var username='<?php echo $_SESSION["username"];?>';
     	initDraft();
     </script>
-	<?php include 'shared/html_head.php';?>
 </head>
 	
 <body>
