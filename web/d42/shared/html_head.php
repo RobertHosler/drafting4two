@@ -10,5 +10,6 @@
 <script type="text/javascript" src="/js/mtg.js"></script>
 <script type="text/javascript" src="/js/draft.js"></script>
 <script type="text/javascript" src="/js/winston.js"></script>
+<script type="text/javascript" src="/js/winchester.js"></script>
 <script type="text/javascript" src="/js/pancake.js"></script>
 <script type="text/javascript" src="/js/grid.js"></script>

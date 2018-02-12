@@ -61,7 +61,7 @@
                 case ('winston'):
                     return initWinstonState($draftName, $cubeName, $cube, 90);
                     break;
-                case ('winston100'):
+                case ('winston100')://ten extra cards
                     return initWinstonState($draftName, $cubeName, $cube, 100);
                     break;
                 case ('pancake'):
@@ -78,6 +78,12 @@
                     break;
                 case ('grid20'):
                     return initGridState($draftName, $cubeName, $cube, 20);
+                    break;
+                case ('winchester'):
+                    return initWinchesterState($draftName, $cubeName, $cube, 92);
+                    break;
+                case ('winchester100')://three extra flips
+                    return initWinchesterState($draftName, $cubeName, $cube, 100);
                     break;
             }
         } else {
@@ -148,6 +154,26 @@
             "draftComplete" => false
          ];
          return $state;
+    }
+    
+    function initWinchesterState($draftName, $cubeName, $cube, $poolSize) {
+         $mainPile = array_slice($cube, 0, $poolSize);
+         $pileOne = array(array_pop($mainPile));
+         $pileTwo = array(array_pop($mainPile));
+         $pileThree = array(array_pop($mainPile));
+         $pileFour = array(array_pop($mainPile));
+         $piles = array($mainPile, $pileOne, $pileTwo, $pileThree, $pileFour);
+         $state = [
+            "format" => 'winchester',
+            "fileName" => $draftName,
+            "cubeName" => $cubeName,
+            "players" => array(),
+            "decks" => array("", array(), array()),
+            "sideboard" => array("", array(), array()),
+            "piles" => $piles,
+            "activePlayer" => rand(1, 2),
+            "draftComplete" => false
+         ];
     }
     
     function initPancakeState($draftName, $cubeName, $cube) {

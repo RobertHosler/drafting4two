@@ -130,8 +130,59 @@
 					</div>
 				</div>
 				
+				<div id="winchester" style="display:none;">
+					<div class="row">
+						<div class="col-xs-12">			
+							<div class="pileRow">
+								<div class="heading">
+									Pile: <span id="pileNumber1">1</span>
+								</div>
+								<div id="pile1" class="currentPile">
+								
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">			
+							<div class="pileRow">
+								<div class="heading">
+									Pile: <span id="pileNumber2">2</span>
+								</div>
+								<div id="pile2" class="currentPile">
+								
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">			
+							<div class="pileRow">
+								<div class="heading">
+									Pile: <span id="pileNumber3">3</span>
+								</div>
+								<div id="pile3" class="currentPile">
+								
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">			
+							<div class="pileRow">
+								<div class="heading">
+									Pile: <span id="pileNumber4">4</span>
+								</div>
+								<div id="pile4" class="currentPile">
+								
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
 				<!-- Draft Pile Row -->
-				<div class="row">
+				<div id="draftPileRow" class="row">
 					<div class="col-xs-12">			
 						<div id="currentPileRow" class="pileRow">
 							<div class="heading">

@@ -2,6 +2,7 @@
 /* global $*/
 /* global mtg*/
 /* global winston*/
+/* global winchester*/
 /* global pancake*/
 /* global grid*/
 /* global draft*/
@@ -40,6 +41,9 @@ function initDraft() {
 			case 'grid':
 			case 'grid20':
 				draft.startDraft(grid);
+				break;
+			case 'winchester':
+				draft.startDraft(winchester);
 				break;
 			default:
 				draft.startDraft(winston);
